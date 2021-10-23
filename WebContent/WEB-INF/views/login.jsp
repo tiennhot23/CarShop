@@ -27,7 +27,7 @@
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Log in</h1>
-            <form action="login.htm" method="post">
+            <form action="admin/" method="post">
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" class="form-control" placeholder="enter your username" required>
