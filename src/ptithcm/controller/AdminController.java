@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ptithcm.bean.Mailer;
+import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
+import ptithcm.entity.Types;
 
 @Transactional
 @Controller
@@ -54,6 +56,25 @@ public class AdminController {
 		String hql = "FROM Cars";
 		Query query = session.createQuery(hql);
 		List<Cars> list = query.list();
+		return list;
+	}
+	
+	
+	@ModelAttribute("brands")
+	public List<Brands> getBrands() {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Brands";
+		Query query = session.createQuery(hql);
+		List<Brands> list = query.list();
+		return list;
+	}
+	
+	@ModelAttribute("types")
+	public List<Types> getTypes() {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Types";
+		Query query = session.createQuery(hql);
+		List<Types> list = query.list();
 		return list;
 	}
 }
