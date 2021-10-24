@@ -181,6 +181,13 @@ a {
     }
 }
 
+.modal{
+	width: 100% !important
+}
+
+.modal-backdrop{
+	width: 100% !important
+}
 
 
 .search {

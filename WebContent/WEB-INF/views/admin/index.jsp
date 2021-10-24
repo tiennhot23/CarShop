@@ -18,7 +18,7 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
-<body id="body-pd">
+<body id="body-pd" class=" bg-light">
     <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="header_img"> <img src="https://i.pinimg.com/originals/9d/5f/14/9d5f14a67e7e5a00101a6baf8a59fe7e.jpg" alt=""> </div>
@@ -26,9 +26,9 @@
     <div class="l-navbar" id="nav-bar">
 	    <nav class="nav">
 	        <div>
-	            <a href="#" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
+	            <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
 	            <div class="nav_list">
-	                <a href="#" class="nav_link active"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
+	                <a href="admin/" class="nav_link active"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
 	                <a href="admin/cars.htm" class="nav_link"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
 	                <a href="admin/types.htm" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
 	                <a href="admin/brands.htm" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
@@ -43,6 +43,7 @@
     <div class="height-100 bg-light">
         <h4>Main Components</h4>
     </div>
+    
     <!--Container Main end-->
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function(event) {

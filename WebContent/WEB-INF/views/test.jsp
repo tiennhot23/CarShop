@@ -76,16 +76,18 @@
                         <div class="form-group col-md-5">
                            <label for="sel1">Types:</label>
                            <form:select path="type.name" items="${types }"
-								itemValue="name" itemLabel="name"
-								class="form-control">
+								itemValue="name" itemLabel="disc"
+								class="form-select form-select-lg mb-6"
+								aria-label=".form-select-lg example">
 		
 							</form:select>
                         </div>
                         <div class="form-group col-md-5">
                            <label for="sel1">Brands:</label>
                            <form:select path="brand.name" items="${brands }"
-								itemValue="name" itemLabel="name"
-								class="form-control">
+								itemValue="name" itemLabel="disc"
+								class="form-select form-select-lg mb-6"
+								aria-label=".form-select-lg example">
 		
 							</form:select>
                         </div>
@@ -117,7 +119,7 @@
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Types:</label>
-                              <select name="typeSearch" class="form-control" id="sel1"">
+                              <select name="type" class="form-control" id="sel1"">
                                  <option value="none" selected disabled hidden>
                                     Select type
                                  </option>
@@ -135,7 +137,7 @@
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Brands:</label>
-                              <select name="brandSearch" class="form-control" id="sel1">
+                              <select name="brand" class="form-control" id="sel1">
                                  <option value="none" selected disabled hidden>
                                     Select brand
                                  </option>
@@ -163,7 +165,7 @@
                   </div>
                   <jsp:useBean id="pagedListHolder" scope="request"
                      type="org.springframework.beans.support.PagedListHolder" />
-                  <c:url value="admin/cars.htm?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }" var="pagedLink">
+                  <c:url value="admin/cars.htm?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&type=${filter_car.type }&brand=${filter_car.brand }" var="pagedLink">
                      <c:param name="p" value="~" />
                   </c:url>
                   <div>
@@ -211,14 +213,14 @@
                                                    <td>${c.brand.name }</td>
                                                    <td>${c.amount }</td>
                                                    <td class="text-center"><span class="fw-bolder">${c.price } VND</span></td>
-                                                   <td><a href="admin/cars/${c.name}.htm?linkEdit&p=~&search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }">
+                                                   <td><a href="admin/cars/${c.name}.htm?linkEdit&search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&type=${filter_car.type }&brand=${filter_car.brand }">
                                                       <button type="button" rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="">
-                                                      <i class="material-icons">Edit</i>
+                                                      <i class="material-icons">person</i>
                                                       </button></a>
                                                    </td>
-                                                   <td><a href="admin/cars/${c.name}.htm?linkDelete" role="button">
+                                                   <td><a href="admin/cars/${c.name}.htm?linkDelete role="button">
                                                       <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm" data-original-title="" title="">
-                                                      <i class="material-icons">Delete</i>
+                                                      <i class="material-icons">close</i>
                                                       </button></a>
                                                    </td>
                                                 </tr>
