@@ -28,9 +28,9 @@
     <div class="l-navbar" id="nav-bar">
 	    <nav class="nav">
 	        <div>
-	            <a href="#" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
+	            <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
 	            <div class="nav_list">
-	                <a href="#" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
+	                <a href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
 	                <a href="admin/cars" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
 	                <a href="admin/types" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
 	                <a href="admin/brands" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
@@ -54,32 +54,50 @@
                 	
 					<form class="row g-3">
 					  <div class="col-12">
-					    <label for="inputAddress" class="form-label">Search</label>
-					    <input name="search" type="text" class="form-control" id="inputAddress" placeholder="Search car...">
+					    <label for="inputAddress" class="form-label">Name</label>
+					    <input name="search" type="text" class="form-control" id="inputAddress" placeholder="Car name..." value=${filter_car.name }>
 					  </div>
 					  <div class="col-md-6">
 					    <label for="inputEmail4" class="form-label">From</label>
-					    <input name="min" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;">
+					    <input name="min" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;"  placeholder="Minimum price" value=${filter_car.min }>
 					  </div>
 					  <div class="col-md-6">
 					    <label for="inputPassword4" class="form-label">To</label>
-					    <input name="max" type="number" class="form-control" id="max_price" min="document.getElementById('min_price').value">
+					    <input name="max" type="number" class="form-control" id="max_price" max="1000000000000000" min="document.getElementById('min_price').value" placeholder="Maximum price" value=${filter_car.max }>
 					  </div>
 					  <div class="col-md-2 form-group">
 						  <label for="sel1">Types:</label>
-						  <select name="type" class="form-control" id="sel1">
-						  	<option></option>
+						  <select name="type" class="form-control" id="sel1"">
+						  	<option value="none" selected disabled hidden>
+						          Select type
+						    </option>
 						  	<c:forEach var="c" items="${types }">
-			                	<option>${c.name }</option>
+			                	<c:choose>
+			                	<c:when test="${c.name == filter_car.type }">
+			                		<option selected>${c.name }</option>
+			                	</c:when>
+			                	<c:when test="${c.name != filter_car.type }">
+			                		<option>${c.name }</option>
+			                	</c:when>
+			                	</c:choose>
 							</c:forEach>
 						  </select>
 					  </div>
 					  <div class="col-md-2 form-group">
 						  <label for="sel1">Brands:</label>
 						  <select name="brand" class="form-control" id="sel1">
-						  	<option></option>
+						  	<option value="none" selected disabled hidden>
+						          Select brand
+						    </option>
 						  	<c:forEach var="c" items="${brands }">
-			                	<option>${c.name }</option>
+			                	<c:choose>
+			                	<c:when test="${c.name == filter_car.type }">
+			                		<option selected>${c.name }</option>
+			                	</c:when>
+			                	<c:when test="${c.name != filter_car.type }">
+			                		<option>${c.name }</option>
+			                	</c:when>
+			                	</c:choose>
 							</c:forEach>
 						  </select>
 					  </div>
@@ -99,7 +117,7 @@
 		    
 		    <jsp:useBean id="pagedListHolder" scope="request"
 				type="org.springframework.beans.support.PagedListHolder" />
-			<c:url value="admin/cars.htm" var="pagedLink">
+			<c:url value="admin/cars.htm?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&type=${filter_car.type }&brand=${filter_car.brand }" var="pagedLink">
 				<c:param name="p" value="~" />
 			</c:url>
 			<div>
@@ -131,7 +149,14 @@
 			                                <tbody>
 								            	<c:forEach var="c" items="${pagedListHolder.pageList}">
 													<tr>
-									                    <td><i class="fa fa-check-circle-o green"></i><span class="ms-1"></span></td>
+									                    <td>
+									                    <c:choose>
+									                    <c:when test="${c.amount == 0 }">
+									                    	<i class="fa fa-dot-circle-o text-danger"></i><span class="ms-1"></span></c:when>
+									                    <c:when test="${c.amount > 0 }">
+									                    	<i class="fa fa-check-circle-o green"></i><span class="ms-1"></span></c:when>
+									                    </c:choose>
+									                    </td>
 									                    <td><img src="${c.img }" width="50"></td>
 									                    <td>${c.name }</td>
 									                    <td>${c.type.name }</td>

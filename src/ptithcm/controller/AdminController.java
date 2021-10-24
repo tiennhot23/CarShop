@@ -16,6 +16,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
@@ -29,6 +30,7 @@ public class AdminController {
 	SessionFactory factory;
 	@Autowired
 	Mailer mailer;
+	FilterCar filterCar = new FilterCar();
 	
 	@RequestMapping("index")
 	public String index() {
@@ -37,7 +39,13 @@ public class AdminController {
 	
 	@RequestMapping("cars")
 	public String cars(HttpServletRequest request, ModelMap model) {
-		List<Cars> cars = this.getCars();
+		filterCar.setName((request.getParameter("search")==null)?"":request.getParameter("search").trim());
+		filterCar.setMin((request.getParameter("min")==null || request.getParameter("min").length()==0)?0:Long.parseLong(request.getParameter("min").trim()));
+		filterCar.setMax((request.getParameter("max")==null || request.getParameter("max").length()==0)?Long.parseLong("1000000000000000"):Long.parseLong(request.getParameter("max").trim()));
+		filterCar.setType((request.getParameter("type")==null)?"":request.getParameter("type").trim());
+		filterCar.setBrand((request.getParameter("brand")==null)?"":request.getParameter("brand").trim());
+		
+		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagedListHolder.setPage(page);
@@ -59,6 +67,22 @@ public class AdminController {
 		return list;
 	}
 	
+	public List<Cars> getCars(FilterCar filterCar) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Cars WHERE name LIKE :search "
+				+ "and price >= :min and price <= :max "
+				+ "and type.name LIKE :type "
+				+ "and brand.name LIKE :brand ";
+		Query query = session.createQuery(hql);
+		query.setParameter("search", "%" + filterCar.getName() + "%");
+		query.setParameter("min", filterCar.getMin());
+		query.setParameter("max", filterCar.getMax());
+		query.setParameter("type", "%" + filterCar.getType());
+		query.setParameter("brand", "%" + filterCar.getBrand());
+		List<Cars> list = query.list();
+		return list;
+	}
+	
 	
 	@ModelAttribute("brands")
 	public List<Brands> getBrands() {
@@ -76,5 +100,10 @@ public class AdminController {
 		Query query = session.createQuery(hql);
 		List<Types> list = query.list();
 		return list;
+	}
+	
+	@ModelAttribute("filter_car")
+	public FilterCar getFilterCar() {
+		return filterCar;
 	}
 }
