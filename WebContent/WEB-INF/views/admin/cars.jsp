@@ -40,15 +40,24 @@
       <div class=" bg-light">
          <h4>Main Components</h4>
          <ul>Ma</ul>
+		<c:if test="${not empty message}">
+			<div class="alert alert-primary" role="alert">
+			  ${message }
+			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+		</c:if>
+         
          <div class="container-fluid">
             <div class="row">
                <div class="col-sm-3 login-section-wrapper">
                   <div class="mt-3">
                   <h4 class="card-title">Car Information</h4>
-                  <form:form action="../order.htm?name=${car.name }" modelAttribute="car">
+                  <form:form action="admin/cars.htm" modelAttribute="car">
                      <div class="form-group">
                         <label for="inputAddress2">Name</label>
-                        <form:input path="name" type="text" class="form-control" id="inputAddress2" />
+                        <form:input path="name" type="text" class="form-control" placeholder="AAAA" id="inputAddress2" />
                      </div>
                      <div class="form-group">
                         <label for="inputAddress">Image</label>
@@ -258,7 +267,7 @@
          </div>
       </div>
       <!--Container Main end--> 
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<%--       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                <div class="modal-header">
@@ -338,7 +347,7 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> --%>
       <script type="text/javascript">
          document.addEventListener("DOMContentLoaded", function(event) {
          

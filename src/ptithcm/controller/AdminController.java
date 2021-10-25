@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
@@ -51,13 +52,11 @@ public class AdminController {
 		getFilterCar(request);
 		
 		
-		
+		System.out.println("INDEX" + car.getName() + car.getDisc());
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
-		System.out.println(pagenumber.getP());
-		System.out.println("aAA" + page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
@@ -68,16 +67,40 @@ public class AdminController {
 		return "admin/cars";
 	}
 	
-	
-	@RequestMapping(value="cars/{name}.htm", params="linkEdit")
-	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("name") String name) {
+	@RequestMapping(value = "cars.htm", params = "btnAdd")
+	public String addProduct(HttpServletRequest request,ModelMap model, 
+			@ModelAttribute("product") Cars car) {
+		System.out.println("ADD" + car.getName() + car.getDisc());
+		Integer temp = this.insertCar(car);
+		if (temp != 0) {
+			model.addAttribute("message", "Insert car successful");
+		} else {
+			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
+		}
+		getFilterCar(request);
 		
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		page = pagenumber.getP();
-		System.out.println(pagenumber.getP());
-		System.out.println("aAA" + page);
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(5);
+		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		
+		return "admin/cars";
+	}
+	
+	
+	@RequestMapping(value="cars/{name}.htm", params="linkEdit")
+	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("name") String name, @ModelAttribute("car") Cars car) {
+		
+		System.out.println("EDIT1" + car.getName() + car.getDisc());
+		List<Cars> cars = this.getCars(filterCar);
+		PagedListHolder pagedListHolder = new PagedListHolder(cars);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
@@ -86,6 +109,70 @@ public class AdminController {
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		return "admin/cars";
 	}
+	
+	@RequestMapping(value = "cars.htm", params = "btnEdit")
+	public String edit_Product(HttpServletRequest request, ModelMap model,
+			@ModelAttribute("car") Cars car) {
+		System.out.println("EDIT2" + car.getName() + car.getDisc());
+		Integer temp = this.updateCar(car);
+		if (temp != 0) {
+			model.addAttribute("message", "Update successfull");
+		} else {
+			model.addAttribute("message", "Update failed!");
+		}
+		car = new Cars();
+
+		getFilterCar(request);
+		
+		List<Cars> cars = this.getCars(filterCar);
+		PagedListHolder pagedListHolder = new PagedListHolder(cars);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(5);
+		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("car", car);
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		
+		return "admin/cars";
+	}
+	
+	@RequestMapping(value = "/cars/{name}.htm", params = "linkDelete")
+	public String deleteProduct(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car,
+			@PathVariable("name") String name) {
+
+		Integer temp = this.deleteCar(car);
+		if (temp == 1) {
+			model.addAttribute("message", "Delete successfull");
+		} else if (temp == 0){
+			model.addAttribute("message", "Delete failed!");
+		} else {
+			Cars carr = getCar(name);
+			System.out.println(car.getName() + car.getDisc());
+			temp = this.updateCar(carr);
+			if(temp == 1)
+				model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
+			else model.addAttribute("message", "Delete failed");
+		}
+		
+		getFilterCar(request);
+		
+		List<Cars> cars = this.getCars(filterCar);
+		PagedListHolder pagedListHolder = new PagedListHolder(cars);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(5);
+		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		
+		return "admin/cars";
+	}
+	
+	
+	
 	
 	public Cars getCar(String name) {
 		Session session = factory.getCurrentSession();
@@ -120,6 +207,69 @@ public class AdminController {
 		List<Cars> list = query.list();
 		return list;
 	}
+	
+	
+	
+	
+	public Integer insertCar(Cars car) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		try {
+			session.save(car);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
+
+	public Integer updateCar(Cars car) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		
+		try {
+			session.update(car);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
+
+	public Integer deleteCar(Cars car) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		
+		try {
+			session.delete(car);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			if(e.getClass().getSimpleName().equals("ConstraintViolationException")) {
+				res = -1;
+				car.setAmount(0);
+			}
+			else res = 0;
+			t.rollback();
+		} finally {
+			session.close();
+		}
+		return res;
+	}
+	
+	
+	
 	
 	
 	@ModelAttribute("brands")
