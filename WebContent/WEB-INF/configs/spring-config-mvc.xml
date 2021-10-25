@@ -25,6 +25,10 @@
 	<!-- Cấu hình package chứa các controller -->
 	<context:component-scan
 		base-package="ptithcm.controller, ptithcm.bean" />
+		
+	<bean id="pagenumber" class="ptithcm.bean.PageNumber">
+		<property name="p" value="0" />
+	</bean>
 
 	<!-- Kết nối CSDL -->
 	<bean id="dataSource"

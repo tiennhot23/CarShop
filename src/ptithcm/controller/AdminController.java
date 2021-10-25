@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
+import ptithcm.bean.PageNumber;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
 import ptithcm.entity.Types;
@@ -33,6 +35,9 @@ public class AdminController {
 	SessionFactory factory;
 	@Autowired
 	Mailer mailer;
+	@Autowired
+	@Qualifier("pagenumber")
+	PageNumber pagenumber;
 	FilterCar filterCar = new FilterCar();
 	
 	
@@ -50,6 +55,9 @@ public class AdminController {
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		pagenumber.setP(page);
+		System.out.println(pagenumber.getP());
+		System.out.println("aAA" + page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
@@ -67,6 +75,9 @@ public class AdminController {
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		System.out.println(pagenumber.getP());
+		System.out.println("aAA" + page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);

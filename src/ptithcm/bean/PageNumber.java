@@ -1,13 +1,15 @@
 package ptithcm.bean;
 
-public class PageNumber {
-	private String p;
+import org.springframework.stereotype.Component;
 
-	public String getP() {
+public class PageNumber {
+	private int p;
+
+	public int getP() {
 		return p;
 	}
 
-	public void setP(String p) {
+	public void setP(int p) {
 		this.p = p;
 	}
 	
