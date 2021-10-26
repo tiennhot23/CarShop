@@ -1,4 +1,8 @@
-﻿create table AD(
+﻿create database CAR
+
+use CAR
+
+create table AD(
 	username varchar(50) primary key,
 	pass varchar(50) not null
 )
@@ -14,8 +18,9 @@ create table Brands(
 )
 
 create table Cars(
+	id int primary key identity(1,1),
 	img varchar(200) not null,
-	name nvarchar(50) not null primary key,
+	name nvarchar(50) not null unique,
 	video varchar(200),
 	amount int default 0,
 	class nvarchar(50) not null foreign key references Classs(name),
@@ -28,7 +33,7 @@ create table Orders(
 	id int primary key identity(1,1),
 	email varchar(100) not null,
 	customer nvarchar(100) not null,
-	car nvarchar(50) not null foreign key references Cars(name),
+	carId int not null foreign key references Cars(id),
 	phone numeric not null,
 	datebuy date not null,
 	amount int not null,

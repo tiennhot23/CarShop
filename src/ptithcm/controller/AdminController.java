@@ -26,6 +26,7 @@ import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
+import ptithcm.entity.Orders;
 import ptithcm.entity.Types;
 
 @Transactional
@@ -52,7 +53,6 @@ public class AdminController {
 		getFilterCar(request);
 		
 		
-		System.out.println("INDEX" + car.getName() + car.getDisc());
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -61,7 +61,7 @@ public class AdminController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
 		model.addAttribute("btnStatus", "btnAdd");
-		model.addAttribute("car", car);
+//		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "admin/cars";
@@ -69,8 +69,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "cars.htm", params = "btnAdd")
 	public String addProduct(HttpServletRequest request,ModelMap model, 
-			@ModelAttribute("product") Cars car) {
-		System.out.println("ADD" + car.getName() + car.getDisc());
+			@ModelAttribute("car") Cars car) {
 		Integer temp = this.insertCar(car);
 		if (temp != 0) {
 			model.addAttribute("message", "Insert car successful");
@@ -78,6 +77,7 @@ public class AdminController {
 			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
 		}
 		getFilterCar(request);
+		car = new Cars();
 		
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
@@ -93,10 +93,9 @@ public class AdminController {
 	}
 	
 	
-	@RequestMapping(value="cars/{name}.htm", params="linkEdit")
-	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("name") String name, @ModelAttribute("car") Cars car) {
+	@RequestMapping(value="cars/{id}.htm", params="linkEdit")
+	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("car") Cars car) {
 		
-		System.out.println("EDIT1" + car.getName() + car.getDisc());
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -105,7 +104,7 @@ public class AdminController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
 		model.addAttribute("btnStatus", "btnEdit");
-		model.addAttribute("car", getCar(name));
+		model.addAttribute("car", getCar(id));
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		return "admin/cars";
 	}
@@ -113,7 +112,6 @@ public class AdminController {
 	@RequestMapping(value = "cars.htm", params = "btnEdit")
 	public String edit_Product(HttpServletRequest request, ModelMap model,
 			@ModelAttribute("car") Cars car) {
-		System.out.println("EDIT2" + car.getName() + car.getDisc());
 		Integer temp = this.updateCar(car);
 		if (temp != 0) {
 			model.addAttribute("message", "Update successfull");
@@ -132,28 +130,33 @@ public class AdminController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(5);
 		model.addAttribute("btnStatus", "btnAdd");
-		model.addAttribute("car", car);
+//		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "admin/cars";
 	}
 	
-	@RequestMapping(value = "/cars/{name}.htm", params = "linkDelete")
+	@RequestMapping(value = "/cars/{id}.htm", params = "linkDelete")
 	public String deleteProduct(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car,
-			@PathVariable("name") String name) {
-
-		Integer temp = this.deleteCar(car);
-		if (temp == 1) {
-			model.addAttribute("message", "Delete successfull");
-		} else if (temp == 0){
-			model.addAttribute("message", "Delete failed!");
-		} else {
-			Cars carr = getCar(name);
-			System.out.println(car.getName() + car.getDisc());
-			temp = this.updateCar(carr);
-			if(temp == 1)
-				model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
-			else model.addAttribute("message", "Delete failed");
+			@PathVariable("id") Integer id) {
+		Integer temp = 0;
+		car = getCar(id);
+		if(getOrders(id).isEmpty()) {
+			temp = this.deleteCar(car);
+			if (temp == 1) {
+				model.addAttribute("message", "Delete successfull");
+			} else if (temp == 0){
+				model.addAttribute("message", "Delete failed!");
+			}
+		}else {
+			car.setAmount(0);
+			temp = this.updateCar(car);
+//			if (temp == 1) {
+//				model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
+//			} else {
+//				model.addAttribute("message", "Update amount failed!");
+//			}
+			model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
 		}
 		
 		getFilterCar(request);
@@ -174,11 +177,11 @@ public class AdminController {
 	
 	
 	
-	public Cars getCar(String name) {
+	public Cars getCar(int id) {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM Cars where name = :name";
+		String hql = "FROM Cars where id = :id";
 		Query query = session.createQuery(hql);
-		query.setParameter("name", name);
+		query.setParameter("id", id);
 		List<Cars> list = query.list();
 		if(list.size()>0) return list.get(0);
 		else return null;
@@ -237,7 +240,7 @@ public class AdminController {
 			session.update(car);
 			t.commit();
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("update error" + e);
 			t.rollback();
 			res = 0;
 		} finally {
@@ -255,13 +258,31 @@ public class AdminController {
 			session.delete(car);
 			t.commit();
 		} catch (Exception e) {
-			System.out.println(e);
-			if(e.getClass().getSimpleName().equals("ConstraintViolationException")) {
-				res = -1;
-				car.setAmount(0);
-			}
-			else res = 0;
+//			t.rollback();
+//			System.out.println("delete error" + e);
+//			if(e.getClass().getSimpleName().equals("ConstraintViolationException")) {
+//				Cars c = getCar(car.getId());
+//				c.setAmount(0);
+//				t = session.beginTransaction();
+//				try {
+//					
+//					session.update(c);
+//					System.out.println("here");
+//					t.commit();
+//					res = 2;
+//				}catch (Exception ex) {
+//					System.out.println(ex);
+//					System.out.println("hore");
+//					res = 0;
+//					t.rollback();
+//				}
+//			}
+//			else {
+//				res = 0;
+//			}
+			System.out.println("update error" + e);
 			t.rollback();
+			res = 0;
 		} finally {
 			session.close();
 		}
@@ -287,6 +308,15 @@ public class AdminController {
 		String hql = "FROM Types";
 		Query query = session.createQuery(hql);
 		List<Types> list = query.list();
+		return list;
+	}
+	
+	public List<Orders> getOrders(int carId) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Orders where car.id = :carId";
+		Query query = session.createQuery(hql);
+		query.setParameter("carId", carId);
+		List<Orders> list = query.list();
 		return list;
 	}
 	

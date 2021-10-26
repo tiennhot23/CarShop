@@ -42,7 +42,7 @@ public class Orders {
 	private long total;
 	
 	@ManyToOne
-	@JoinColumn(name="car")
+	@JoinColumn(name="carId")
 	private Cars car;
 	
 	

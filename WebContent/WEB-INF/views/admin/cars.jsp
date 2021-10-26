@@ -55,9 +55,12 @@
                   <div class="mt-3">
                   <h4 class="card-title">Car Information</h4>
                   <form:form action="admin/cars.htm" modelAttribute="car">
+                  	 <div class="form-group">
+                        <form:input path="id" type="hidden" class="form-control" placeholder="Car id" />
+                     </div>
                      <div class="form-group">
                         <label for="inputAddress2">Name</label>
-                        <form:input path="name" type="text" class="form-control" placeholder="AAAA" id="inputAddress2" />
+                        <form:input path="name" type="text" class="form-control" id="inputAddress2" />
                      </div>
                      <div class="form-group">
                         <label for="inputAddress">Image</label>
@@ -185,8 +188,8 @@
                            <div class="grid-margin stretch-card">
                               <div class="card">
                                  <div class="card-body">
-                                    <h4 class="card-title">Basic Table</h4>
-                                    <p class="card-description"> Basic table with card </p>
+                                    <h4 class="card-title">Table Car</h4>
+                                    <p class="card-description"> All car in shop </p>
                                     <div class="table-responsive">
                                        <table class="table">
                                           <thead>
@@ -197,7 +200,7 @@
                                                 <th scope="col" width="15%">Type</th>
                                                 <th scope="col" width="15%">Brand</th>
                                                 <th scope="col" width="15%">Amount</th>
-                                                <th scope="col" class="text-center" width="20%"><span>Revenue</span></th>
+                                                <th scope="col" class="text-center" width="20%"><span>Price</span></th>
                                                 <th colspan="2" scope="col" class="text-center" width="20%"><span>Action</span></th>
                                              </tr>
                                           </thead>
@@ -220,12 +223,12 @@
                                                    <td>${c.brand.name }</td>
                                                    <td>${c.amount }</td>
                                                    <td class="text-center"><span class="fw-bolder">${c.price } VND</span></td>
-                                                   <td><a href="admin/cars/${c.name}.htm?linkEdit&p=~&search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }">
+                                                   <td><a href="admin/cars/${c.id}.htm?linkEdit&p=~&search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }">
                                                       <button type="button" rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="">
                                                       <i class="material-icons">Edit</i>
                                                       </button></a>
                                                    </td>
-                                                   <td><a href="admin/cars/${c.name}.htm?linkDelete" role="button">
+                                                   <td><a href="admin/cars/${c.id}.htm?linkDelete" role="button">
                                                       <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm" data-original-title="" title="">
                                                       <i class="material-icons">Delete</i>
                                                       </button></a>
@@ -245,7 +248,7 @@
                                                    <i class="material-icons">person</i>
                                                    </button>
                                                 </td>
-                                                <td><a href="admin/cars/${c.name}.htm?linkDelete role="button">
+                                                <td><a href="admin/cars/${c.id}.htm?linkDelete role="button">
                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm" data-original-title="" title="">
                                                    <i class="material-icons">close</i>
                                                    </button></a>

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,8 @@ import javax.persistence.Table;
 @Table(name="Cars")
 public class Cars {
 	@Id
+	@GeneratedValue
+	private Integer id;
 	private String name;
 	private String img;
 	private String video;
@@ -34,11 +37,19 @@ public class Cars {
 	private Collection<Orders> orders;
 	
 	
+	
 	public Collection<Orders> getOrders() {
 		return orders;
 	}
 	public void setOrders(Collection<Orders> orders) {
 		this.orders = orders;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
