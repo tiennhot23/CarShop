@@ -27,10 +27,10 @@
                <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
                <div class="nav_list">
                   <a href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
-                  <a href="admin/cars.htm" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
-                  <a href="admin/types.htm" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
-                  <a href="admin/brands.htm" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
-                  <a href="admin/stats.htm" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Stats</span> </a>
+                  <a href="admin/cars/" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
+                  <a href="admin/types/" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
+                  <a href="admin/brands/" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
+                  <a href="admin/stats/" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Stats</span> </a>
                </div>
             </div>
             <a href="#" class="nav_link"> <i class="bx bx-log-out nav_icon"></i> <span class="nav_name">SignOut</span> </a>
@@ -54,7 +54,7 @@
                <div class="col-sm-3 login-section-wrapper">
                   <div class="mt-3">
                   <h4 class="card-title">Car Information</h4>
-                  <form:form action="admin/cars.htm" modelAttribute="car">
+                  <form:form action="admin/cars/" modelAttribute="car">
                   	 <div class="form-group">
                         <form:input path="id" type="hidden" class="form-control" placeholder="Car id" />
                      </div>
@@ -170,12 +170,12 @@
                               <p>
                            </div>
                         </form>
-                        <form action="admin/cars.htm"><button type="submit" class="btn badge badge-info">Clear filter</button></form>
+                        <form action="admin/cars/"><button type="submit" class="btn badge badge-info">Clear filter</button></form>
                      </div>
                   </div>
                   <jsp:useBean id="pagedListHolder" scope="request"
                      type="org.springframework.beans.support.PagedListHolder" />
-                  <c:url value="admin/cars.htm?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }" var="pagedLink">
+                  <c:url value="admin/cars/?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }" var="pagedLink">
                      <c:param name="p" value="~" />
                   </c:url>
                   <div>
@@ -235,25 +235,6 @@
                                                    </td>
                                                 </tr>
                                              </c:forEach>
-                                             <tr>
-                                                <td><i class="fa fa-dot-circle-o text-danger"></i><span class="ms-1"></span></td>
-                                                <td><img src="https://i.imgur.com/VKOeFyS.png" width="50"></td>
-                                                <td><label class="badge badge-success">Completed</label></td>
-                                                <td><label class="badge badge-danger">Pending</label></td>
-                                                <td><label class="badge badge-warning">In progress</label></td>
-                                                <td><label class="badge badge-info">Fixed</label></td>
-                                                <td class="text-center"><span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h ms-2"></i></td>
-                                                <td>
-                                                   <button type="button" class="btn btn-primary btn-md mr-1 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-                                                   <i class="material-icons">person</i>
-                                                   </button>
-                                                </td>
-                                                <td><a href="admin/cars/${c.id}.htm?linkDelete role="button">
-                                                   <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm" data-original-title="" title="">
-                                                   <i class="material-icons">close</i>
-                                                   </button></a>
-                                                </td>
-                                             </tr>
                                           </tbody>
                                        </table>
                                     </div>
@@ -270,6 +251,7 @@
          </div>
       </div>
       <!--Container Main end--> 
+      
 <%--       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
