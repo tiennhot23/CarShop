@@ -15,6 +15,25 @@
       <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
       <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      
+      <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <style>
+    .image-cover {
+	    position: relative;
+	}
+		
+	.image-cover::before {
+	    content: "";
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    right: 0;
+	    bottom: 0;
+	    /* Adjust the color values to achieve desired darkness */
+	    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25));
+	}
+    </style>
    </head>
 
     <body id="body-pd" class=" bg-light">
@@ -22,6 +41,14 @@
             <script>
                 window.onload = function () {
                     $("#mymodal").modal("show");
+                    //document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'
+                };
+            </script>
+        </c:if>
+        <c:if test="${not empty orderAccept}">
+            <script>
+                window.onload = function () {
+                    $("#orderacceptmodal").modal("show");
                     //document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'
                 };
             </script>
@@ -116,8 +143,6 @@
 				</div>
 			</div>
 		</div>
-			
-		
         
 
         <div class="card mt-1">
@@ -167,12 +192,12 @@
                                   </td>
                                   <c:choose>
                                   <c:when test="${o.stat == -1 }">
-                                  <td><a href="admin/?linkAccept&p=~">
+                                  <td><a href="admin/${o.id }.htm?linkAccept&p=~">
                                    <button type="button" rel="tooltip" class="btn btn-info btn-just-icon btn-sm">
                                    <i class="material-icons">Accept</i>
                                    </button></a>
                                   </td>
-                                  <td><a href="admin/?linkDelete&p=~">
+                                  <td><a href="admin/${o.id }.htm?linkDeny&p=~">
                                    <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm">
                                    <i class="material-icons">Deny</i>
                                    </button></a>
@@ -198,9 +223,41 @@
         
         
         
-        
-        
-        
+        <div class="modal fade" id="orderacceptmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Order</h5>
+                    </div>
+                    <div class="modal-body">
+						<div class="image-cover card bg-dark text-white">
+						  <img class="card-img" src="${orderAccept.car.img }" alt="Card image">
+						  <div class="card-img-overlay mt-5">						  
+						    <h5 class="card-title">Car: ${orderAccept.car.name }</h5>
+						    <p class="card-text">Customer: ${orderAccept.customer }</p>
+						    <p class="card-text">Email: ${orderAccept.email }</p>
+						    <p class="card-text">Phone: ${orderAccept.phone }</p>
+						    <p class="card-text">Amount: ${orderAccept.amount }</p>
+						    
+						  </div>
+						</div>
+						<p class="card-text mt-2">Choose an expected date</p>
+                        <form action="admin/?p=~">
+                        	<input name="idorderaccept" type="hidden" class="form-control" value="${orderAccept.id }"/>
+                        	<input name="expecteddate" id="datepicker" width="276" required/>
+                        	<button name="btnAccept" type="submit" rel="tooltip" class="btn mt-2 btn-info btn-just-icon btn-sm">
+	                        <i class="material-icons">Accept</i>
+	                        </button>
+                        </form>
+					    <script>
+					        $('#datepicker').datepicker({
+					            uiLibrary: 'bootstrap4'
+					        });
+					    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         
         
@@ -329,6 +386,7 @@
          // Your code to run since DOM is loaded and ready
          });
       </script>
+
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

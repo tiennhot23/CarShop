@@ -54,7 +54,7 @@ public class AdminCarController {
 		pagenumber.setP(page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
 //		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
@@ -80,7 +80,7 @@ public class AdminCarController {
 		page = pagenumber.getP();
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
@@ -97,7 +97,7 @@ public class AdminCarController {
 		page = pagenumber.getP();
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnEdit");
 		model.addAttribute("car", getCar(id));
 		model.addAttribute("pagedListHolder", pagedListHolder);
@@ -123,7 +123,7 @@ public class AdminCarController {
 		page = pagenumber.getP();
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
 //		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
@@ -169,7 +169,7 @@ public class AdminCarController {
 		page = pagenumber.getP();
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		

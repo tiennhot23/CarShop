@@ -39,9 +39,8 @@
       <!--Container Main start-->
       <div class=" bg-light">
          <h4>Main Components</h4>
-         <ul>Ma</ul>
 		<c:if test="${not empty message}">
-			<div class="alert alert-primary" role="alert">
+			<div class="alert alert-primary mt-5" role="alert">
 			  ${message }
 			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			    <span aria-hidden="true">&times;</span>
@@ -49,7 +48,7 @@
 			</div>
 		</c:if>
          
-         <div class="container-fluid">
+         <div class="container-fluid mt-5">
             <div class="row">
                <div class="col-sm-3 login-section-wrapper">
                   <div class="mt-3">

@@ -59,7 +59,7 @@ public class AdminController {
 		pagenumber.setP(page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(5);
+		pagedListHolder.setPageSize(6);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		return "admin/index";
 	}
@@ -88,51 +88,49 @@ public class AdminController {
 //		
 //		return "admin/cars";
 //	}
-//	
-//	
-//	@RequestMapping(value="cars/{id}.htm", params="linkEdit")
-//	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("car") Cars car) {
-//		
-//		List<Cars> cars = this.getCars(filterCar);
-//		PagedListHolder pagedListHolder = new PagedListHolder(cars);
-//		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-//		page = pagenumber.getP();
-//		pagedListHolder.setPage(page);
-//		pagedListHolder.setMaxLinkedPages(5);
-//		pagedListHolder.setPageSize(5);
-//		model.addAttribute("btnStatus", "btnEdit");
-//		model.addAttribute("car", getCar(id));
-//		model.addAttribute("pagedListHolder", pagedListHolder);
-//		return "admin/cars";
-//	}
-//	
-//	@RequestMapping(value = "cars.htm", params = "btnEdit")
-//	public String edit_Product(HttpServletRequest request, ModelMap model,
-//			@ModelAttribute("car") Cars car) {
-//		Integer temp = this.updateCar(car);
-//		if (temp != 0) {
-//			model.addAttribute("message", "Update successfull");
-//		} else {
-//			model.addAttribute("message", "Update failed!");
-//		}
-//		car = new Cars();
-//
-//		getFilterCar(request);
-//		
-//		List<Cars> cars = this.getCars(filterCar);
-//		PagedListHolder pagedListHolder = new PagedListHolder(cars);
-//		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-//		page = pagenumber.getP();
-//		pagedListHolder.setPage(page);
-//		pagedListHolder.setMaxLinkedPages(5);
-//		pagedListHolder.setPageSize(5);
-//		model.addAttribute("btnStatus", "btnAdd");
-////		model.addAttribute("car", car);
-//		model.addAttribute("pagedListHolder", pagedListHolder);
-//		
-//		return "admin/cars";
-//	}
-//	
+	
+	
+	@RequestMapping(value="/{id}.htm", params="linkAccept")
+	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
+		
+		List<Orders> orders = this.getOrders(filterOrder);
+		PagedListHolder pagedListHolder = new PagedListHolder(orders);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(6);
+		model.addAttribute("orderAccept", getOrder(id));
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		return "admin/index";
+	}
+	
+	@RequestMapping(value = "index", params = "btnAccept")
+	public String edit_Product(HttpServletRequest request, ModelMap model) {
+		Orders order = getOrder(request.getParameter("idorderaccept"));
+		order.setStat(1);
+	
+		Integer temp = this.updateOrder(order);
+		if (temp != 0) {
+			model.addAttribute("message", "Order accepted");
+		} else {
+			model.addAttribute("message", "Failed!");
+		}
+
+		getFilterOrder(request);
+		
+		List<Orders> orders = this.getOrders(filterOrder);
+		PagedListHolder pagedListHolder = new PagedListHolder(orders);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(6);
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		
+		return "admin/index";
+	}
+	
 //	@RequestMapping(value = "/cars/{id}.htm", params = "linkDelete")
 //	public String deleteProduct(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car,
 //			@PathVariable("id") Integer id) {
@@ -194,7 +192,7 @@ public class AdminController {
 	
 	public List<Orders> getOrders(FilterOrder filterOrder) {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM Orders ";
+		String hql = "FROM Orders where stat <> -2 ";
 		if(!filterOrder.getId().equals("")) hql += "and id = :id ";
 		if(!filterOrder.getCustomer().equals("")) hql += "and customer LIKE :customer ";
 		if(!filterOrder.getEmail().equals("")) hql += "and email = :email ";
@@ -202,7 +200,6 @@ public class AdminController {
 		if(filterOrder.getStatus() != 2) {
 			hql += "and stat = :status ";
 		}
-		hql = hql.replaceFirst("and", "where");
 		hql += "order by stat";
 				
 		Query query = session.createQuery(hql);
@@ -237,24 +234,24 @@ public class AdminController {
 //		}
 //		return res;
 //	}
-//
-//	public Integer updateCar(Cars car) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		int res = 1;
-//		
-//		try {
-//			session.update(car);
-//			t.commit();
-//		} catch (Exception e) {
-//			System.out.println("update error" + e);
-//			t.rollback();
-//			res = 0;
-//		} finally {
-//			session.close();
-//		}
-//		return res;
-//	}
+
+	public Integer updateOrder(Orders order) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		
+		try {
+			session.update(order);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println("update error" + e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
 //
 //	public Integer deleteCar(Cars car) {
 //		Session session = factory.openSession();
@@ -318,6 +315,16 @@ public class AdminController {
 //		return list;
 //	}
 //	
+	public Orders getOrder(String id) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Orders where id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Orders> list = query.list();
+		if(list.size()>0) return list.get(0);
+		else return null;
+	}
+	
 	public List<Orders> getOrders(int carId) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Orders where car.id = :carId";
@@ -333,6 +340,10 @@ public class AdminController {
 		Query query = session.createQuery(hql);
 		List<Orders> list = query.list();
 		return list;
+	}
+	
+	public void acceptOrder(String id) {
+		
 	}
 	
 	@ModelAttribute("filter_order")
