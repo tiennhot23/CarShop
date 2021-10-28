@@ -1,5 +1,7 @@
 package ptithcm.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sun.corba.se.spi.orbutil.fsm.State;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.FilterOrder;
@@ -83,6 +86,9 @@ public class AdminController {
 	
 	@RequestMapping(value = "index", params = "btnAccept")
 	public String accepted(HttpServletRequest request, ModelMap model) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+		System.out.println(formatter.format(new Date(request.getParameter("expecteddate"))));
+		
 		Orders order = getOrder(request.getParameter("idorderaccept"));
 		order.setStat(1);
 	
@@ -91,6 +97,18 @@ public class AdminController {
 			model.addAttribute("message", "Order accepted");
 		} else {
 			model.addAttribute("message", "Failed!");
+		}
+		
+		String from = "tiennhot8@gmail.com";
+		String to = order.getEmail();
+		String subject = "Order Car";
+		String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + request.getParameter("expecteddate");
+		if(temp != 0) {
+			try {
+				mailer.send(from, to, subject, body);
+			}catch (Exception e) {
+				model.addAttribute("message","Gửi mail thất bại!");
+			}
 		}
 
 		getFilterOrder(request);
@@ -136,6 +154,19 @@ public class AdminController {
 			model.addAttribute("message", "Order rejected");
 		} else {
 			model.addAttribute("message", "Failed!");
+		}
+		
+		String from = "tiennhot8@gmail.com";
+		String to = order.getEmail();
+		String subject = "Order Car";
+		String body = "Đơn hàng đã bị từ chối.<br/>" + ((reason.length()>0)?"Lí do: " + reason + "<br/>":"")
+				+ "Mọi thắc mắc vui lòng liên hệ qua website: http://localhost:8080/CarShop/";
+		if(temp != 0) {
+			try {
+				mailer.send(from, to, subject, body);
+			}catch (Exception e) {
+				model.addAttribute("message","Gửi mail thất bại!");
+			}
 		}
 
 		getFilterOrder(request);

@@ -85,7 +85,7 @@
 		   <h4>Main Components</h4>
 		   <ul></ul>
 			<c:if test="${not empty message}">
-			<div class="alert alert-primary" role="alert">
+			<div class="alert alert-primary mt-5" role="alert">
 			  ${message }
 			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			    <span aria-hidden="true">&times;</span>
@@ -125,14 +125,14 @@
                                  <form:options items="${status}" />
                               </form:select>
                            </div>
-                           <div class="col-10">
+                           <div class="col-12">
                               <button type="submit" class="btn btn-primary">Search</button>
                            </div>
-                           <div class="col-2">
+                           <div class="col-12">
                               <p>
                            </div>
                         </form:form>
-                        <form action="admin/"><button type="submit" class="btn badge badge-info">Clear filter</button></form>
+                        <form action="admin/"><button type="submit" class="btn badge badge-info mt-1">Clear filter</button></form>
                      </div>
                   </div>
 				</div>
@@ -259,6 +259,7 @@
 					        $('#datepicker').datepicker({
 					            uiLibrary: 'bootstrap4'
 					        });
+					        $.datepicker.formatDate('dd-mm-yy', dateTypeVar);
 					    </script>
                     </div>
                 </div>
@@ -285,7 +286,8 @@
 						</div>
                         <form action="admin/?p=~" method="post">
                         	<input name="idorderdeny" type="hidden" class="form-control" value="${orderDeny.id }"/>
-                        	<textarea name="disc" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        	<label class="mt-1">Reason:</label>
+                        	<textarea name="disc" class="form-control mt-1" id="exampleFormControlTextarea1" rows="3"></textarea>
                         	<button name="btnDeny" type="submit" rel="tooltip" class="btn mt-2 btn-danger btn-just-icon btn-sm">
 	                        <i class="material-icons">Deny</i>
 	                        </button>
