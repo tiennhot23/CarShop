@@ -102,7 +102,7 @@
                   </div>
                   <div class="collapse container" id="collapseExample">
                      <div class="row">
-                        <form:form class="row g-3" modelAttribute="filter_order">
+                        <form:form action="admin/" class="row g-3" modelAttribute="filter_order">
                            <div class="col-md-3">
                               <label for="inputAddress" class="form-label">ID</label>
                               <form:input path="id" name="id" type="text" class="form-control" id="inputAddress" placeholder="Id"/>

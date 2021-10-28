@@ -71,7 +71,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
 	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
-		
+		System.out.println(filterOrder.getCustomer());
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -112,6 +112,7 @@ public class AdminController {
 		}
 
 		getFilterOrder(request);
+		System.out.println(filterOrder.getCustomer());
 		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
@@ -128,7 +129,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
 	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
-		
+		System.out.println(filterOrder.getCustomer());
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -170,6 +171,7 @@ public class AdminController {
 		}
 
 		getFilterOrder(request);
+		System.out.println(filterOrder.getCustomer());
 		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);

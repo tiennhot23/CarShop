@@ -53,18 +53,26 @@
                <div class="col-sm-3 login-section-wrapper">
                   <div class="mt-3">
                   <h4 class="card-title">Car Information</h4>
-                  <form:form action="admin/cars/" modelAttribute="car">
+                  <form:form action="admin/cars/" method="post" modelAttribute="car" enctype="multipart/form-data">
                   	 <div class="form-group">
-                        <form:input path="id" type="hidden" class="form-control" placeholder="Car id" />
+                        <form:input path="id" type="hidden" class="form-control" placeholder="Car id" required="true"/>
                      </div>
                      <div class="form-group">
                         <label for="inputAddress2">Name</label>
-                        <form:input path="name" type="text" class="form-control" id="inputAddress2" />
+                        <form:input path="name" type="text" class="form-control" id="inputAddress2" required="true"/>
                      </div>
                      <div class="form-group">
                         <label for="inputAddress">Image</label>
-                        <form:input path="img" type="text" class="form-control" id="inputAddress" />
+                        <div class="form-check">
+						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiolink" value="option1" onclick="EnableDisableTextBox()"  checked>
+						  <form:input path="img" type="text" class="form-control" id="inputlink" placeholder="Link image" required="true"/>
+						</div>
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiofile" value="option2" onclick="EnableDisableTextBox()" >
+						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled="true" required="true"/> 
+						</div>
                      </div>
+                     
                      <div class="form-group">
                         <label for="inputAddress2">Video</label>
                         <form:input path="video" type="text" class="form-control" id="inputAddress2" />
@@ -81,7 +89,7 @@
                      </div>
                      <div class="form-group">
                         <label for="exampleFormControlTextarea1">Discription</label>
-                        <form:textarea path="disc" class="form-control" id="exampleFormControlTextarea1" rows="3"></form:textarea>
+                        <form:textarea path="disc" class="form-control" id="exampleFormControlTextarea1" rows="3" required="true"></form:textarea>
                      </div>
                      <div class="form-row">
                         <div class="form-group col-md-5">
@@ -113,7 +121,7 @@
                   </div>
                   <div class="collapse container" id="collapseExample">
                      <div class="row">
-                        <form class="row g-3">
+                        <form action="admin/cars/" class="row g-3">
                            <div class="col-12">
                               <label for="inputAddress" class="form-label">Name</label>
                               <input name="search" type="text" class="form-control" id="inputAddress" placeholder="Car name..." value=${filter_car.name }>
@@ -376,6 +384,22 @@
          // Your code to run since DOM is loaded and ready
          });
       </script>
+      <script type="text/javascript">
+		    function EnableDisableTextBox() {
+		        var rlink = document.getElementById("radiolink");
+		        var rfile = document.getElementById("radiofile");
+		        var inlink = document.getElementById("inputlink");
+		        var infile = document.getElementById("inputfile");
+		        inlink.disabled = rlink.checked ? false : true;
+		        infile.disabled = rfile.checked ? false : true;
+		        if (inlink.disabled) {
+		        	inlink.value = ''
+		        }
+		        if (infile.disabled) {
+		        	infile.value = ''
+		        }
+		    }
+		</script>
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

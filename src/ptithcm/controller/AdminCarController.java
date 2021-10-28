@@ -1,7 +1,9 @@
 package ptithcm.controller;
 
+import java.io.File;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -20,7 +22,10 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import jdk.nashorn.internal.ir.ContinueNode;
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
@@ -33,6 +38,8 @@ import ptithcm.entity.Types;
 @Controller
 @RequestMapping("/admin/cars/")
 public class AdminCarController {
+	@Autowired
+	ServletContext context;
 	@Autowired
 	SessionFactory factory;
 	@Autowired
@@ -64,7 +71,26 @@ public class AdminCarController {
 	
 	@RequestMapping(value = "index.htm", params = "btnAdd")
 	public String addProduct(HttpServletRequest request,ModelMap model, 
-			@ModelAttribute("car") Cars car) {
+			@ModelAttribute("car") Cars car, @RequestParam(value="imageFile", required=false) MultipartFile imageFile) {
+		
+		if(imageFile == null) {
+			
+		}else {
+			if(!imageFile.getContentType().equals("image/jpeg") && !imageFile.getContentType().equals("image/png")) {
+				model.addAttribute("message", "Không đúng định dạng file ảnh");
+			}else {
+				String photoPath = context.getRealPath("/files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
+				System.out.println(photoPath);
+				try {
+					imageFile.transferTo(new File(photoPath));
+					car.setImg("files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
+				}
+				catch (Exception e) {
+					model.addAttribute("message", "Lỗi lưu file!");
+				}
+			}
+		}
+		
 		Integer temp = this.insertCar(car);
 		if (temp != 0) {
 			model.addAttribute("message", "Insert car successful");
@@ -73,6 +99,7 @@ public class AdminCarController {
 		}
 		getFilterCar(request);
 		car = new Cars();
+
 		
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
@@ -106,7 +133,27 @@ public class AdminCarController {
 	
 	@RequestMapping(value = "index.htm", params = "btnEdit")
 	public String edit_Product(HttpServletRequest request, ModelMap model,
-			@ModelAttribute("car") Cars car) {
+			@ModelAttribute("car") Cars car, @RequestParam(value="imageFile", required=false) MultipartFile imageFile) {
+
+		if(imageFile == null) {
+			
+		}else {
+			if(!imageFile.getContentType().equals("image/jpeg") && !imageFile.getContentType().equals("image/png")) {
+				model.addAttribute("message", "Không đúng định dạng file ảnh");
+			}else {
+				String photoPath = context.getRealPath("/files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
+				System.out.println(photoPath);
+				try {
+					imageFile.transferTo(new File(photoPath));
+					car.setImg("files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
+				}
+				catch (Exception e) {
+					model.addAttribute("message", "Lỗi lưu file!");
+				}
+			}
+		}
+		
+		
 		Integer temp = this.updateCar(car);
 		if (temp != 0) {
 			model.addAttribute("message", "Update successfull");
