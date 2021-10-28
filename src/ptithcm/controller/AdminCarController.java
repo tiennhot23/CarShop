@@ -47,12 +47,21 @@ public class AdminCarController {
 	@Autowired
 	@Qualifier("pagenumber")
 	PageNumber pagenumber;
-	FilterCar filterCar = new FilterCar();
+	@Autowired
+	FilterCar filterCar;
 	
 	
 	@RequestMapping("index")
 	public String cars(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car) {
-		getFilterCar(request);
+		if(request.getParameter("clear") != null) {
+			filterCar.setNameFilter("");
+			filterCar.setMinFilter(0);
+			filterCar.setMaxFilter(Long.parseLong("1000000000000000"));
+			filterCar.setTypeFilter("");
+			filterCar.setBrandFilter("");
+		}
+		
+		filterCar = getFilterCar(request);
 		
 		
 		List<Cars> cars = this.getCars(filterCar);
@@ -63,7 +72,6 @@ public class AdminCarController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
-//		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "admin/cars";
@@ -97,7 +105,6 @@ public class AdminCarController {
 		} else {
 			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
 		}
-		getFilterCar(request);
 		car = new Cars();
 
 		
@@ -162,7 +169,6 @@ public class AdminCarController {
 		}
 		car = new Cars();
 
-		getFilterCar(request);
 		
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
@@ -208,7 +214,6 @@ public class AdminCarController {
 //			model.addAttribute("message", "Delete failed!");
 //		}
 		
-		getFilterCar(request);
 		
 		List<Cars> cars = this.getCars(filterCar);
 		PagedListHolder pagedListHolder = new PagedListHolder(cars);
@@ -251,11 +256,15 @@ public class AdminCarController {
 				+ "and type.name LIKE :type "
 				+ "and brand.name LIKE :brand ";
 		Query query = session.createQuery(hql);
-		query.setParameter("search", "%" + filterCar.getName() + "%");
-		query.setParameter("min", filterCar.getMin());
-		query.setParameter("max", filterCar.getMax());
-		query.setParameter("type", "%" + filterCar.getType());
-		query.setParameter("brand", "%" + filterCar.getBrand());
+		query.setParameter("search", "%" + filterCar.getNameFilter() + "%");
+		query.setParameter("min", filterCar.getMinFilter());
+		query.setParameter("max", filterCar.getMaxFilter());
+		if(filterCar.getTypeFilter().equals("All")) {
+			query.setParameter("type", "%");
+		}else query.setParameter("type", "%" + filterCar.getTypeFilter());
+		if(filterCar.getBrandFilter().equals("All")) {
+			query.setParameter("brand", "%");
+		}else query.setParameter("brand", "%" + filterCar.getBrandFilter());
 		List<Cars> list = query.list();
 		return list;
 	}
@@ -348,6 +357,7 @@ public class AdminCarController {
 		String hql = "FROM Brands";
 		Query query = session.createQuery(hql);
 		List<Brands> list = query.list();
+		list.add(0, new Brands("All", "none"));
 		return list;
 	}
 	
@@ -357,6 +367,7 @@ public class AdminCarController {
 		String hql = "FROM Types";
 		Query query = session.createQuery(hql);
 		List<Types> list = query.list();
+		list.add(0, new Types("All", "none"));
 		return list;
 	}
 	
@@ -371,11 +382,11 @@ public class AdminCarController {
 	
 	@ModelAttribute("filter_car")
 	public FilterCar getFilterCar(HttpServletRequest request) {
-		filterCar.setName((request.getParameter("search")==null)?"":request.getParameter("search").trim());
-		filterCar.setMin((request.getParameter("min")==null || request.getParameter("min").length()==0)?0:Long.parseLong(request.getParameter("min").trim()));
-		filterCar.setMax((request.getParameter("max")==null || request.getParameter("max").length()==0)?Long.parseLong("1000000000000000"):Long.parseLong(request.getParameter("max").trim()));
-		filterCar.setType((request.getParameter("typeSearch")==null)?"":request.getParameter("typeSearch").trim());
-		filterCar.setBrand((request.getParameter("brandSearch")==null)?"":request.getParameter("brandSearch").trim());
+		filterCar.setNameFilter((request.getParameter("nameFilter")==null)?filterCar.getNameFilter():request.getParameter("nameFilter").trim());
+		filterCar.setMinFilter((request.getParameter("minFilter")==null || request.getParameter("minFilter").length()==0)?filterCar.getMinFilter():Long.parseLong(request.getParameter("minFilter").trim()));
+		filterCar.setMaxFilter((request.getParameter("maxFilter")==null || request.getParameter("maxFilter").length()==0)?filterCar.getMaxFilter():Long.parseLong(request.getParameter("maxFilter").trim()));
+		filterCar.setTypeFilter((request.getParameter("typeFilter")==null)?filterCar.getTypeFilter():request.getParameter("typeFilter").trim());
+		filterCar.setBrandFilter((request.getParameter("brandFilter")==null)?filterCar.getBrandFilter():request.getParameter("brandFilter").trim());
 		return filterCar;
 	}
 }

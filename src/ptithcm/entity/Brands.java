@@ -18,7 +18,14 @@ public class Brands {
 	@OneToMany(mappedBy="brand", fetch=FetchType.EAGER)
 	private Collection<Cars> cars;
 	
-	
+	public Brands() {
+		
+	}
+	public Brands(String name, String disc) {
+		super();
+		this.name = name;
+		this.disc = disc;
+	}
 	public Collection<Cars> getCars() {
 		return cars;
 	}

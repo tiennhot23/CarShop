@@ -1,44 +1,44 @@
 package ptithcm.bean;
 
 public class FilterCar {
-	private String name;
-	private long min, max;
-	private String type;
-	private String brand;
+	private String nameFilter;
+	private long minFilter, maxFilter;
+	private String typeFilter;
+	private String brandFilter;
 	
 	public FilterCar() {
 		super();
 	}
 	
-	public String getName() {
-		return name;
+	public String getNameFilter() {
+		return nameFilter;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNameFilter(String nameFilter) {
+		this.nameFilter = nameFilter;
 	}
-	public long getMin() {
-		return min;
+	public long getMinFilter() {
+		return minFilter;
 	}
-	public void setMin(long min) {
-		this.min = min;
+	public void setMinFilter(long minFilter) {
+		this.minFilter = minFilter;
 	}
-	public long getMax() {
-		return max;
+	public long getMaxFilter() {
+		return maxFilter;
 	}
-	public void setMax(long max) {
-		this.max = max;
+	public void setMaxFilter(long maxFilter) {
+		this.maxFilter = maxFilter;
 	}
-	public String getType() {
-		return type;
+	public String getTypeFilter() {
+		return typeFilter;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeFilter(String typeFilter) {
+		this.typeFilter = typeFilter;
 	}
-	public String getBrand() {
-		return brand;
+	public String getBrandFilter() {
+		return brandFilter;
 	}
-	public void setBrand(String brand) {
-		this.brand = brand;
+	public void setBrandFilter(String brandFilter) {
+		this.brandFilter = brandFilter;
 	}
 	
 	

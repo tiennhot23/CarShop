@@ -97,31 +97,41 @@
 		<div class="content mt-5">
 			<div class="row col-12">
 				<div class="col-sm-9 login-section-wrapper">
-					<div class="mb-2 d-flex justify-content-between align-items-center">
-                     <div class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></div>
+				<div class="row">
+                  	<div class="col-sm-2">
+                  		<div class="mb-2 d-flex justify-content-between align-items-center">
+		                     <div class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></div>
+		                  </div>
+                  	</div>
+                  	<div class="col-sm-1">
+                  		<a href="admin/?clear=1"><button type="submit" class="btn badge badge-info mt-1">Clear filter</button></a>
+                  	</div>
+                  
+                  
                   </div>
+					
                   <div class="collapse container" id="collapseExample">
                      <div class="row">
                         <form:form action="admin/" class="row g-3" modelAttribute="filter_order">
                            <div class="col-md-3">
                               <label for="inputAddress" class="form-label">ID</label>
-                              <form:input path="id" name="id" type="text" class="form-control" id="inputAddress" placeholder="Id"/>
+                              <form:input path="idFilter" name="id" type="text" class="form-control" id="inputAddress" placeholder="Id"/>
                            </div>
                            <div class="col-md-9">
                               <label for="inputAddress" class="form-label">Customer</label>
-                              <form:input path="customer" name="customer" type="text" class="form-control" id="inputAddress" placeholder="Customer name..." />
+                              <form:input path="customerFilter" name="customer" type="text" class="form-control" id="inputAddress" placeholder="Customer name..." />
                            </div>
                            <div class="col-md-5">
                               <label for="inputEmail4" class="form-label">Email</label>
-                              <form:input path="email" name="email" type="text" class="form-control" id="min_price"  placeholder="Email" />
+                              <form:input path="emailFilter" name="email" type="text" class="form-control" id="min_price"  placeholder="Email" />
                            </div>
                            <div class="col-md-5">
                               <label for="inputPassword4" class="form-label">Phone</label>
-                              <form:input path="phone" name="phone" type="text" class="form-control"   placeholder="Phone" />
+                              <form:input path="phoneFilter" name="phone" type="text" class="form-control"   placeholder="Phone" />
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Status:</label>
-                              <form:select path="status" class="form-control">
+                              <form:select path="statusFilter" class="form-control">
                                  <form:options items="${status}" />
                               </form:select>
                            </div>
@@ -132,7 +142,7 @@
                               <p>
                            </div>
                         </form:form>
-                        <form action="admin/"><button type="submit" class="btn badge badge-info mt-1">Clear filter</button></form>
+                        
                      </div>
                   </div>
 				</div>

@@ -18,24 +18,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
-import ptithcm.bean.FilterCar;
 import ptithcm.bean.FilterOrder;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
-import ptithcm.entity.Brands;
-import ptithcm.entity.Cars;
 import ptithcm.entity.Orders;
-import ptithcm.entity.Types;
 
 @Transactional
 @Controller
@@ -48,14 +40,22 @@ public class AdminController {
 	@Autowired
 	@Qualifier("pagenumber")
 	PageNumber pagenumber;
-	FilterCar filterCar = new FilterCar();
-	FilterOrder filterOrder = new FilterOrder();
+	@Autowired
+	FilterOrder filterOrder;
 	
 	
 	@RequestMapping("index")
-	public String index(HttpServletRequest request, ModelMap model, @ModelAttribute("order") Orders order) {
-		getFilterOrder(request);
-		
+	public String index(HttpServletRequest request, ModelMap model, 
+			@ModelAttribute("order") Orders order) {
+		if(request.getParameter("clear") != null) {
+			filterOrder.setIdFilter("");
+			filterOrder.setCustomerFilter("");
+			filterOrder.setEmailFilter("");
+			filterOrder.setPhoneFilter("");
+			filterOrder.setStatusFilter(0);
+		}
+		filterOrder = getFilterOrder(request);
+
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -67,11 +67,10 @@ public class AdminController {
 		return "admin/index";
 	}
 	
-	
-	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
-	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
-		System.out.println(filterOrder.getCustomer());
+	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") String id,
+			@ModelAttribute("order") Orders order) {
+		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -86,8 +85,8 @@ public class AdminController {
 	
 	@RequestMapping(value = "index", params = "btnAccept")
 	public String accepted(HttpServletRequest request, ModelMap model) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-		System.out.println(formatter.format(new Date(request.getParameter("expecteddate"))));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
+		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));
 		
 		Orders order = getOrder(request.getParameter("idorderaccept"));
 		order.setStat(1);
@@ -102,7 +101,7 @@ public class AdminController {
 		String from = "tiennhot8@gmail.com";
 		String to = order.getEmail();
 		String subject = "Order Car";
-		String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + request.getParameter("expecteddate");
+		String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
 		if(temp != 0) {
 			try {
 				mailer.send(from, to, subject, body);
@@ -110,9 +109,6 @@ public class AdminController {
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-
-		getFilterOrder(request);
-		System.out.println(filterOrder.getCustomer());
 		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
@@ -129,7 +125,6 @@ public class AdminController {
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
 	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
-		System.out.println(filterOrder.getCustomer());
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -169,9 +164,6 @@ public class AdminController {
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-
-		getFilterOrder(request);
-		System.out.println(filterOrder.getCustomer());
 		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
@@ -190,22 +182,22 @@ public class AdminController {
 	public List<Orders> getOrders(FilterOrder filterOrder) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Orders where stat <> -2 ";
-		if(!filterOrder.getId().equals("")) hql += "and id = :id ";
-		if(!filterOrder.getCustomer().equals("")) hql += "and customer LIKE :customer ";
-		if(!filterOrder.getEmail().equals("")) hql += "and email = :email ";
-		if(!filterOrder.getPhone().equals("")) hql += "and phone = :phone ";
-		if(filterOrder.getStatus() != 2) {
-			hql += "and stat = :status ";
+		if(!filterOrder.getIdFilter().equals("")) hql += "and id = :idFilter ";
+		if(!filterOrder.getCustomerFilter().equals("")) hql += "and customer LIKE :customerFilter ";
+		if(!filterOrder.getEmailFilter().equals("")) hql += "and email = :emailFilter ";
+		if(!filterOrder.getPhoneFilter().equals("")) hql += "and phone = :phoneFilter ";
+		if(filterOrder.getStatusFilter() != 0) {
+			hql += "and stat = :statusFilter ";
 		}
 		hql += "order by stat";
 				
 		Query query = session.createQuery(hql);
-		if(!filterOrder.getId().equals("")) query.setParameter("id", filterOrder.getId());
-		if(!filterOrder.getCustomer().equals("")) query.setParameter("customer", "%" + filterOrder.getCustomer() + "%");
-		if(!filterOrder.getEmail().equals("")) query.setParameter("email", filterOrder.getEmail());
-		if(!filterOrder.getPhone().equals("")) query.setParameter("phone", filterOrder.getPhone());
-		if(filterOrder.getStatus() != 2) {
-			query.setParameter("status", filterOrder.getStatus());
+		if(!filterOrder.getIdFilter().equals("")) query.setParameter("idFilter", filterOrder.getIdFilter());
+		if(!filterOrder.getCustomerFilter().equals("")) query.setParameter("customerFilter", "%" + filterOrder.getCustomerFilter() + "%");
+		if(!filterOrder.getEmailFilter().equals("")) query.setParameter("emailFilter", filterOrder.getEmailFilter());
+		if(!filterOrder.getPhoneFilter().equals("")) query.setParameter("phoneFilter", filterOrder.getPhoneFilter());
+		if(filterOrder.getStatusFilter() != 0) {
+			query.setParameter("statusFilter", filterOrder.getStatusFilter());
 		}
 		
 		List<Orders> list = query.list();
@@ -304,20 +296,20 @@ public class AdminController {
 	
 	@ModelAttribute("filter_order")
 	public FilterOrder getFilterOrder(HttpServletRequest request) {
-		filterOrder.setId((request.getParameter("id")==null)?"":request.getParameter("id").trim());
-		filterOrder.setCustomer((request.getParameter("customer")==null)?"":request.getParameter("customer").trim());
-		filterOrder.setEmail((request.getParameter("email")==null)?"":request.getParameter("email").trim());
-		filterOrder.setPhone((request.getParameter("phone")==null)?"":request.getParameter("phone").trim());
-		filterOrder.setStatus((request.getParameter("status")==null)?2:Integer.parseInt(request.getParameter("status").trim()));
+		filterOrder.setIdFilter((request.getParameter("idFilter")==null)?filterOrder.getIdFilter():request.getParameter("idFilter").trim());
+		filterOrder.setCustomerFilter((request.getParameter("customerFilter")==null)?filterOrder.getCustomerFilter():request.getParameter("customerFilter").trim());
+		filterOrder.setEmailFilter((request.getParameter("emailFilter")==null)?filterOrder.getEmailFilter():request.getParameter("emailFilter").trim());
+		filterOrder.setPhoneFilter((request.getParameter("phoneFilter")==null)?filterOrder.getPhoneFilter():request.getParameter("phoneFilter").trim());
+		filterOrder.setStatusFilter((request.getParameter("statusFilter")==null)?filterOrder.getStatusFilter():Integer.parseInt(request.getParameter("statusFilter").trim()));
 		return filterOrder;
 	}
 	
 	@ModelAttribute("status")
 	public Map<Integer, String> status(){
 		Map<Integer, String> map = new HashMap<Integer, String>();
-		 map.put(2, "All");
+		 map.put(0, "All");
         map.put(-1, "Pending");
-        map.put(0, "Denied");
+        map.put(2, "Denied");
         map.put(1, "Accepted");
 		return map;
 	}

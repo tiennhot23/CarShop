@@ -116,59 +116,49 @@
                   </div>
                </div>
                <div class="col-sm-9 px-0 d-none d-sm-block">
-                  <div class="mb-2 d-flex justify-content-between align-items-center">
-                     <div class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></div>
+                  <div class="row">
+                  	<div class="col-sm-2">
+                  		<div class="mb-2 d-flex justify-content-between align-items-center">
+		                     <div class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></div>
+		                  </div>
+                  	</div>
+                  	<div class="col-sm-1">
+                  		<a href="admin/cars/?clear=1"><button type="submit" class="btn badge badge-info">Clear filter</button></a>
+                  	</div>
+                  
+                  
                   </div>
                   <div class="collapse container" id="collapseExample">
                      <div class="row">
-                        <form action="admin/cars/" class="row g-3">
+                        <form:form action="admin/cars/" class="row g-3" modelAttribute="filter_car">
                            <div class="col-12">
                               <label for="inputAddress" class="form-label">Name</label>
-                              <input name="search" type="text" class="form-control" id="inputAddress" placeholder="Car name..." value=${filter_car.name }>
+                              <form:input path="nameFilter" type="text" class="form-control" id="inputAddress" placeholder="Car name..."/>
                            </div>
                            <div class="col-md-6">
                               <label for="inputEmail4" class="form-label">From</label>
-                              <input name="min" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;"  placeholder="Minimum price" value=${filter_car.min }>
+                              <form:input path="minFilter" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;"  placeholder="Minimum price" />
                            </div>
                            <div class="col-md-6">
                               <label for="inputPassword4" class="form-label">To</label>
-                              <input name="max" type="number" class="form-control" id="max_price" max="1000000000000000" min="document.getElementById('min_price').value" placeholder="Maximum price" value=${filter_car.max }>
+                              <form:input path="maxFilter" type="number" class="form-control" id="max_price" max="1000000000000000" min="document.getElementById('min_price').value" placeholder="Maximum price" />
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Types:</label>
-                              <select name="typeSearch" class="form-control" id="sel1"">
-                                 <option value="none" selected disabled hidden>
-                                    Select type
-                                 </option>
-                                 <c:forEach var="c" items="${types }">
-                                    <c:choose>
-                                       <c:when test="${c.name == filter_car.type }">
-                                          <option selected>${c.name }</option>
-                                       </c:when>
-                                       <c:when test="${c.name != filter_car.type }">
-                                          <option>${c.name }</option>
-                                       </c:when>
-                                    </c:choose>
-                                 </c:forEach>
-                              </select>
+                              <form:select path="typeFilter" items="${types }"
+								itemValue="name" itemLabel="name"
+								class="form-control">
+		
+								</form:select>
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Brands:</label>
-                              <select name="brandSearch" class="form-control" id="sel1">
-                                 <option value="none" selected disabled hidden>
-                                    Select brand
-                                 </option>
-                                 <c:forEach var="c" items="${brands }">
-                                    <c:choose>
-                                       <c:when test="${c.name == filter_car.brand }">
-                                          <option selected>${c.name }</option>
-                                       </c:when>
-                                       <c:when test="${c.name != filter_car.brand }">
-                                          <option>${c.name }</option>
-                                       </c:when>
-                                    </c:choose>
-                                 </c:forEach>
-                              </select>
+                              <form:select path="brandFilter" items="${brands }"
+								itemValue="name" itemLabel="name"
+								class="form-control">
+		
+								</form:select>
+                             
                            </div>
                            <div class="col-12">
                               <button type="submit" class="btn btn-primary">Search</button>
@@ -176,13 +166,13 @@
                            <div class="col-12">
                               <p>
                            </div>
-                        </form>
-                        <form action="admin/cars/"><button type="submit" class="btn badge badge-info">Clear filter</button></form>
+                        </form:form>
                      </div>
                   </div>
+                  
                   <jsp:useBean id="pagedListHolder" scope="request"
                      type="org.springframework.beans.support.PagedListHolder" />
-                  <c:url value="admin/cars/?search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }" var="pagedLink">
+                  <c:url value="admin/cars/" var="pagedLink">
                      <c:param name="p" value="~" />
                   </c:url>
                   <div>
@@ -230,7 +220,7 @@
                                                    <td>${c.brand.name }</td>
                                                    <td>${c.amount }</td>
                                                    <td class="text-center"><span class="fw-bolder">${c.price } VND</span></td>
-                                                   <td><a href="admin/cars/${c.id}.htm?linkEdit&p=~&search=${filter_car.name }&min=${filter_car.min }&max=${filter_car.max }&typeSearch=${filter_car.type }&brandSearch=${filter_car.brand }">
+                                                   <td><a href="admin/cars/${c.id}.htm?linkEdit">
                                                       <button type="button" rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="">
                                                       <i class="material-icons">Edit</i>
                                                       </button></a>

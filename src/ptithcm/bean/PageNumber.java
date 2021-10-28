@@ -1,7 +1,5 @@
 package ptithcm.bean;
 
-import org.springframework.stereotype.Component;
-
 public class PageNumber {
 	private int p;
 

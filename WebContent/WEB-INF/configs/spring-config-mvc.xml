@@ -29,6 +29,22 @@
 	<bean id="pagenumber" class="ptithcm.bean.PageNumber">
 		<property name="p" value="0" />
 	</bean>
+	
+	<bean class="ptithcm.bean.FilterCar">
+		<property name="nameFilter" value="" />
+		<property name="minFilter" value="0" />
+		<property name="maxFilter" value="1000000000000000" />
+		<property name="typeFilter" value="" />
+		<property name="brandFilter" value="" />
+	</bean>
+	
+	<bean class="ptithcm.bean.FilterOrder">
+		<property name="idFilter" value="" />
+		<property name="customerFilter" value="" />
+		<property name="emailFilter" value="" />
+		<property name="phoneFilter" value="" />
+		<property name="statusFilter" value="0" />
+	</bean>
 
 	<!-- Kết nối CSDL -->
 	<bean id="dataSource"

@@ -1,41 +1,41 @@
 package ptithcm.bean;
 
 public class FilterOrder {
-	private String id;
-	private String email;
-	private String phone;
-	private String customer;
-	private int status;
+	private String idFilter;
+	private String emailFilter;
+	private String phoneFilter;
+	private String customerFilter;
+	private int statusFilter;
 
-	public int getStatus() {
-		return status;
+	public int getStatusFilter() {
+		return statusFilter;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatusFilter(int statusFilter) {
+		this.statusFilter = statusFilter;
 	}
-	public String getId() {
-		return id;
+	public String getIdFilter() {
+		return idFilter;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setIdFilter(String idFilter) {
+		this.idFilter = idFilter;
 	}
-	public String getEmail() {
-		return email;
+	public String getEmailFilter() {
+		return emailFilter;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailFilter(String emailFilter) {
+		this.emailFilter = emailFilter;
 	}
-	public String getPhone() {
-		return phone;
+	public String getPhoneFilter() {
+		return phoneFilter;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setPhoneFilter(String phoneFilter) {
+		this.phoneFilter = phoneFilter;
 	}
-	public String getCustomer() {
-		return customer;
+	public String getCustomerFilter() {
+		return customerFilter;
 	}
-	public void setCustomer(String customer) {
-		this.customer = customer;
+	public void setCustomerFilter(String customerFilter) {
+		this.customerFilter = customerFilter;
 	}
 	
 	
