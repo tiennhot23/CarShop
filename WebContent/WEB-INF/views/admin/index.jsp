@@ -49,7 +49,13 @@
             <script>
                 window.onload = function () {
                     $("#orderacceptmodal").modal("show");
-                    //document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'
+                };
+            </script>
+        </c:if>
+        <c:if test="${not empty orderDeny}">
+            <script>
+                window.onload = function () {
+                    $("#orderdenymodal").modal("show");
                 };
             </script>
         </c:if>
@@ -105,11 +111,11 @@
                               <label for="inputAddress" class="form-label">Customer</label>
                               <form:input path="customer" name="customer" type="text" class="form-control" id="inputAddress" placeholder="Customer name..." />
                            </div>
-                           <div class="col-md-6">
+                           <div class="col-md-5">
                               <label for="inputEmail4" class="form-label">Email</label>
                               <form:input path="email" name="email" type="text" class="form-control" id="min_price"  placeholder="Email" />
                            </div>
-                           <div class="col-md-6">
+                           <div class="col-md-5">
                               <label for="inputPassword4" class="form-label">Phone</label>
                               <form:input path="phone" name="phone" type="text" class="form-control"   placeholder="Phone" />
                            </div>
@@ -119,10 +125,10 @@
                                  <form:options items="${status}" />
                               </form:select>
                            </div>
-                           <div class="col-12">
+                           <div class="col-10">
                               <button type="submit" class="btn btn-primary">Search</button>
                            </div>
-                           <div class="col-12">
+                           <div class="col-2">
                               <p>
                            </div>
                         </form:form>
@@ -259,6 +265,40 @@
             </div>
         </div>
         
+        <div class="modal fade" id="orderdenymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Order</h5>
+                    </div>
+                    <div class="modal-body">
+						<div class="image-cover card bg-dark text-white">
+						  <img class="card-img" src="${orderDeny.car.img }" alt="Card image">
+						  <div class="card-img-overlay mt-5">						  
+						    <h5 class="card-title">Car: ${orderDeny.car.name }</h5>
+						    <p class="card-text">Customer: ${orderDeny.customer }</p>
+						    <p class="card-text">Email: ${orderDeny.email }</p>
+						    <p class="card-text">Phone: ${orderDeny.phone }</p>
+						    <p class="card-text">Amount: ${orderDeny.amount }</p>
+						    
+						  </div>
+						</div>
+                        <form action="admin/?p=~" method="post">
+                        	<input name="idorderdeny" type="hidden" class="form-control" value="${orderDeny.id }"/>
+                        	<textarea name="disc" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        	<button name="btnDeny" type="submit" rel="tooltip" class="btn mt-2 btn-danger btn-just-icon btn-sm">
+	                        <i class="material-icons">Deny</i>
+	                        </button>
+                        </form>
+					    <script>
+					        $('#datepicker').datepicker({
+					            uiLibrary: 'bootstrap4'
+					        });
+					    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         
         <div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

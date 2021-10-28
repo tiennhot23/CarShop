@@ -64,34 +64,10 @@ public class AdminController {
 		return "admin/index";
 	}
 	
-//	@RequestMapping(value = "cars.htm", params = "btnAdd")
-//	public String addProduct(HttpServletRequest request,ModelMap model, 
-//			@ModelAttribute("car") Cars car) {
-//		Integer temp = this.insertCar(car);
-//		if (temp != 0) {
-//			model.addAttribute("message", "Insert car successful");
-//		} else {
-//			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
-//		}
-//		getFilterCar(request);
-//		car = new Cars();
-//		
-//		List<Cars> cars = this.getCars(filterCar);
-//		PagedListHolder pagedListHolder = new PagedListHolder(cars);
-//		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-//		page = pagenumber.getP();
-//		pagedListHolder.setPage(page);
-//		pagedListHolder.setMaxLinkedPages(5);
-//		pagedListHolder.setPageSize(5);
-//		model.addAttribute("btnStatus", "btnAdd");
-//		model.addAttribute("pagedListHolder", pagedListHolder);
-//		
-//		return "admin/cars";
-//	}
 	
 	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
-	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
+	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
 		
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
@@ -106,7 +82,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "index", params = "btnAccept")
-	public String edit_Product(HttpServletRequest request, ModelMap model) {
+	public String accepted(HttpServletRequest request, ModelMap model) {
 		Orders order = getOrder(request.getParameter("idorderaccept"));
 		order.setStat(1);
 	
@@ -131,64 +107,52 @@ public class AdminController {
 		return "admin/index";
 	}
 	
-//	@RequestMapping(value = "/cars/{id}.htm", params = "linkDelete")
-//	public String deleteProduct(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car,
-//			@PathVariable("id") Integer id) {
-//		Integer temp = 0;
-//		car = getCar(id);
-//		if(getOrders(id).isEmpty()) {
-//			temp = this.deleteCar(car);
-//			if (temp == 1) {
-//				model.addAttribute("message", "Delete successfull");
-//			} else if (temp == 0){
-//				model.addAttribute("message", "Delete failed!");
-//			}
-//		}else {
-//			car.setAmount(0);
-//			temp = this.updateCar(car);
-////			if (temp == 1) {
-////				model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
-////			} else {
-////				model.addAttribute("message", "Update amount failed!");
-////			}
-//			model.addAttribute("message", "Cannot delete completely. This car is used for order infomation. <br> Amount wil be set to 0.");
-//		}
-//		
-//		getFilterCar(request);
-//		
-//		List<Cars> cars = this.getCars(filterCar);
-//		PagedListHolder pagedListHolder = new PagedListHolder(cars);
-//		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-//		page = pagenumber.getP();
-//		pagedListHolder.setPage(page);
-//		pagedListHolder.setMaxLinkedPages(5);
-//		pagedListHolder.setPageSize(5);
-//		model.addAttribute("btnStatus", "btnAdd");
-//		model.addAttribute("pagedListHolder", pagedListHolder);
-//		
-//		return "admin/cars";
-//	}
-//	
-//	
-//	
-//	
-//	public Cars getCar(int id) {
-//		Session session = factory.getCurrentSession();
-//		String hql = "FROM Cars where id = :id";
-//		Query query = session.createQuery(hql);
-//		query.setParameter("id", id);
-//		List<Cars> list = query.list();
-//		if(list.size()>0) return list.get(0);
-//		else return null;
-//	}
-//
-//	public List<Cars> getCars() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "FROM Cars";
-//		Query query = session.createQuery(hql);
-//		List<Cars> list = query.list();
-//		return list;
-//	}
+	
+	@RequestMapping(value="/{id}.htm", params="linkDeny")
+	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
+		
+		List<Orders> orders = this.getOrders(filterOrder);
+		PagedListHolder pagedListHolder = new PagedListHolder(orders);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(6);
+		model.addAttribute("orderDeny", getOrder(id));
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		return "admin/index";
+	}
+	
+	@RequestMapping(value = "index", params = "btnDeny")
+	public String denied(HttpServletRequest request, ModelMap model) {
+		
+		String reason = request.getParameter("disc");
+		
+		Orders order = getOrder(request.getParameter("idorderdeny"));
+		order.setStat(0);
+	
+		Integer temp = this.updateOrder(order);
+		if (temp != 0) {
+			model.addAttribute("message", "Order rejected");
+		} else {
+			model.addAttribute("message", "Failed!");
+		}
+
+		getFilterOrder(request);
+		
+		List<Orders> orders = this.getOrders(filterOrder);
+		PagedListHolder pagedListHolder = new PagedListHolder(orders);
+		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
+		page = pagenumber.getP();
+		pagedListHolder.setPage(page);
+		pagedListHolder.setMaxLinkedPages(5);
+		pagedListHolder.setPageSize(6);
+		model.addAttribute("pagedListHolder", pagedListHolder);
+		
+		return "admin/index";
+	}
+	
+
 	
 	public List<Orders> getOrders(FilterOrder filterOrder) {
 		Session session = factory.getCurrentSession();
@@ -218,22 +182,22 @@ public class AdminController {
 	
 	
 	
-//	public Integer insertCar(Cars car) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		int res = 1;
-//		try {
-//			session.save(car);
-//			t.commit();
-//		} catch (Exception e) {
-//			System.out.println(e);
-//			t.rollback();
-//			res = 0;
-//		} finally {
-//			session.close();
-//		}
-//		return res;
-//	}
+	public Integer insertOrder(Orders order) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		try {
+			session.save(order);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
 
 	public Integer updateOrder(Orders order) {
 		Session session = factory.openSession();
@@ -252,69 +216,28 @@ public class AdminController {
 		}
 		return res;
 	}
-//
-//	public Integer deleteCar(Cars car) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		int res = 1;
-//		
-//		try {
-//			session.delete(car);
-//			t.commit();
-//		} catch (Exception e) {
-////			t.rollback();
-////			System.out.println("delete error" + e);
-////			if(e.getClass().getSimpleName().equals("ConstraintViolationException")) {
-////				Cars c = getCar(car.getId());
-////				c.setAmount(0);
-////				t = session.beginTransaction();
-////				try {
-////					
-////					session.update(c);
-////					System.out.println("here");
-////					t.commit();
-////					res = 2;
-////				}catch (Exception ex) {
-////					System.out.println(ex);
-////					System.out.println("hore");
-////					res = 0;
-////					t.rollback();
-////				}
-////			}
-////			else {
-////				res = 0;
-////			}
-//			System.out.println("update error" + e);
-//			t.rollback();
-//			res = 0;
-//		} finally {
-//			session.close();
-//		}
-//		return res;
-//	}
-//	
-//	
-//	
-//	
-//	
-//	@ModelAttribute("brands")
-//	public List<Brands> getBrands() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "FROM Brands";
-//		Query query = session.createQuery(hql);
-//		List<Brands> list = query.list();
-//		return list;
-//	}
-//	
-//	@ModelAttribute("types")
-//	public List<Types> getTypes() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "FROM Types";
-//		Query query = session.createQuery(hql);
-//		List<Types> list = query.list();
-//		return list;
-//	}
-//	
+
+	public Integer deleteOrder(Orders order) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		
+		try {
+			session.delete(order);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println("update error" + e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
+	
+	
+	
+
 	public Orders getOrder(String id) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Orders where id = :id";
