@@ -44,6 +44,7 @@ create table Orders(
 create table Securities(
 	token varchar(100) primary key,
 	expired date not null,
+	orderId varchar(100) not null foreign key references Orders(id),
 )
 
 insert into AD values ('sa', '123')
