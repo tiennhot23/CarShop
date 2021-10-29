@@ -7,7 +7,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <%@include file="/WEB-INF/views/include/header.jsp"%>
       <base href="${pageContext.servletContext.contextPath}/">
       <link rel="stylesheet" href="<c:url value='resources/assets/css/admin.css'/>">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -18,6 +17,8 @@
       
       <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    
+    <script src="https://kit.fontawesome.com/41a8d7d896.js"></script>
     <style>
     .image-cover {
 	    position: relative;
@@ -195,7 +196,7 @@
                                   <td class="text-center"><span class="fw-bolder">${o.total } VND</span></td>
                                   <td>
                                      <c:choose>
-                                        <c:when test="${o.stat == 0}">
+                                        <c:when test="${o.stat == 2}">
                                            <label class="badge badge-danger">Denied</label>
                                         </c:when>
                                         <c:when test="${o.stat == -1 }">

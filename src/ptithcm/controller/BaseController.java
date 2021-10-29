@@ -23,6 +23,11 @@ public class BaseController {
 	@Autowired
 	SessionFactory factory;
 	
+	@RequestMapping("index")
+	public String index() {
+		return "public/index";
+	}
+	
 	@RequestMapping("login")
 	public String login_form(HttpSession session) {
 		System.out.println(session.getAttribute("username"));
