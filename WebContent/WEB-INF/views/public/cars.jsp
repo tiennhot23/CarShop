@@ -131,7 +131,7 @@
 							<div class="row">
 								<c:forEach var="c" items="${pagedListHolder.pageList}">
 									<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-						                <a href="cars/${c.id }.htm?linkCar" class="fancybox" rel="ligthbox">
+						                <a class="fancybox" rel="ligthbox" onclick="showCar('${c.img}', '${c.name }','${c.price }', '${c.type.name }', '${c.brand.name }', '${c.amount }', '${c.disc }')">
 						                    <img  src="${c.img }" class="zoom img-fluid "  alt="">
 						                </a>
 						                
@@ -161,26 +161,20 @@
             	<div class="modal-content">
                     <div class="modal-body">
 						<div class="image-cover card bg-dark text-white">
-						  <img class="card-img" src="${car.img }" alt="Card image">
+						  <img id="modal-car-img" class="card-img" src="${car.img }" alt="Card image">
 						  <div class="card-img-overlay mt-5">
-						  	<h5 class="card-title">Car: ${car.name }</h5>	
-						    <p class="card-text">Amount: ${car.price }</p>
-						    <p class="card-text">Amount: ${car.type.name }</p>
-						    <p class="card-alg-left card-text">Amount: ${car.brand.name }</p>
+						  	<h5 id="modal-car-name" class="card-title">Car: ${car.name }</h5>	
+						    <p id="modal-car-price" class="card-text">Price: ${car.price }</p>
+						    <p id="modal-car-type" class="card-text">Type: ${car.type.name }</p>
+						    <p id="modal-car-brand" class="card-alg-left card-text">Brand: ${car.brand.name }</p>
 						    
                             <div class="card-alg-right ">
 				                <a href="cars/" class=" btn btn-lg">Buy now</a>
 				            </div>
-						    <p class="card-text">Amount: ${car.amount }</p>
-						    <p class="card-text">Amount: ${car.disc }</p>
+						    <p id="modal-car-amount" class="card-text">Amount: ${car.amount }</p>
+						    <p id="modal-car-disc" class="card-text">Discription: ${car.disc }</p>
 						  </div>
 						</div>
-                        
-					    <script>
-					        $('#datepicker').datepicker({
-					            uiLibrary: 'bootstrap4'
-					        });
-					    </script>
                     </div>
              	</div>
             </div>
@@ -233,6 +227,16 @@ $(document).ready(function(){
 			$(this).removeClass('transition');
 		});
 	});
+function showCar(img, name, price, type, brand, amount, disc){
+	document.getElementById("modal-car-img").src = img;
+	document.getElementById("modal-car-name").innerHTML = name;
+	document.getElementById("modal-car-price").innerHTML = price;
+	document.getElementById("modal-car-type").innerHTML = type;
+	document.getElementById("modal-car-brand").innerHTML = brand;
+	document.getElementById("modal-car-amount").innerHTML = amount;
+	document.getElementById("modal-car-disc").innerHTML = disc;
+	$("#carmodal").modal("show");
+}
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
