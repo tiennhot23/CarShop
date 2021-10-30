@@ -17,6 +17,20 @@
 		 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
    </head>
 <body>
+<c:if test="${not empty car}">
+    <script>
+        window.onload = function () {
+            $("#carmodal").modal("show");
+        };
+    </script>
+</c:if>
+<c:if test="${not empty order}">
+    <script>
+        window.onload = function () {
+            $("#ordermodal").modal("show");
+        };
+    </script>
+</c:if>
 <header class="header-area overlay">
     <div class="page-header">
         <div class="container">
@@ -67,9 +81,43 @@
                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                    <!-- section-title -->
                    <div class="section-title mb-0">
-                       <h2>All about Hike. We share our knowledge on blog</h2>
-                       <p>Our approach is very simple: we define your problem and give the best solution. </p>
-                       
+                       <form:form action="cars/" class="row g-3" modelAttribute="filter_car">
+                           <div class="col-12">
+                              <label for="inputAddress" class="form-label">Name</label>
+                              <form:input path="nameFilter" type="text" class="form-control" id="inputAddress" placeholder="Car name..."/>
+                           </div>
+                           <div class="col-md-6">
+                              <label for="inputEmail4" class="form-label">From</label>
+                              <form:input path="minFilter" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;"  placeholder="Minimum price" />
+                           </div>
+                           <div class="col-md-6">
+                              <label for="inputPassword4" class="form-label">To</label>
+                              <form:input path="maxFilter" type="number" class="form-control" id="max_price" max="1000000000000000" min="document.getElementById('min_price').value" placeholder="Maximum price" />
+                           </div>
+                           <div class="col-md-2 form-group">
+                              <label for="sel1">Types:</label>
+                              <form:select path="typeFilter" items="${types }"
+								itemValue="name" itemLabel="name"
+								class="form-control">
+		
+								</form:select>
+                           </div>
+                           <div class="col-md-2 form-group">
+                              <label for="sel1">Brands:</label>
+                              <form:select path="brandFilter" items="${brands }"
+								itemValue="name" itemLabel="name"
+								class="form-control">
+		
+								</form:select>
+                             
+                           </div>
+                           <div class="col-12">
+                              <button type="submit" class="btn btn-lg">Search</button>
+                           </div>
+                           <div class="col-12">
+                              <p>
+                           </div>
+                        </form:form>
                    </div>
                    <!-- /.section-title -->
                </div>
@@ -81,23 +129,62 @@
                    <div class="section-title mb-0">
 						<div class="container page-top">
 							<div class="row">
-							<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-				                <a href="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" class="fancybox" rel="ligthbox">
-				                    <img  src="https://images.pexels.com/photos/62307/air-bubbles-diving-underwater-blow-62307.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" class="zoom img-fluid "  alt="">
-				                </a>
-				                
-				            </div>
+								<c:forEach var="c" items="${pagedListHolder.pageList}">
+									<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+						                <a href="cars/${c.id }.htm?linkCar" class="fancybox" rel="ligthbox">
+						                    <img  src="${c.img }" class="zoom img-fluid "  alt="">
+						                </a>
+						                
+						            </div>
+                                </c:forEach>
 							</div>
 						</div>	
                    </div>
                    <!-- /.section-title -->
                </div>
        </div>
+       <jsp:useBean id="pagedListHolder" scope="request"
+                     type="org.springframework.beans.support.PagedListHolder" />
+                  <c:url value="cars/" var="pagedLink">
+                     <c:param name="p" value="~" />
+                  </c:url>
+                  <div>
+                     <tg:paging pagedListHolder="${pagedListHolder}"
+                        pagedLink="${pagedLink}" />
+                  </div>
    </div>
 </div>
 
 
-
+		<div class="modal fade" id="carmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            	<div class="modal-content">
+                    <div class="modal-body">
+						<div class="image-cover card bg-dark text-white">
+						  <img class="card-img" src="${car.img }" alt="Card image">
+						  <div class="card-img-overlay mt-5">
+						  	<h5 class="card-title">Car: ${car.name }</h5>	
+						    <p class="card-text">Amount: ${car.price }</p>
+						    <p class="card-text">Amount: ${car.type.name }</p>
+						    <p class="card-alg-left card-text">Amount: ${car.brand.name }</p>
+						    
+                            <div class="card-alg-right ">
+				                <a href="cars/" class=" btn btn-lg">Buy now</a>
+				            </div>
+						    <p class="card-text">Amount: ${car.amount }</p>
+						    <p class="card-text">Amount: ${car.disc }</p>
+						  </div>
+						</div>
+                        
+					    <script>
+					        $('#datepicker').datepicker({
+					            uiLibrary: 'bootstrap4'
+					        });
+					    </script>
+                    </div>
+             	</div>
+            </div>
+        </div>
 <script type="text/javascript">
 jQuery(function($) {
     $(window).on('scroll', function() {
