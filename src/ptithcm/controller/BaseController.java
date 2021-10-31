@@ -3,6 +3,7 @@ package ptithcm.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.websocket.server.PathParam;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -62,15 +64,26 @@ public class BaseController {
 	@RequestMapping("verified")
 	public String verified(ModelMap model, @PathParam(value = "token") String token) {
 		Securities securities = getSecurities(token);
-		if(securities!=null && securities.getExpired().after(new Date())) {
+		if(securities == null) {
+			model.addAttribute("message", "Mã xác nhận không tồn tại!");
+			return "public/order";
+		}
+		Long expiredDate = Long.parseLong(securities.getExpired());
+		Long currentDate = Calendar.getInstance().getTimeInMillis();
+		
+		if(expiredDate > currentDate) {
 			byte[] decodedBytes = Base64.getDecoder().decode(token.getBytes());
 			String[] decodeString = new String(decodedBytes).split("~~");
 			String oid = decodeString[0];
 			String email = decodeString[1];
-			model.addAttribute("message", "Xác minh thành công!");
+			Orders order = getOrder(oid);
+			order.setStat(-1);
+			updateOrder(order); // TODO: org.hibernate.HibernateException: Illegal attempt to associate a collection with two open sessions
+			deleteSecurities(securities);
+			model.addAttribute("message", "Đơn hàng của bạn đã được xác nhận.");
 		}
 		else
-			model.addAttribute("message", "Mã xác nhận không tồn tại hoặc đã bị hết hạn!");
+			model.addAttribute("message", "Mã xác nhận đã bị hết hạn!");
 		return "public/order";
 	}
 	
@@ -103,5 +116,40 @@ public class BaseController {
 		List<Admin> list = query.list();
 		if(list.size()>0) return list.get(0);
 		else return null;
+	}
+	
+	public Integer updateOrder(Orders order) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		try {
+			session.update(order);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println("update order error" + e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
+	}
+	
+	public Integer deleteSecurities(Securities securities) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		int res = 1;
+		
+		try {
+			session.delete(securities);
+			t.commit();
+		} catch (Exception e) {
+			System.out.println("delete key error" + e);
+			t.rollback();
+			res = 0;
+		} finally {
+			session.close();
+		}
+		return res;
 	}
 }

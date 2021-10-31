@@ -117,7 +117,7 @@ public class CarController {
         c.add(Calendar.DATE, 1);
 		Securities securities = new Securities();
 		securities.setToken(token);
-		securities.setExpired(c.getTime());
+		securities.setExpired(String.valueOf(c.getTimeInMillis()));
 		securities.setOrder(order);
 		
 		if(!addSecurities(securities)) {
@@ -125,7 +125,7 @@ public class CarController {
 			return "public/order";
 		}
 		
-		String from = "tiennhot8@gmail.com";
+		String from = "IDRISCAR";
 		String to = email;
 		String subject = "Order Car";
 		String body = "";

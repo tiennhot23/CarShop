@@ -45,7 +45,7 @@ create table Orders(
 
 create table Securities(
 	token varchar(100) primary key,
-	expired date not null,
+	expired varchar(15) not null,
 	orderId int not null foreign key references Orders(id),
 )
 

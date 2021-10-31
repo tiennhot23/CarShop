@@ -17,9 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Securities {
 	@Id
 	private String token;
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="MM/dd/yyyy")
-	private Date expired;
+	private String expired;
 	@ManyToOne
 	@JoinColumn(name="orderId")
 	private Orders order;
@@ -36,10 +34,10 @@ public class Securities {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public Date getExpired() {
+	public String getExpired() {
 		return expired;
 	}
-	public void setExpired(Date expired) {
+	public void setExpired(String expired) {
 		this.expired = expired;
 	}
 	
