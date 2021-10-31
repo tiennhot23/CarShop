@@ -175,6 +175,7 @@
                                 <th scope="col" width="10%">Customer</th>
                                 <th scope="col" width="10%">Email</th>
                                 <th scope="col" width="10%">Phone</th>
+                                <th scope="col" width="10%">Address</th>
                                 <th scope="col" width="10%">Date</th>
                                 <th scope="col" width="10%">Amount</th>
                                 <th scope="col" class="text-center" width="15%"><span>Total</span></th>
@@ -191,9 +192,10 @@
                                   <td>${o.customer }</td>
                                   <td>${o.email }</td>
                                   <td>${o.phone }</td>
+                                  <td>${o.addres }</td>
                                   <td>${o.datebuy }</td>
                                   <td>${o.amount }</td>
-                                  <td class="text-center"><span class="fw-bolder">${o.total } VND</span></td>
+                                  <td class="text-center"><span class="fw-bolder">${o.total } $</span></td>
                                   <td>
                                      <c:choose>
                                         <c:when test="${o.stat == 2}">
@@ -254,6 +256,7 @@
 						    <p class="card-text">Customer: ${orderAccept.customer }</p>
 						    <p class="card-text">Email: ${orderAccept.email }</p>
 						    <p class="card-text">Phone: ${orderAccept.phone }</p>
+						    <p class="card-text">Address: ${orderDeny.addres }</p>
 						    <p class="card-text">Amount: ${orderAccept.amount }</p>
 						    
 						  </div>
@@ -291,6 +294,7 @@
 						    <p class="card-text">Customer: ${orderDeny.customer }</p>
 						    <p class="card-text">Email: ${orderDeny.email }</p>
 						    <p class="card-text">Phone: ${orderDeny.phone }</p>
+						    <p class="card-text">Address: ${orderDeny.addres }</p>
 						    <p class="card-text">Amount: ${orderDeny.amount }</p>
 						    
 						  </div>

@@ -131,7 +131,7 @@
 							<div class="row">
 								<c:forEach var="c" items="${pagedListHolder.pageList}">
 									<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-						                <a class="fancybox" rel="ligthbox" onclick="showCar('${c.img}', '${c.name }','${c.price }', '${c.type.name }', '${c.brand.name }', '${c.amount }', '${c.disc }')">
+						                <a class="fancybox" rel="ligthbox" onclick="showCar('${c.id }', '${c.img}', '${c.name }','${c.price }', '${c.type.name }', '${c.brand.name }', '${c.amount }', '${c.disc }')">
 						                    <img  src="${c.img }" class="zoom img-fluid "  alt="">
 						                </a>
 						                
@@ -169,12 +169,80 @@
 						    <p id="modal-car-brand" class="card-alg-left card-text">Brand: ${car.brand.name }</p>
 						    
                             <div class="card-alg-right ">
-				                <a href="cars/" class=" btn btn-lg">Buy now</a>
+				                <a onclick="showOrder()" class=" btn btn-lg">Buy now</a>
 				            </div>
+				            <p class="card-text">.</p>
 						    <p id="modal-car-amount" class="card-text">Amount: ${car.amount }</p>
 						    <p id="modal-car-disc" class="card-text">Discription: ${car.disc }</p>
 						  </div>
 						</div>
+                    </div>
+             	</div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="ordermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            	<div class="modal-content">
+                    <div class="modal-body">
+						<div class="row modal-row">
+						    <div class="col-md-6 mb-4 mb-md-0">
+						    	<h5 id="modal-order-car" class="card-title"></h5>
+						      <img id="modal-order-img" width="100%" border-radius= "50%" src="${car.img }" alt="Card image">
+						    </div>
+						    <div class="col-md-6">
+								<form action="cars/order.htm" method="post">
+								  <div class="form-row">
+								  	<div class="form-group col-md-12">
+									    <label for="inputAddress2">Name</label>
+									    <input name="customer" type="text" class="form-control" id="inputAddress2" placeholder="Your name" required>
+									  </div>
+								    <div class="form-group col-md-6">
+								      <label for="inputEmail4">Email</label>
+								      <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="Email" required>
+								    </div>
+								    <div class="form-group col-md-6">
+								      <label for="inputPassword4">Phone</label>
+								      <input name="phone" type="text" class="form-control" id="inputPassword4" placeholder="Phone number" pattern="[0][0-9]{9}" required>
+								    </div>
+								  </div>
+								  <div class="form-group">
+								    <label for="inputAddress">Address</label>
+								    <input name="addres" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
+								  </div>
+								  
+								  <div class="form-row">
+								  	<div class="form-group col-md-2">
+								      <label for="inputZip">Amount</label>
+								      <input name="amount" type="number" class="form-control" id="amountBuy" value="1" min="1" onclick="calcTotalPrice('amountBuy')" required>
+								    </div>
+								    <div class="form-group col-md-6">
+								      <label for="inputCity">Total price</label>
+								      <input type="number" class="form-control" id="modal-order-total" min="0" disabled>
+								    </div>
+								    <div class="form-group col-md-1">
+								      <label for="inputCity">Unit</label>
+								      <label class="mt-1" for="inputCity">$</label>
+								    </div>
+								    <div class="form-group">
+								      <input type="hidden" class="form-control" id="modal-order-price" min="0" disabled>
+								      <input name="carid" type="hidden" class="form-control" id="modal-order-carid" >
+								    </div>
+								  </div>
+								  <div class="form-group">
+								    <div class="form-check">
+								      <input class="form-check-input" type="checkbox" id="lincenceCheck" onclick="onCheck('lincenceCheck', 'btnBuy')">
+								      <label class="form-check-label ml-2" for="gridCheck">
+								        I've read all the 
+								      </label>
+								      <a href=""><span>linsence</span></a>
+								    </div>
+								  </div>
+								  <button type="button" class="btn btn-secondary mr-2" style="float: right;" data-dismiss="modal">Cancel</button>
+								  <button id="btnBuy" type="submit" class="btn btn-lg" disabled>Buy</button>
+								</form>
+						    </div>
+						  </div>
                     </div>
              	</div>
             </div>
@@ -227,16 +295,54 @@ $(document).ready(function(){
 			$(this).removeClass('transition');
 		});
 	});
-function showCar(img, name, price, type, brand, amount, disc){
+function showCar(id, img, name, price, type, brand, amount, disc){
 	document.getElementById("modal-car-img").src = img;
 	document.getElementById("modal-car-name").innerHTML = name;
-	document.getElementById("modal-car-price").innerHTML = price;
-	document.getElementById("modal-car-type").innerHTML = type;
-	document.getElementById("modal-car-brand").innerHTML = brand;
-	document.getElementById("modal-car-amount").innerHTML = amount;
+	document.getElementById("modal-car-price").innerHTML = price + " $";
+	document.getElementById("modal-car-type").innerHTML = "Type: " + type;
+	document.getElementById("modal-car-brand").innerHTML = "Brand: " + brand;
+	document.getElementById("modal-car-amount").innerHTML = "Amount: " + amount;
 	document.getElementById("modal-car-disc").innerHTML = disc;
+	
+	document.getElementById("modal-order-img").src = img;
+	document.getElementById("modal-order-car").innerHTML = name;
+	document.getElementById("modal-order-total").value = price;
+	document.getElementById("modal-order-price").value = price;
+	document.getElementById("modal-order-carid").value = id;
 	$("#carmodal").modal("show");
 }
+function showOrder(){
+	
+	$("#carmodal").modal("hide");
+	$('#ordermodal').modal({backdrop: 'static', keyboard: false});
+	$("#ordermodal").modal("show");
+	
+}
+function onCheck(checkbox, button){
+	if(document.getElementById(checkbox).checked){
+		document.getElementById(button).disabled = false;
+	}else{
+		document.getElementById(button).disabled = true;
+	}
+}
+function calcTotalPrice(amount){
+	var a = document.getElementById(amount).value;
+	document.getElementById("modal-order-total").value = a * document.getElementById("modal-order-price").value;
+}
+</script>
+<script type="text/javascript">
+$('[data-dismiss=modal]').on('click', function (e) {
+    var $t = $(this),
+        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+
+  $(target)
+    .find("input,textarea,select")
+       .val('')
+       .end()
+    .find("input[type=checkbox], input[type=radio]")
+       .prop("checked", "")
+       .end();
+})
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

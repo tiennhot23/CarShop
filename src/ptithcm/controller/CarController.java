@@ -1,5 +1,10 @@
 package ptithcm.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -9,6 +14,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
@@ -24,6 +30,8 @@ import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
+import ptithcm.entity.Orders;
+import ptithcm.entity.Securities;
 import ptithcm.entity.Types;
 
 @Transactional
@@ -69,20 +77,72 @@ public class CarController {
 	}
 	
 	
-	@RequestMapping(value="/{id}.htm", params="linkCar")
-	public String index1(HttpServletRequest request, ModelMap model, @PathVariable("id") int id) {
+	@RequestMapping("/order.htm")
+	public String order(HttpServletRequest request, ModelMap model) {
+		String customer = request.getParameter("customer");
+		String email = request.getParameter("email");
+		String phone = request.getParameter("phone");
+		String addres = request.getParameter("addres");
+		int amount = Integer.parseInt(request.getParameter("amount"));
+		int carid = Integer.parseInt(request.getParameter("carid"));
+		int stat = -2;
+		Cars car = new Cars();
+		car = getCar(carid);
+		long total = car.getPrice() * amount;
 		
-		List<Cars> cars = this.getCars(filterCar);
-		PagedListHolder pagedListHolder = new PagedListHolder(cars);
-		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-		page = pagenumber.getP();
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(4);
-		model.addAttribute("car", getCar(id));
-		model.addAttribute("pagedListHolder", pagedListHolder);
+		Orders order = new Orders();
+		order.setCustomer(customer);
+		order.setEmail(email);
+		order.setPhone(phone);
+		order.setDatebuy(new Date());
+		order.setCar(car);
+		order.setAmount(amount);
+		order.setAddres(addres);
+		order.setTotal(total);
+		order.setStat(stat);
 		
-		return "public/cars";
+		if(!addOrder(order)) {
+			model.addAttribute("message", "Không thể tạo đơn hàng!");
+			return "public/order";
+		}
+		String token = order.getOid() + "~~" + order.getEmail();
+		byte[] encodedBytes = Base64.getEncoder().encode(token.getBytes());
+		token = new String(encodedBytes);
+		System.out.println("encodedBytes " + new String(encodedBytes));
+		byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
+		System.out.println("decodedBytes " + new String(decodedBytes));
+		
+		Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, 1);
+		Securities securities = new Securities();
+		securities.setToken(token);
+		securities.setExpired(c.getTime());
+		securities.setOrder(order);
+		
+		if(!addSecurities(securities)) {
+			model.addAttribute("message", "Không thể tạo key!");
+			return "public/order";
+		}
+		
+		String from = "tiennhot8@gmail.com";
+		String to = email;
+		String subject = "Order Car";
+		String body = "";
+		try {
+			body = "http://localhost:8080/CarShop/verified.htm?token=" + URLEncoder.encode(token, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			mailer.send(from, to, subject, body);
+			model.addAttribute("message", "Gửi mail thành công!");
+		}catch (Exception e) {
+			// TODO: handle exception
+			model.addAttribute("message","Gửi mail thất bại!");
+		}
+		return "public/order";
 	}
 	
 	public List<Cars> getCars(FilterCar filterCar) {
@@ -110,6 +170,45 @@ public class CarController {
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
 		List<Cars> list = query.list();
+		if(list.size()>0) return list.get(0);
+		else return null;
+	}
+	
+	private boolean addOrder(Orders order) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(order);
+			transaction.commit();
+		}catch (Exception e) {
+			System.out.println("addOrder error" + e);
+			transaction.rollback();
+		}finally {
+			session.close();
+		}
+		return transaction.wasCommitted() ? true : false;
+	}
+	
+	private boolean addSecurities(Securities securities) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(securities);
+			transaction.commit();
+		}catch (Exception e) {
+			transaction.rollback();
+		}finally {
+			session.close();
+		}
+		return transaction.wasCommitted() ? true : false;
+	}
+	
+	public Orders getOrder(int id) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Orders where id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Orders> list = query.list();
 		if(list.size()>0) return list.get(0);
 		else return null;
 	}
