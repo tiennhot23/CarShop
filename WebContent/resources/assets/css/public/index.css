@@ -58,6 +58,20 @@ p {
   -ms-transform: scaleX(1);
   transform: scaleX(1);
 }
+.carousel, .carousel-inner img{
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px !important;
+  height: 600px;
+}
+.carousel-caption{
+  color: #000 !important;
+  margin-left: auto;
+  margin-right: auto;
+  right: 5% !important;
+  left: 5% !important;
+  padding-bottom: 0% !important;
+}
 .overlay::after {
   content: '';
   position: absolute;
@@ -205,9 +219,7 @@ p {
 .navbar.fixed-top.navbar-dark .navbar-nav .nav-link::after {
   background-color: #c0ca33;
 }
-.content {
-  padding: 120px 0;
-}
+
 @media screen and (max-width: 768px) {
   .navbar-brand {
     margin-left: 20px;

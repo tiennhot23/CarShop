@@ -10,11 +10,13 @@ create table AD(
 create table Classs(
 	name nvarchar(50) primary key,
 	disc nvarchar(max) not null,
+	img varchar(200) not null,
 )
 
 create table Brands(
 	name nvarchar(50) primary key,
-	disc nvarchar(max) not null
+	disc nvarchar(max) not null,
+	img varchar(200) not null,
 )
 
 create table Cars(
@@ -52,21 +54,21 @@ create table Securities(
 insert into AD values ('sa', '123')
 
 insert into Classs values
-('Sport', N'https://vi.wikipedia.org/wiki/Xe_th%E1%BB%83_thao'),
-('Super', N'https://vi.wikipedia.org/wiki/Si%C3%AAu_xe'),
-('Race', N'https://en.wikipedia.org/wiki/Auto_racing'),
-('Concept', N'https://en.wikipedia.org/wiki/Concept_car'),
-('Muscle', N'https://en.wikipedia.org/wiki/Muscle_car'),
-('Luxury', N'https://vi.wikipedia.org/wiki/Xe_sang_tr%E1%BB%8Dng'),
-('Offroad', N'https://en.wikipedia.org/wiki/Off-road_vehicle');
+('Sport', N'https://vi.wikipedia.org/wiki/Xe_th%E1%BB%83_thao', N'https://i.pinimg.com/originals/24/15/55/241555e86887d2bde3dd100f90d71746.jpg'),
+('Super', N'https://vi.wikipedia.org/wiki/Si%C3%AAu_xe', N'https://w0.peakpx.com/wallpaper/417/369/HD-wallpaper-lotus-evija-2020-rear-view-hypercar-new-silver-evija-supercar-british-sports-cars-lotus.jpg'),
+('Race', N'https://en.wikipedia.org/wiki/Auto_racing', N'https://w0.peakpx.com/wallpaper/731/912/HD-wallpaper-bmw-bmw-z4-gt3-car-coupe-race-car-sport-car-white-car.jpg'),
+('Concept', N'https://en.wikipedia.org/wiki/Concept_car', N'https://w0.peakpx.com/wallpaper/501/450/HD-wallpaper-2021-rolls-royce-ghost-front-view-exterior-luxury-white-sedan-new-white-ghost-british-cars-rolls-royce.jpg'),
+('Muscle', N'https://en.wikipedia.org/wiki/Muscle_car', N'https://thumbs.dreamstime.com/b/classic-black-car-studio-shot-isolated-white-background-66971386.jpg'),
+('Luxury', N'https://vi.wikipedia.org/wiki/Xe_sang_tr%E1%BB%8Dng', N'https://i.pinimg.com/originals/03/71/d2/0371d245a9218e1929fb479325a799b8.jpg'),
+('Offroad', N'https://en.wikipedia.org/wiki/Off-road_vehicle', N'https://thumbs.dreamstime.com/b/white-off-road-four-wheel-drive-car-side-view-isolated-white-background-white-off-road-four-wheel-drive-car-side-view-116213337.jpg');
 
 insert into Brands values
-('BMW', N'https://vi.wikipedia.org/wiki/BMW'),
-('Ferrari', N'https://vi.wikipedia.org/wiki/Ferrari'),
-('Ford', N'https://vi.wikipedia.org/wiki/Ford'),
-('Porsche', N'https://vi.wikipedia.org/wiki/Porsche'),
-('Lamborghini', N'https://vi.wikipedia.org/wiki/Lamborghini'),
-('Audi', N'https://vi.wikipedia.org/wiki/Audi');
+('BMW', N'https://vi.wikipedia.org/wiki/BMW', N'https://giaxetot.vn/uploads/logo-bmw.png'),
+('Ferrari', N'https://vi.wikipedia.org/wiki/Ferrari', N'https://giaxetot.vn/uploads/logo-ferrari.png'),
+('Ford', N'https://vi.wikipedia.org/wiki/Ford', N'https://giaxetot.vn/uploads/logo-ford.png'),
+('Porsche', N'https://vi.wikipedia.org/wiki/Porsche', N'https://giaxetot.vn/uploads/logo-porsche.png'),
+('Lamborghini', N'https://vi.wikipedia.org/wiki/Lamborghini', N'https://giaxetot.vn/uploads/logo-lamborghini.png'),
+('Audi', N'https://vi.wikipedia.org/wiki/Audi', N'https://giaxetot.vn/uploads/Audi.png');
 
 insert into Cars values
 (N'https://danchoioto.vn/wp-content/uploads/2020/10/gia-bmw-330i.jpg', 'BMW 330i M', '', 50, 'Sport', N'Xe BMW 330i M Sport có tất cả các đặc điểm thông thường của dòng 3 Series, nhưng được trang bị bộ bodykit mạnh mẽ hơn, thể thao hơn, bánh xe hợp kim lớn hơn và nổi bật hơn cả là viền ngoại thất bóng loáng cùng một ít huy hiệu “M Sport” xung quanh cabin', 2400000000, 'BMW'),

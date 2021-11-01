@@ -19,14 +19,17 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import ptithcm.entity.Admin;
+import ptithcm.entity.Brands;
 import ptithcm.entity.Orders;
 import ptithcm.entity.Securities;
+import ptithcm.entity.Types;
 
 @Transactional
 @Controller
@@ -78,9 +81,13 @@ public class BaseController {
 			String email = decodeString[1];
 			Orders order = getOrder(oid);
 			order.setStat(-1);
-			updateOrder(order); // TODO: org.hibernate.HibernateException: Illegal attempt to associate a collection with two open sessions
+			Integer temp = this.updateOrder(order);
+			if (temp != 0) {
+				model.addAttribute("message", "Đơn hàng của bạn đã được xác nhận.");
+			} else {
+				model.addAttribute("message", "Failed!");
+			}
 			deleteSecurities(securities);
-			model.addAttribute("message", "Đơn hàng của bạn đã được xác nhận.");
 		}
 		else
 			model.addAttribute("message", "Mã xác nhận đã bị hết hạn!");
@@ -93,6 +100,7 @@ public class BaseController {
 		Query query = session.createQuery(hql);
 		query.setParameter("oid", oid);
 		List<Orders> list = query.list();
+		session.close();
 		if(list.size()>0) return list.get(0);
 		else return null;
 	}
@@ -151,5 +159,23 @@ public class BaseController {
 			session.close();
 		}
 		return res;
+	}
+	
+	@ModelAttribute("brands")
+	public List<Brands> getBrands() {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Brands";
+		Query query = session.createQuery(hql);
+		List<Brands> list = query.list();
+		return list;
+	}
+	
+	@ModelAttribute("types")
+	public List<Types> getTypes() {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Types";
+		Query query = session.createQuery(hql);
+		List<Types> list = query.list();
+		return list;
 	}
 }

@@ -116,6 +116,7 @@ public class AdminCarController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "admin/cars";
@@ -178,7 +179,7 @@ public class AdminCarController {
 		pagedListHolder.setMaxLinkedPages(5);
 		pagedListHolder.setPageSize(6);
 		model.addAttribute("btnStatus", "btnAdd");
-//		model.addAttribute("car", car);
+		model.addAttribute("car", car);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "admin/cars";

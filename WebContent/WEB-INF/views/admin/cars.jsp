@@ -393,6 +393,18 @@
 		        }
 		    }
 		</script>
+		<script type="text/javascript">
+		function submitForm() {
+			   // Get the first form with the name
+			   // Usually the form name is not repeated
+			   // but duplicate names are possible in HTML
+			   // Therefore to work around the issue, enforce the correct index
+			   var frm = document.getElementsByName('carform')[0];
+			   frm.submit(); // Submit the form
+			   frm.reset();  // Reset all form data
+			   return false; // Prevent page refresh
+			}
+		</script>
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

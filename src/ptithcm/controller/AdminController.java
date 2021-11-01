@@ -48,7 +48,7 @@ public class AdminController {
 	public String index(HttpServletRequest request, ModelMap model, 
 			@ModelAttribute("order") Orders order) {
 		if(request.getParameter("clear") != null) {
-			filterOrder.setIdFilter("");
+			filterOrder.setOidFilter("");
 			filterOrder.setCustomerFilter("");
 			filterOrder.setEmailFilter("");
 			filterOrder.setPhoneFilter("");
@@ -68,7 +68,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
-	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") String id,
+	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id,
 			@ModelAttribute("order") Orders order) {
 		
 		List<Orders> orders = this.getOrders(filterOrder);
@@ -88,7 +88,7 @@ public class AdminController {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
 		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));
 		
-		Orders order = getOrder(request.getParameter("idorderaccept"));
+		Orders order = getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
 		order.setStat(1);
 	
 		Integer temp = this.updateOrder(order);
@@ -98,7 +98,7 @@ public class AdminController {
 			model.addAttribute("message", "Failed!");
 		}
 		
-		String from = "tiennhot8@gmail.com";
+		String from = "IDRISCAR";
 		String to = order.getEmail();
 		String subject = "Order Car";
 		String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
@@ -124,7 +124,7 @@ public class AdminController {
 	
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
-	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") String id, @ModelAttribute("order") Orders order) {
+	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("order") Orders order) {
 		List<Orders> orders = this.getOrders(filterOrder);
 		PagedListHolder pagedListHolder = new PagedListHolder(orders);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
@@ -142,8 +142,8 @@ public class AdminController {
 		
 		String reason = request.getParameter("disc");
 		
-		Orders order = getOrder(request.getParameter("idorderdeny"));
-		order.setStat(0);
+		Orders order = getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
+		order.setStat(2);
 	
 		Integer temp = this.updateOrder(order);
 		if (temp != 0) {
@@ -152,7 +152,7 @@ public class AdminController {
 			model.addAttribute("message", "Failed!");
 		}
 		
-		String from = "tiennhot8@gmail.com";
+		String from = "IDRISCAR";
 		String to = order.getEmail();
 		String subject = "Order Car";
 		String body = "Đơn hàng đã bị từ chối.<br/>" + ((reason.length()>0)?"Lí do: " + reason + "<br/>":"")
@@ -182,7 +182,7 @@ public class AdminController {
 	public List<Orders> getOrders(FilterOrder filterOrder) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Orders where stat <> -2 ";
-		if(!filterOrder.getIdFilter().equals("")) hql += "and id = :idFilter ";
+		if(!filterOrder.getOidFilter().equals("")) hql += "and oid = :oidFilter ";
 		if(!filterOrder.getCustomerFilter().equals("")) hql += "and customer LIKE :customerFilter ";
 		if(!filterOrder.getEmailFilter().equals("")) hql += "and email = :emailFilter ";
 		if(!filterOrder.getPhoneFilter().equals("")) hql += "and phone = :phoneFilter ";
@@ -192,14 +192,13 @@ public class AdminController {
 		hql += "order by stat";
 				
 		Query query = session.createQuery(hql);
-		if(!filterOrder.getIdFilter().equals("")) query.setParameter("idFilter", filterOrder.getIdFilter());
+		if(!filterOrder.getOidFilter().equals("")) query.setParameter("oidFilter", filterOrder.getOidFilter());
 		if(!filterOrder.getCustomerFilter().equals("")) query.setParameter("customerFilter", "%" + filterOrder.getCustomerFilter() + "%");
 		if(!filterOrder.getEmailFilter().equals("")) query.setParameter("emailFilter", filterOrder.getEmailFilter());
 		if(!filterOrder.getPhoneFilter().equals("")) query.setParameter("phoneFilter", filterOrder.getPhoneFilter());
 		if(filterOrder.getStatusFilter() != 0) {
 			query.setParameter("statusFilter", filterOrder.getStatusFilter());
 		}
-		
 		List<Orders> list = query.list();
 		return list;
 	}
@@ -251,7 +250,7 @@ public class AdminController {
 			session.delete(order);
 			t.commit();
 		} catch (Exception e) {
-			System.out.println("update error" + e);
+			System.out.println("delete error" + e);
 			t.rollback();
 			res = 0;
 		} finally {
@@ -263,30 +262,33 @@ public class AdminController {
 	
 	
 
-	public Orders getOrder(String id) {
-		Session session = factory.getCurrentSession();
+	public Orders getOrder(int id) {
+		Session session = factory.openSession();
 		String hql = "FROM Orders where id = :id";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
 		List<Orders> list = query.list();
+		session.close();
 		if(list.size()>0) return list.get(0);
 		else return null;
 	}
 	
 	public List<Orders> getOrders(int carId) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		String hql = "FROM Orders where car.id = :carId";
 		Query query = session.createQuery(hql);
 		query.setParameter("carId", carId);
 		List<Orders> list = query.list();
+		session.close();
 		return list;
 	}
 	
 	public List<Orders> getOrders() {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		String hql = "FROM Orders order by stat"; 
 		Query query = session.createQuery(hql);
 		List<Orders> list = query.list();
+		session.close();
 		return list;
 	}
 	
@@ -296,7 +298,7 @@ public class AdminController {
 	
 	@ModelAttribute("filter_order")
 	public FilterOrder getFilterOrder(HttpServletRequest request) {
-		filterOrder.setIdFilter((request.getParameter("idFilter")==null)?filterOrder.getIdFilter():request.getParameter("idFilter").trim());
+		filterOrder.setOidFilter((request.getParameter("oidFilter")==null)?filterOrder.getOidFilter():request.getParameter("oidFilter").trim());
 		filterOrder.setCustomerFilter((request.getParameter("customerFilter")==null)?filterOrder.getCustomerFilter():request.getParameter("customerFilter").trim());
 		filterOrder.setEmailFilter((request.getParameter("emailFilter")==null)?filterOrder.getEmailFilter():request.getParameter("emailFilter").trim());
 		filterOrder.setPhoneFilter((request.getParameter("phoneFilter")==null)?filterOrder.getPhoneFilter():request.getParameter("phoneFilter").trim());

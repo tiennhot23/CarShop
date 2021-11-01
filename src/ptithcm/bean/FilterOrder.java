@@ -1,7 +1,7 @@
 package ptithcm.bean;
 
 public class FilterOrder {
-	private String idFilter;
+	private String oidFilter;
 	private String emailFilter;
 	private String phoneFilter;
 	private String customerFilter;
@@ -13,11 +13,11 @@ public class FilterOrder {
 	public void setStatusFilter(int statusFilter) {
 		this.statusFilter = statusFilter;
 	}
-	public String getIdFilter() {
-		return idFilter;
+	public String getOidFilter() {
+		return oidFilter;
 	}
-	public void setIdFilter(String idFilter) {
-		this.idFilter = idFilter;
+	public void setOidFilter(String oidFilter) {
+		this.oidFilter = oidFilter;
 	}
 	public String getEmailFilter() {
 		return emailFilter;

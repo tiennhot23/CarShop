@@ -115,8 +115,8 @@
                      <div class="row">
                         <form:form action="admin/" class="row g-3" modelAttribute="filter_order">
                            <div class="col-md-3">
-                              <label for="inputAddress" class="form-label">ID</label>
-                              <form:input path="idFilter" name="id" type="text" class="form-control" id="inputAddress" placeholder="Id"/>
+                              <label for="inputAddress" class="form-label">OID</label>
+                              <form:input path="oidFilter" name="oid" type="text" class="form-control" id="inputAddress" placeholder="OID"/>
                            </div>
                            <div class="col-md-9">
                               <label for="inputAddress" class="form-label">Customer</label>
@@ -170,7 +170,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col" width="10%">ID</th>
+                                <th scope="col" width="10%">OID</th>
                                 <th scope="col" width="15%">Car</th>
                                 <th scope="col" width="10%">Customer</th>
                                 <th scope="col" width="10%">Email</th>
@@ -187,7 +187,7 @@
                         	<c:forEach var="o" items="${pagedListHolder.pageList}">
                                <tr>
                                   
-                                  <td>${o.id }</td>
+                                  <td>${o.oid }</td>
                                   <td>${o.car.name }</td>
                                   <td>${o.customer }</td>
                                   <td>${o.email }</td>
@@ -251,12 +251,12 @@
                     <div class="modal-body">
 						<div class="image-cover card bg-dark text-white">
 						  <img class="card-img" src="${orderAccept.car.img }" alt="Card image">
-						  <div class="card-img-overlay mt-5">						  
+						  <div class="card-img-overlay">						  
 						    <h5 class="card-title">Car: ${orderAccept.car.name }</h5>
 						    <p class="card-text">Customer: ${orderAccept.customer }</p>
 						    <p class="card-text">Email: ${orderAccept.email }</p>
 						    <p class="card-text">Phone: ${orderAccept.phone }</p>
-						    <p class="card-text">Address: ${orderDeny.addres }</p>
+						    <p class="card-text">Address: ${orderAccept.addres }</p>
 						    <p class="card-text">Amount: ${orderAccept.amount }</p>
 						    
 						  </div>
@@ -289,7 +289,7 @@
                     <div class="modal-body">
 						<div class="image-cover card bg-dark text-white">
 						  <img class="card-img" src="${orderDeny.car.img }" alt="Card image">
-						  <div class="card-img-overlay mt-5">						  
+						  <div class="card-img-overlay">						  
 						    <h5 class="card-title">Car: ${orderDeny.car.name }</h5>
 						    <p class="card-text">Customer: ${orderDeny.customer }</p>
 						    <p class="card-text">Email: ${orderDeny.email }</p>

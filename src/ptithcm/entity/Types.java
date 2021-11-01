@@ -14,6 +14,14 @@ public class Types{
 	@Id
 	private String name;
 	private String disc;
+	private String img;
+	
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	
 	@OneToMany(mappedBy="type", fetch=FetchType.EAGER)
 	private Collection<Cars> cars;
