@@ -104,6 +104,7 @@ public class CarController {
 		order.setStat(stat);
 		
 		if(!addOrder(order)) {
+			model.addAttribute("status", "0");
 			model.addAttribute("message", "Không thể tạo đơn hàng!");
 			return "public/order";
 		}
@@ -123,6 +124,7 @@ public class CarController {
 		securities.setOrder(order);
 		
 		if(!addSecurities(securities)) {
+			model.addAttribute("status", "0");
 			model.addAttribute("message", "Không thể tạo key!");
 			return "public/order";
 		}
@@ -139,9 +141,11 @@ public class CarController {
 		}
 		try {
 			mailer.send(from, to, subject, body);
-			model.addAttribute("message", "Gửi mail thành công!");
+			model.addAttribute("status", "1");
+			model.addAttribute("message", "Đơn hàng của bạn đã được thiết lập. Vui lòng vào mail để xác nhận đơn hàng!");
 		}catch (Exception e) {
 			// TODO: handle exception
+			model.addAttribute("status", "0");
 			model.addAttribute("message","Gửi mail thất bại!");
 		}
 		return "public/order";

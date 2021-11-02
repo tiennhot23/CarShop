@@ -22,14 +22,14 @@
 	    </style>
    </head>
 <body>
-<div id="loading">
+<!-- <div id="loading">
 </div>
 <script>
   $(window).on('load', function () {
     $('#loading').hide();
     $("div#main").removeClass("hidden");
   }) 
-</script>
+</script> -->  <!--set div class hidden -->
 <header class="header-area overlay">
     <nav class="navbar navbar-expand-md navbar-dark">
 		<div class="container">
@@ -68,7 +68,7 @@
 		</div>
 	</div>
 </header>
-<div id="main" class="hidden">
+<div id="main">
 	<section id="content" class="content">
 		<div style="margin-top: 100px;" class="container">
 			<h1>Let's explore.</h1>

@@ -23,7 +23,7 @@
 	    </style>
    </head>
 <body>
-<div id="loading">
+<!-- <div id="loading">
 </div>
 <script>
   $(window).on('load', function () {
@@ -34,7 +34,7 @@
 	  }
     
   }) 
-</script>
+</script> --> <!--set div class hidden -->
 <c:if test="${not empty car}">
     <script>
         window.onload = function () {
@@ -90,7 +90,7 @@
     </div>
 	
 </header>
-<div class="card-section hidden" id="main">
+<div class="card-section" id="main">
    <div class="container">
        <div class="card-block bg-white mb30">
            <div class="row">

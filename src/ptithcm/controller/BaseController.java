@@ -67,6 +67,7 @@ public class BaseController {
 	public String verified(ModelMap model, @PathParam(value = "token") String token) {
 		Securities securities = getSecurities(token);
 		if(securities == null) {
+			model.addAttribute("status", "0");
 			model.addAttribute("message", "Mã xác nhận không tồn tại!");
 			return "public/order";
 		}
@@ -82,14 +83,19 @@ public class BaseController {
 			order.setStat(-1);
 			Integer temp = this.updateOrder(order);
 			if (temp != 0) {
+				model.addAttribute("status", "1");
 				model.addAttribute("message", "Đơn hàng của bạn đã được xác nhận.");
 			} else {
-				model.addAttribute("message", "Failed!");
+				model.addAttribute("status", "0");
+				model.addAttribute("message", "Không thể cập nhật trạng thái đơn hàng!");
 			}
 			deleteSecurities(securities);
 		}
-		else
+		else {
+			model.addAttribute("status", "0");
 			model.addAttribute("message", "Mã xác nhận đã bị hết hạn!");
+		}
+			
 		return "public/order";
 	}
 	
