@@ -59,9 +59,11 @@ public class CarController {
 			filterCar.setMaxFilter(Long.parseLong("1000000000000000"));
 			filterCar.setTypeFilter("");
 			filterCar.setBrandFilter("");
+		}else {
+			filterCar = getFilterCar(request);
 		}
 		
-		filterCar = getFilterCar(request);
+		
 		
 		
 		List<Cars> cars = this.getCars(filterCar);
@@ -70,7 +72,7 @@ public class CarController {
 		pagenumber.setP(page);
 		pagedListHolder.setPage(page);
 		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(4);
+		pagedListHolder.setPageSize(8);
 		model.addAttribute("pagedListHolder", pagedListHolder);
 		
 		return "public/cars";

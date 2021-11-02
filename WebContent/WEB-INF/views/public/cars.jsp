@@ -9,14 +9,32 @@
 	<head>
       	<base href="${pageContext.servletContext.contextPath}/">
       	<link rel="stylesheet" href="<c:url value='resources/assets/css/public/cars.css'/>">
+      	<link rel="stylesheet" href="<c:url value='resources/assets/css/loading.css'/>">
       	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
       	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css">
       	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		
 		 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+		 <style type="text/css" media="screen">
+	      div.hidden{
+			   display: none
+			}
+	    </style>
    </head>
 <body>
+<div id="loading">
+</div>
+<script>
+  $(window).on('load', function () {
+	  window.setTimeout( finish, 2000 );
+	  function finish(){
+		  $('#loading').hide();
+		    $("div#main").removeClass("hidden");
+	  }
+    
+  }) 
+</script>
 <c:if test="${not empty car}">
     <script>
         window.onload = function () {
@@ -53,13 +71,11 @@
 										<li><a href="#" class="nav-item nav-link">About Us</a></li>
 										<li><a href="cars/" class="nav-item nav-link">Cars</a></li>
 										<li class="dropdown">
-											<a href="#" class="nav-item nav-link" data-toggle="dropdown">Portfolio</a>
+											<a href="#" class="nav-item nav-link" data-toggle="dropdown">Explore</a>
 											<div class="dropdown-menu">
-												<a href="#" class="dropdown-item">Dropdown Item 1</a>
-												<a href="#" class="dropdown-item">Dropdown Item 2</a>
-												<a href="#" class="dropdown-item">Dropdown Item 3</a>
-												<a href="#" class="dropdown-item">Dropdown Item 4</a>
-												<a href="#" class="dropdown-item">Dropdown Item 5</a>
+												<a id="videotag" class="dropdown-item">Video</a>
+												<a id="typetag" class="dropdown-item">Type</a>
+												<a id="brandtag" class="dropdown-item">Brand</a>
 											</div>
 										</li>
 										<li><a href="login.htm" class="nav-item nav-link">Login</a></li>
@@ -74,7 +90,7 @@
     </div>
 	
 </header>
-<div class="card-section">
+<div class="card-section hidden" id="main">
    <div class="container">
        <div class="card-block bg-white mb30">
            <div class="row">
@@ -111,12 +127,16 @@
 								</form:select>
                              
                            </div>
-                           <div class="col-12">
-                              <button type="submit" class="btn btn-lg">Search</button>
-                           </div>
-                           <div class="col-12">
-                              <p>
-                           </div>
+                           <div class="row col-12">
+		                  	<div class="col-sm-11">
+		                  		<div class="mb-2 d-flex justify-content-between align-items-center">
+				                     <button type="submit" class="btn btn-lg">Search</button>
+				                  </div>
+		                  	</div>
+		                  	<div class="col-sm-1">
+		                  		<button name="clear" style="float: right;" type="submit" class="btn badge badge-info">Clear filter</button>
+		                  	</div>
+		                  </div>
                         </form:form>
                    </div>
                    <!-- /.section-title -->

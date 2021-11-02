@@ -17,6 +17,19 @@ p {
   font-size: 1.6rem;
   line-height: 1.6;
 }
+.carousel-control-next-icon{
+  height: 50px !important;
+  width: 50px !important;
+  border-radius: 50%;
+  background-image: url(https://static.thenounproject.com/png/464827-200.png) !important;
+}
+
+.carousel-control-prev-icon {
+  height: 50px !important;
+  width: 50px !important;
+  border-radius: 50%;
+  background-image: url(https://pic.onlinewebfonts.com/svg/img_241801.png) !important;
+}
 .button {
   display: inline-block;
   margin-top: 20px;

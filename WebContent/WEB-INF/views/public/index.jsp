@@ -10,12 +10,26 @@
       <base href="${pageContext.servletContext.contextPath}/">
       <link rel="stylesheet" href="<c:url value='resources/assets/css/public/index.css'/>">
       <link rel="stylesheet" href="<c:url value='resources/assets/css/public/footer.css'/>">
+      <link rel="stylesheet" href="<c:url value='resources/assets/css/loading.css'/>">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <style type="text/css" media="screen">
+	      div.hidden{
+			   display: none
+			}
+	    </style>
    </head>
 <body>
+<div id="loading">
+</div>
+<script>
+  $(window).on('load', function () {
+    $('#loading').hide();
+    $("div#main").removeClass("hidden");
+  }) 
+</script>
 <header class="header-area overlay">
     <nav class="navbar navbar-expand-md navbar-dark">
 		<div class="container">
@@ -30,14 +44,14 @@
 			<div id="main-nav" class="collapse navbar-collapse">
 				<ul class="navbar-nav ml-auto">
 					<li><a href="#" class="nav-item nav-link active">Home</a></li>
-					<li><a href="#footer" class="nav-item nav-link">About Us</a></li>
+					<li><a id="footertag" class="nav-item nav-link">About Us</a></li>
 					<li><a href="cars/" class="nav-item nav-link">Cars</a></li>
 					<li class="dropdown">
-						<a href="#" class="nav-item nav-link" data-toggle="dropdown">Portfolio</a>
+						<a href="#" class="nav-item nav-link" data-toggle="dropdown">Explore</a>
 						<div class="dropdown-menu">
-							<a href="#videos" class="dropdown-item">Video</a>
-							<a href="#types" class="dropdown-item">Type</a>
-							<a href="#brands" class="dropdown-item">Brand</a>
+							<a id="videotag" class="dropdown-item">Video</a>
+							<a id="typetag" class="dropdown-item">Type</a>
+							<a id="brandtag" class="dropdown-item">Brand</a>
 						</div>
 					</li>
 					<li><a href="login.htm" class="nav-item nav-link">Login</a></li>
@@ -47,13 +61,14 @@
 	</nav>
 	<div class="banner">
 		<div class="container">
-			<h1>Bootstrap 4 Navbar</h1>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec elit ex. Etiam elementum lectus et tempor molestie.</p>
-			<a href="#content" class="button button-primary">Get Start</a>
+			<h1>IDRISCAR</h1>
+			<h2>We are here to help you BuyaCar with confidence.</h2>
+			<p>A dream without ambition is like a car without gas... you're not going anywhere.</p>
+			<div class="button button-primary" id="getstart">Get Start</div>
 		</div>
 	</div>
 </header>
-<main>
+<div id="main" class="hidden">
 	<section id="content" class="content">
 		<div style="margin-top: 100px;" class="container">
 			<h1>Let's explore.</h1>
@@ -61,20 +76,28 @@
 		<div  style="margin-top: 100px;" class="container">
 			<div style="margin-top: 100px;"  id="videos" class="row">
 				<div class="col-md-4">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec elit ex. Etiam elementum lectus et tempor molestie. Pellentesque vestibulum dui sit amet dui volutpat sollicitudin. Etiam non erat finibus, iaculis nunc vel, convallis eros. Etiam efficitur tempor dui, vitae fringilla ipsum tristique quis. Aliquam erat volutpat. Cras ullamcorper ex et viverra vulputate. Nam lectus ligula, pretium nec risus nec, ultricies fringilla mauris. Proin quis venenatis neque, iaculis porta nulla. </p>
+					<div class="embed-responsive embed-responsive-4by3">
+					  <iframe width="420" height="345" src="https://www.youtube.com/embed/LALgQSrVsaQ"></iframe>
+					</div>
 				</div>
 				<div class="col-md-4">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec elit ex. Etiam elementum lectus et tempor molestie. Pellentesque vestibulum dui sit amet dui volutpat sollicitudin. Etiam non erat finibus, iaculis nunc vel, convallis eros. Etiam efficitur tempor dui, vitae fringilla ipsum tristique quis. Aliquam erat volutpat. Cras ullamcorper ex et viverra vulputate. Nam lectus ligula, pretium nec risus nec, ultricies fringilla mauris. Proin quis venenatis neque, iaculis porta nulla. </p>
+					<div class="embed-responsive embed-responsive-4by3">
+					  <iframe width="420" height="345" src="https://www.youtube.com/embed/SRqBLf_BWqc"></iframe>
+					</div>
 				</div>
 				<div class="col-md-4">
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec elit ex. Etiam elementum lectus et tempor molestie. Pellentesque vestibulum dui sit amet dui volutpat sollicitudin. Etiam non erat finibus, iaculis nunc vel, convallis eros. Etiam efficitur tempor dui, vitae fringilla ipsum tristique quis. Aliquam erat volutpat. Cras ullamcorper ex et viverra vulputate. Nam lectus ligula, pretium nec risus nec, ultricies fringilla mauris. Proin quis venenatis neque, iaculis porta nulla. </p>
+					<div class="embed-responsive embed-responsive-4by3">
+					  <iframe width="420" height="345" src="https://www.youtube.com/embed/yDK5n53vQ0g"></iframe>
+					</div>
 				</div>
 			</div>
 			<div style="margin-top: 100px;"  id="types" class="carousel slide" data-ride="carousel">
 			  <div class="carousel-inner">
 			    <c:forEach var="c" items="${types}" begin="0" end="0">
 				<div class="carousel-item active">
+				<a href="cars/?typeFilter=${c.name}&brandFilter=" class="fancybox" rel="ligthbox">
 			      <img class="d-block w-100" src="${c.img }">
+			    </a>
 			      <div class="carousel-caption d-none d-md-block">
 				    <h1>${c.name } Car</h1>
 				    <p>${c.disc }</p>
@@ -83,7 +106,9 @@
                 </c:forEach>
 			    <c:forEach var="c" items="${types}" begin="1">
 				<div class="carousel-item">
+				<a href="cars/?typeFilter=${c.name}&brandFilter=" class="fancybox" rel="ligthbox">
 			      <img class="d-block w-100" src="${c.img }">
+			    </a>
 			      <div class="carousel-caption d-none d-md-block">
 				    <h1>${c.name } Car</h1>
 				    <p>${c.disc }</p>
@@ -100,7 +125,7 @@
 			    <span class="sr-only">Next</span>
 			  </a>
 			</div>
-			<div style="margin-top: 100px;" id="brand" class="row">
+			<div style="margin-top: 100px;" id="brands" class="row">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 	                   <!-- section-title -->
 	                   <div class="section-title mb-0">
@@ -108,10 +133,9 @@
 								<div class="row">
 									<c:forEach var="c" items="${brands}">
 										<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-							                <a href="cars/?brand=${c.name}" class="fancybox" rel="ligthbox">
+							                <a href="cars/?brandFilter=${c.name}&typeFilter=" class="fancybox" rel="ligthbox">
 							                    <img  src="${c.img }" class="zoom img-fluid "  alt="">
 							                </a>
-							                
 							            </div>
 	                                </c:forEach>
 								</div>
@@ -152,7 +176,7 @@
 	         </div>
 	     </div>
 	</section>
-</main>
+</div>
 
 <script type="text/javascript">
 jQuery(function($) {
@@ -163,7 +187,32 @@ jQuery(function($) {
 			$('.navbar').removeClass('fixed-top');
 		}
 	});
-	
+    $("#getstart").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#content").offset().top
+        }, 1000);
+    });
+    $("#videotag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#content").offset().top
+        }, 1000);
+    });
+    $("#typetag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#types").offset().top
+        }, 1000);
+    });
+    $("#brandtag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#brands").offset().top
+        }, 1000);
+    });
+    $("#footertag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#footer").offset().top
+        }, 1000);
+    });
+    
 	function adjustNav() {
 		var winWidth = $(window).width(),
 			dropdown = $('.dropdown'),
@@ -188,6 +237,7 @@ jQuery(function($) {
 	
 	adjustNav();
 });
+
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

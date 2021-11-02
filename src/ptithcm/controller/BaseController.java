@@ -1,10 +1,8 @@
 package ptithcm.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import org.springframework.http.HttpStatus;
 import java.util.Base64;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +17,12 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import ptithcm.entity.Admin;
 import ptithcm.entity.Brands;
@@ -179,3 +178,5 @@ public class BaseController {
 		return list;
 	}
 }
+
+
