@@ -7,52 +7,34 @@
 <!doctype html>
 <html>
    <head>
-      <%@include file="/WEB-INF/views/include/header.jsp"%>
+      <%@include file="/WEB-INF/views/include/adminheader.jsp"%>
       <base href="${pageContext.servletContext.contextPath}/">
-      <link rel="stylesheet" href="<c:url value='resources/assets/css/admin.css'/>">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
       
-    <script src="https://kit.fontawesome.com/41a8d7d896.js"></script>
-    <link rel="stylesheet" href="<c:url value='resources/assets/css/style.css'/>">
    </head>
    <body id="body-pd" class=" bg-light">
-      <header class="header" id="header">
-         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-         <div class="header_img"> <img src="https://i.pinimg.com/originals/9d/5f/14/9d5f14a67e7e5a00101a6baf8a59fe7e.jpg" alt=""> </div>
-      </header>
-      <div class="l-navbar" id="nav-bar">
-         <nav class="nav">
-            <div>
-               <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
-               <div class="nav_list">
-                  <a href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
-                  <a href="admin/cars/" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
-                  <a href="admin/types/" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
-                  <a href="admin/brands/" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
-                  <a href="admin/stats/" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Stats</span> </a>
-               </div>
-            </div>
-            <a href="#" class="nav_link"> <i class="bx bx-log-out nav_icon"></i> <span class="nav_name">SignOut</span> </a>
-         </nav>
-      </div>
+      	<%@include file="/WEB-INF/views/include/adminmenu.jsp"%>
+		<div class="l-navbar" id="nav-bar">
+		   <nav class="nav">
+		      <div>
+		         <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
+		         <div class="nav_list">
+		            <a href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
+		            <a href="admin/cars/" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
+		            <a href="admin/types/" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
+		            <a href="admin/brands/" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
+		            <a href="admin/stats/" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Stats</span> </a>
+		         </div>
+		      </div>
+		      <a href="#" class="nav_link"> <i class="bx bx-log-out nav_icon"></i> <span class="nav_name">SignOut</span> </a>
+		   </nav>
+		</div>
       <!--Container Main start-->
       <div class=" bg-light">
-         <h4>Main Components</h4>
-		<c:if test="${not empty message}">
-			<div class="alert alert-primary mt-5" role="alert">
-			  ${message }
-			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			    <span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
-		</c:if>
          
          <div class="container-fluid mt-5">
             <div class="row">
+            
+            	<!-- Form car -->
                <div class="col-sm-3 login-section-wrapper">
                   <div class="mt-3">
                   <h4 class="card-title">Car Information</h4>
@@ -72,7 +54,7 @@
 						</div>
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiofile" value="option2" onclick="EnableDisableTextBox()" >
-						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled="true" required="true"/> 
+						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled required /> 
 						</div>
                      </div>
                      
@@ -100,7 +82,6 @@
                            <form:select path="type.name" items="${types }"
 								itemValue="name" itemLabel="name"
 								class="form-control">
-		
 							</form:select>
                         </div>
                         <div class="form-group col-md-5">
@@ -118,19 +99,23 @@
                   </form:form>
                   </div>
                </div>
+               
+               
+               <!-- Table -->
                <div class="col-sm-9 px-0 d-none d-sm-block">
                   <div class="row">
                   	<div class="col-sm-2">
                   		<div class="mb-2 d-flex justify-content-between align-items-center">
-		                     <div class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></div>
+		                     <a class="px-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"> <span>Filters <i class="fa fa-angle-down"></i></span></a>
 		                  </div>
                   	</div>
                   	<div class="col-sm-1">
                   		<a href="admin/cars/?clear=1"><button type="submit" class="btn badge badge-info">Clear filter</button></a>
                   	</div>
-                  
-                  
                   </div>
+                  
+                  
+                  <!-- Filter -->
                   <div class="collapse container" id="collapseExample">
                      <div class="row">
                         <form:form action="admin/cars/" class="row g-3" modelAttribute="filter_car">
@@ -148,20 +133,17 @@
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Types:</label>
-                              <form:select path="typeFilter" items="${types }"
+                              <form:select path="typeFilter" items="${typesSearch }"
 								itemValue="name" itemLabel="name"
 								class="form-control">
-		
 								</form:select>
                            </div>
                            <div class="col-md-2 form-group">
                               <label for="sel1">Brands:</label>
-                              <form:select path="brandFilter" items="${brands }"
+                              <form:select path="brandFilter" items="${brandsSearch }"
 								itemValue="name" itemLabel="name"
 								class="form-control">
-		
 								</form:select>
-                             
                            </div>
                            <div class="col-12">
                               <button type="submit" class="btn btn-primary">Search</button>
@@ -182,9 +164,12 @@
                      <tg:paging pagedListHolder="${pagedListHolder}"
                         pagedLink="${pagedLink}" />
                   </div>
+                  
+                  
+                  <!-- Table -->
                   <div class="page-content page-container" id="page-content">
                      <div class="padding">
-                        <div class="row container d-flex justify-content-center">
+                        <div class="container">
                            <div class="grid-margin stretch-card">
                               <div class="card">
                                  <div class="card-body">
@@ -224,12 +209,12 @@
                                                    <td>${c.amount }</td>
                                                    <td class="text-center"><span class="fw-bolder">${c.price } VND</span></td>
                                                    <td><a href="admin/cars/${c.id}.htm?linkEdit">
-                                                      <button type="button" rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="">
+                                                      <button type="button" class="btn btn-info btn-just-icon btn-sm">
                                                       <i class="material-icons">Edit</i>
                                                       </button></a>
                                                    </td>
                                                    <td><a href="admin/cars/${c.id}.htm?linkDelete" role="button">
-                                                      <button type="button" rel="tooltip" class="btn btn-danger btn-just-icon btn-sm" data-original-title="" title="">
+                                                      <button type="button" class="btn btn-danger btn-just-icon btn-sm">
                                                       <i class="material-icons">Delete</i>
                                                       </button></a>
                                                    </td>
@@ -252,161 +237,6 @@
       </div>
       <!--Container Main end--> 
       
-<%--       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Order</h5>
-               </div>
-               <div class="modal-body">
-                  <form action="../order.htm?name=${car.name }" method="post">
-                     <div class="form-group">
-                        <label for="inputAddress2">Name</label>
-                        <input type="text" class="form-control" id="inputAddress2" value=${car.name }>
-                     </div>
-                     <div class="form-group">
-                        <label for="inputAddress">Image</label>
-                        <input type="text" class="form-control" id="inputAddress" >
-                     </div>
-                     <div class="form-group">
-                        <label for="inputAddress2">Video</label>
-                        <input type="text" class="form-control" id="inputAddress2" >
-                     </div>
-                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                           <label for="inputEmail4">Amount</label>
-                           <input type="email" class="form-control" id="inputEmail4" >
-                        </div>
-                        <div class="form-group col-md-6">
-                           <label for="inputPassword4">Price</label>
-                           <input type="password" class="form-control" id="inputPassword4" >
-                        </div>
-                     </div>
-                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Discription</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                     </div>
-                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                           <label for="sel1">Types:</label>
-                           <select name="type" class="form-control" id="sel1"">
-                              <option value="none" selected disabled hidden>
-                                 Select type
-                              </option>
-                              <c:forEach var="c" items="${types }">
-                                 <c:choose>
-                                    <c:when test="${c.name == filter_car.type }">
-                                       <option selected>${c.name }</option>
-                                    </c:when>
-                                    <c:when test="${c.name != filter_car.type }">
-                                       <option>${c.name }</option>
-                                    </c:when>
-                                 </c:choose>
-                              </c:forEach>
-                           </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                           <label for="sel1">Brands:</label>
-                           <select name="brand" class="form-control" id="sel1">
-                              <option value="none" selected disabled hidden>
-                                 Select brand
-                              </option>
-                              <c:forEach var="c" items="${brands }">
-                                 <c:choose>
-                                    <c:when test="${c.name == filter_car.type }">
-                                       <option selected>${c.name }</option>
-                                    </c:when>
-                                    <c:when test="${c.name != filter_car.type }">
-                                       <option>${c.name }</option>
-                                    </c:when>
-                                 </c:choose>
-                              </c:forEach>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                     </div>
-                  </form>
-               </div>
-            </div>
-         </div>
-      </div> --%>
-      <script type="text/javascript">
-         document.addEventListener("DOMContentLoaded", function(event) {
-         
-         const showNavbar = (toggleId, navId, bodyId, headerId) =>{
-         const toggle = document.getElementById(toggleId),
-         nav = document.getElementById(navId),
-         bodypd = document.getElementById(bodyId),
-         headerpd = document.getElementById(headerId)
-         
-         // Validate that all variables exist
-         if(toggle && nav && bodypd && headerpd){
-         toggle.addEventListener('click', ()=>{
-         // show navbar
-         nav.classList.toggle('show')
-         // change icon
-         toggle.classList.toggle('bx-x')
-         // add padding to body
-         bodypd.classList.toggle('body-pd')
-         // add padding to header
-         headerpd.classList.toggle('body-pd')
-         })
-         }
-         }
-         
-         showNavbar('header-toggle','nav-bar','body-pd','header')
-         
-         /*===== LINK ACTIVE =====*/
-         const linkColor = document.querySelectorAll('.nav_link')
-         
-         function colorLink(){
-         if(linkColor){
-         linkColor.forEach(l=> l.classList.remove('active'))
-         this.classList.add('active')
-         }
-         }
-         
-         function openModalFuntion(){
-         	$('#exampleModalCenter').modal('show')
-         }
-         linkColor.forEach(l=> l.addEventListener('click', colorLink))
-         
-         // Your code to run since DOM is loaded and ready
-         });
-      </script>
-      <script type="text/javascript">
-		    function EnableDisableTextBox() {
-		        var rlink = document.getElementById("radiolink");
-		        var rfile = document.getElementById("radiofile");
-		        var inlink = document.getElementById("inputlink");
-		        var infile = document.getElementById("inputfile");
-		        inlink.disabled = rlink.checked ? false : true;
-		        infile.disabled = rfile.checked ? false : true;
-		        if (inlink.disabled) {
-		        	inlink.value = ''
-		        }
-		        if (infile.disabled) {
-		        	infile.value = ''
-		        }
-		    }
-		</script>
-		<script type="text/javascript">
-		function submitForm() {
-			   // Get the first form with the name
-			   // Usually the form name is not repeated
-			   // but duplicate names are possible in HTML
-			   // Therefore to work around the issue, enforce the correct index
-			   var frm = document.getElementsByName('carform')[0];
-			   frm.submit(); // Submit the form
-			   frm.reset();  // Reset all form data
-			   return false; // Prevent page refresh
-			}
-		</script>
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <%@include file="/WEB-INF/views/include/adminfooter.jsp"%>
    </body>
 </html>

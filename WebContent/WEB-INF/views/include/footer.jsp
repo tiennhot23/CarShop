@@ -1,16 +1,195 @@
-<!-- Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
-</footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="<c:url value='/resources/assets/js/bootstrap.bundle.min.js' />"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script>
-var editor = CKEDITOR.replace( 'messagebody' );
-CKFinder.setupCKEditor(ckeditor, '${pageContext.request.contextPath}/resources/ckfinder/');
+<div id="footer" style="margin-top: 100px;">
+    <div id="part1">
+        <div id="companyinfo"> <a id="sitelink" href="#">IDRISCAR</a>
+            <p id="title">Cool and Perfect Snippet code</p>
+            <p id="detail">We create awesome code snippets that will help you in creating your own beautiful site. </p>
+        </div>
+        <div id="explore">
+            <p id="txt1">Explore</p> <a class="link" href="#">Home</a> <a class="link" href="#">About</a> <a class="link" href="#">Snippet</a> <a class="link" href="#">Careers</a>
+        </div>
+        <div id="visit">
+            <p id="txt2">Visit</p>
+            <p class="text">Lincoln House </p>
+            <p class="text">78 Bhulabhai Desai Road </p>
+            <p class="text">Mumbai 400 026 </p>
+            <p class="text">Phone: (22) 2363-3611 </p>
+            <p class="text">Fax: (22) 2363-0350 </p>
+        </div>
+        <div id="legal">
+            <p id="txt3">Legal</p> <a class="link1" href="#">Terms and Conditions</a> <a class="link1" href="#">Private Policy</a>
+        </div>
+        <div id="subscribe">
+            <p id="txt4">Subscribe to US</p>
+            <p class="text">tiennhot8@gmail.com </p>
+            <p id="txt5">Connect With US</p> <i class="fab fa-facebook-square social fa-2x"></i> <i class="fab fa-linkedin social fa-2x"></i> <i class="fab fa-twitter-square social fa-2x"></i>
+        </div>
+    </div>
+    <div id="part2">
+        <p id="txt6"><i class="material-icons tiny"> </i>copyright 2019 BBbootstrap - All right reserved</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    $(window).on('scroll', function() {
+		if ($(this).scrollTop() >= 200) {
+			$('.navbar').addClass('fixed-top');
+		} else if ($(this).scrollTop() == 0) {
+			$('.navbar').removeClass('fixed-top');
+		}
+	});
+    $("#getstart").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#content").offset().top
+        }, 1000);
+    });
+    $("#videotag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#content").offset().top
+        }, 1000);
+    });
+    $("#typetag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#types").offset().top
+        }, 1000);
+    });
+    $("#brandtag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#brands").offset().top
+        }, 1000);
+    });
+    $("#footertag").click(function() {
+        $('html, body').animate({
+            scrollTop: $("#footer").offset().top
+        }, 1000);
+    });
+    
+	function adjustNav() {
+		var winWidth = $(window).width(),
+			dropdown = $('.dropdown'),
+			dropdownMenu = $('.dropdown-menu');
+		
+		if (winWidth >= 768) {
+			dropdown.on('mouseenter', function() {
+				$(this).addClass('show')
+					.children(dropdownMenu).addClass('show');
+			});
+			
+			dropdown.on('mouseleave', function() {
+				$(this).removeClass('show')
+					.children(dropdownMenu).removeClass('show');
+			});
+		} else {
+			dropdown.off('mouseenter mouseleave');
+		}
+	}
 	
+	$(window).on('resize', adjustNav);
+	
+	adjustNav();
+});
+
 </script>
+
+<script type="text/javascript">
+jQuery(function($) {
+    $(window).on('scroll', function() {
+		if ($(this).scrollTop() >= 200) {
+			$('.navbar').addClass('fixed-top');
+		} else if ($(this).scrollTop() == 0) {
+			$('.navbar').removeClass('fixed-top');
+		}
+	});
+	
+	function adjustNav() {
+		var winWidth = $(window).width(),
+			dropdown = $('.dropdown'),
+			dropdownMenu = $('.dropdown-menu');
+		
+		if (winWidth >= 768) {
+			dropdown.on('mouseenter', function() {
+				$(this).addClass('show')
+					.children(dropdownMenu).addClass('show');
+			});
+			
+			dropdown.on('mouseleave', function() {
+				$(this).removeClass('show')
+					.children(dropdownMenu).removeClass('show');
+			});
+		} else {
+			dropdown.off('mouseenter mouseleave');
+		}
+	}
+	
+	$(window).on('resize', adjustNav);
+	
+	adjustNav();
+});
+$(document).ready(function(){
+	  $(".fancybox").fancybox({
+	        openEffect: "none",
+	        closeEffect: "none"
+	    });
+	    
+	    $(".zoom").hover(function(){
+			
+			$(this).addClass('transition');
+		}, function(){
+	        
+			$(this).removeClass('transition');
+		});
+	});
+function showCar(id, img, name, price, type, brand, amount, disc){
+	document.getElementById("modal-car-img").src = img;
+	document.getElementById("modal-car-name").innerHTML = name;
+	document.getElementById("modal-car-price").innerHTML = price + " $";
+	document.getElementById("modal-car-type").innerHTML = "Type: " + type;
+	document.getElementById("modal-car-brand").innerHTML = "Brand: " + brand;
+	document.getElementById("modal-car-amount").innerHTML = "Amount: " + amount;
+	document.getElementById("modal-car-disc").innerHTML = disc;
+	
+	document.getElementById("modal-order-img").src = img;
+	document.getElementById("modal-order-car").innerHTML = name;
+	document.getElementById("modal-order-total").value = price;
+	document.getElementById("modal-order-price").value = price;
+	document.getElementById("modal-order-carid").value = id;
+	$("#carmodal").modal("show");
+}
+function showOrder(){
+	
+	$("#carmodal").modal("hide");
+	$('#ordermodal').modal({backdrop: 'static', keyboard: false});
+	$("#ordermodal").modal("show");
+	
+}
+function onCheck(checkbox, button){
+	if(document.getElementById(checkbox).checked){
+		document.getElementById(button).disabled = false;
+	}else{
+		document.getElementById(button).disabled = true;
+	}
+}
+function calcTotalPrice(amount){
+	var a = document.getElementById(amount).value;
+	document.getElementById("modal-order-total").value = a * document.getElementById("modal-order-price").value;
+}
+</script>
+<script type="text/javascript">
+$('[data-dismiss=modal]').on('click', function (e) {
+    var $t = $(this),
+        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+
+  $(target)
+    .find("input,textarea,select")
+       .val('')
+       .end()
+    .find("input[type=checkbox], input[type=radio]")
+       .prop("checked", "")
+       .end();
+})
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+

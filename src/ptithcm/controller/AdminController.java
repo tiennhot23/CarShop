@@ -9,30 +9,26 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import ptithcm.bean.FilterOrder;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
+import ptithcm.dao.OrderDAO;
 import ptithcm.entity.Orders;
 
 @Transactional
 @Controller
 @RequestMapping("/admin/")
-public class AdminController {
+public class AdminController{
 	@Autowired
 	SessionFactory factory;
 	@Autowired
@@ -55,49 +51,35 @@ public class AdminController {
 			filterOrder.setStatusFilter(0);
 		}
 		filterOrder = getFilterOrder(request);
-
-		List<Orders> orders = this.getOrders(filterOrder);
-		PagedListHolder pagedListHolder = new PagedListHolder(orders);
+		List<Orders> orders = OrderDAO.getOrders(filterOrder);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(6);
-		model.addAttribute("pagedListHolder", pagedListHolder);
+		model.addAttribute("pagedListHolder", PageController.getPageList(orders, page, 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
 	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id,
 			@ModelAttribute("order") Orders order) {
-		
-		List<Orders> orders = this.getOrders(filterOrder);
-		PagedListHolder pagedListHolder = new PagedListHolder(orders);
-		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-		page = pagenumber.getP();
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(6);
-		model.addAttribute("orderAccept", getOrder(id));
-		model.addAttribute("pagedListHolder", pagedListHolder);
+		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		model.addAttribute("orderAccept", OrderDAO.getOrder(id));
+		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value = "index", params = "btnAccept")
 	public String accepted(HttpServletRequest request, ModelMap model) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
-		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));
-		
-		Orders order = getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
+		@SuppressWarnings("deprecation")
+		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));		
+		Orders order = OrderDAO.getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
 		order.setStat(1);
-	
-		Integer temp = this.updateOrder(order);
+		Integer temp = OrderDAO.update(order);
 		if (temp != 0) {
 			model.addAttribute("message", "Order accepted");
 		} else {
 			model.addAttribute("message", "Failed!");
 		}
-		
 		String from = "IDRISCAR";
 		String to = order.getEmail();
 		String subject = "Order Car";
@@ -109,15 +91,8 @@ public class AdminController {
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-		
-		List<Orders> orders = this.getOrders(filterOrder);
-		PagedListHolder pagedListHolder = new PagedListHolder(orders);
-		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-		page = pagenumber.getP();
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(6);
-		model.addAttribute("pagedListHolder", pagedListHolder);
+		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
 		
 		return "admin/index";
 	}
@@ -125,33 +100,23 @@ public class AdminController {
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
 	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("order") Orders order) {
-		List<Orders> orders = this.getOrders(filterOrder);
-		PagedListHolder pagedListHolder = new PagedListHolder(orders);
-		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-		page = pagenumber.getP();
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(6);
-		model.addAttribute("orderDeny", getOrder(id));
-		model.addAttribute("pagedListHolder", pagedListHolder);
+		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		model.addAttribute("orderDeny", OrderDAO.getOrder(id));
+		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value = "index", params = "btnDeny")
 	public String denied(HttpServletRequest request, ModelMap model) {
-		
 		String reason = request.getParameter("disc");
-		
-		Orders order = getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
+		Orders order = OrderDAO.getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
 		order.setStat(2);
-	
-		Integer temp = this.updateOrder(order);
+		Integer temp = OrderDAO.update(order);
 		if (temp != 0) {
 			model.addAttribute("message", "Order rejected");
 		} else {
 			model.addAttribute("message", "Failed!");
-		}
-		
+		}		
 		String from = "IDRISCAR";
 		String to = order.getEmail();
 		String subject = "Order Car";
@@ -164,136 +129,9 @@ public class AdminController {
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-		
-		List<Orders> orders = this.getOrders(filterOrder);
-		PagedListHolder pagedListHolder = new PagedListHolder(orders);
-		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
-		page = pagenumber.getP();
-		pagedListHolder.setPage(page);
-		pagedListHolder.setMaxLinkedPages(5);
-		pagedListHolder.setPageSize(6);
-		model.addAttribute("pagedListHolder", pagedListHolder);
-		
+		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
-	}
-	
-
-	
-	public List<Orders> getOrders(FilterOrder filterOrder) {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM Orders where stat <> -2 ";
-		if(!filterOrder.getOidFilter().equals("")) hql += "and oid = :oidFilter ";
-		if(!filterOrder.getCustomerFilter().equals("")) hql += "and customer LIKE :customerFilter ";
-		if(!filterOrder.getEmailFilter().equals("")) hql += "and email = :emailFilter ";
-		if(!filterOrder.getPhoneFilter().equals("")) hql += "and phone = :phoneFilter ";
-		if(filterOrder.getStatusFilter() != 0) {
-			hql += "and stat = :statusFilter ";
-		}
-		hql += "order by stat";
-				
-		Query query = session.createQuery(hql);
-		if(!filterOrder.getOidFilter().equals("")) query.setParameter("oidFilter", filterOrder.getOidFilter());
-		if(!filterOrder.getCustomerFilter().equals("")) query.setParameter("customerFilter", "%" + filterOrder.getCustomerFilter() + "%");
-		if(!filterOrder.getEmailFilter().equals("")) query.setParameter("emailFilter", filterOrder.getEmailFilter());
-		if(!filterOrder.getPhoneFilter().equals("")) query.setParameter("phoneFilter", filterOrder.getPhoneFilter());
-		if(filterOrder.getStatusFilter() != 0) {
-			query.setParameter("statusFilter", filterOrder.getStatusFilter());
-		}
-		List<Orders> list = query.list();
-		return list;
-	}
-	
-	
-	
-	
-	public Integer insertOrder(Orders order) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		int res = 1;
-		try {
-			session.save(order);
-			t.commit();
-		} catch (Exception e) {
-			System.out.println(e);
-			t.rollback();
-			res = 0;
-		} finally {
-			session.close();
-		}
-		return res;
-	}
-
-	public Integer updateOrder(Orders order) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		int res = 1;
-		
-		try {
-			session.update(order);
-			t.commit();
-		} catch (Exception e) {
-			System.out.println("update error" + e);
-			t.rollback();
-			res = 0;
-		} finally {
-			session.close();
-		}
-		return res;
-	}
-
-	public Integer deleteOrder(Orders order) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		int res = 1;
-		
-		try {
-			session.delete(order);
-			t.commit();
-		} catch (Exception e) {
-			System.out.println("delete error" + e);
-			t.rollback();
-			res = 0;
-		} finally {
-			session.close();
-		}
-		return res;
-	}
-	
-	
-	
-
-	public Orders getOrder(int id) {
-		Session session = factory.openSession();
-		String hql = "FROM Orders where id = :id";
-		Query query = session.createQuery(hql);
-		query.setParameter("id", id);
-		List<Orders> list = query.list();
-		session.close();
-		if(list.size()>0) return list.get(0);
-		else return null;
-	}
-	
-	public List<Orders> getOrders(int carId) {
-		Session session = factory.openSession();
-		String hql = "FROM Orders where car.id = :carId";
-		Query query = session.createQuery(hql);
-		query.setParameter("carId", carId);
-		List<Orders> list = query.list();
-		session.close();
-		return list;
-	}
-	
-	public List<Orders> getOrders() {
-		Session session = factory.openSession();
-		String hql = "FROM Orders order by stat"; 
-		Query query = session.createQuery(hql);
-		List<Orders> list = query.list();
-		session.close();
-		return list;
-	}
-	
-	public void acceptOrder(String id) {
-		
 	}
 	
 	@ModelAttribute("filter_order")
@@ -315,4 +153,5 @@ public class AdminController {
         map.put(1, "Accepted");
 		return map;
 	}
+
 }

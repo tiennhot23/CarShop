@@ -9,46 +9,10 @@
 	<head>
       	<base href="${pageContext.servletContext.contextPath}/">
       	<link rel="stylesheet" href="<c:url value='resources/assets/css/public/cars.css'/>">
-      	<link rel="stylesheet" href="<c:url value='resources/assets/css/loading.css'/>">
-      	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-      	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css">
-      	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		
-		 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-		 <style type="text/css" media="screen">
-	      div.hidden{
-			   display: none
-			}
-	    </style>
+      	<%@include file="/WEB-INF/views/include/header.jsp"%>
    </head>
 <body>
-<!-- <div id="loading">
-</div>
-<script>
-  $(window).on('load', function () {
-	  window.setTimeout( finish, 2000 );
-	  function finish(){
-		  $('#loading').hide();
-		    $("div#main").removeClass("hidden");
-	  }
-    
-  }) 
-</script> --> <!--set div class hidden -->
-<c:if test="${not empty car}">
-    <script>
-        window.onload = function () {
-            $("#carmodal").modal("show");
-        };
-    </script>
-</c:if>
-<c:if test="${not empty order}">
-    <script>
-        window.onload = function () {
-            $("#ordermodal").modal("show");
-        };
-    </script>
-</c:if>
+<%@include file="/WEB-INF/views/include/menu.jsp"%>
 <header class="header-area overlay">
     <div class="page-header">
         <div class="container">
@@ -57,7 +21,7 @@
                     <div class="page-caption">
                         <nav class="navbar navbar-expand-md navbar-dark">
 							<div class="container">
-								<a href="#" class="navbar-brand">Bootdey.com</a>
+								<a href="#" class="navbar-brand">IDRISCAR</a>
 								
 								<button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#main-nav">
 									<span class="menu-icon-bar"></span>
@@ -67,15 +31,15 @@
 								
 								<div id="main-nav" class="collapse navbar-collapse">
 									<ul class="navbar-nav ml-auto">
-										<li><a href="#" class="nav-item nav-link active">Home</a></li>
-										<li><a href="#" class="nav-item nav-link">About Us</a></li>
-										<li><a href="cars/" class="nav-item nav-link">Cars</a></li>
+										<li><a href="#" class="nav-item nav-link ">Home</a></li>
+										<li><a href="#footer" class="nav-item nav-link">About Us</a></li>
+										<li><a href="cars/" class="nav-item nav-link active">Cars</a></li>
 										<li class="dropdown">
 											<a href="#" class="nav-item nav-link" data-toggle="dropdown">Explore</a>
 											<div class="dropdown-menu">
-												<a id="videotag" class="dropdown-item">Video</a>
-												<a id="typetag" class="dropdown-item">Type</a>
-												<a id="brandtag" class="dropdown-item">Brand</a>
+												<a href="#videos" class="dropdown-item">Video</a>
+												<a href="#types" class="dropdown-item">Type</a>
+												<a href="#brands" class="dropdown-item">Brand</a>
 											</div>
 										</li>
 										<li><a href="login.htm" class="nav-item nav-link">Login</a></li>
@@ -127,7 +91,7 @@
 								</form:select>
                              
                            </div>
-                           <div class="row col-12">
+                           <div class="row col-12 mt-5">
 		                  	<div class="col-sm-11">
 		                  		<div class="mb-2 d-flex justify-content-between align-items-center">
 				                     <button type="submit" class="btn btn-lg">Search</button>
@@ -249,7 +213,7 @@
 								      <input name="carid" type="hidden" class="form-control" id="modal-order-carid" >
 								    </div>
 								  </div>
-								  <div class="form-group">
+								  <div class="form-group mb-5">
 								    <div class="form-check">
 								      <input class="form-check-input" type="checkbox" id="lincenceCheck" onclick="onCheck('lincenceCheck', 'btnBuy')">
 								      <label class="form-check-label ml-2" for="gridCheck">
@@ -267,106 +231,6 @@
              	</div>
             </div>
         </div>
-<script type="text/javascript">
-jQuery(function($) {
-    $(window).on('scroll', function() {
-		if ($(this).scrollTop() >= 200) {
-			$('.navbar').addClass('fixed-top');
-		} else if ($(this).scrollTop() == 0) {
-			$('.navbar').removeClass('fixed-top');
-		}
-	});
-	
-	function adjustNav() {
-		var winWidth = $(window).width(),
-			dropdown = $('.dropdown'),
-			dropdownMenu = $('.dropdown-menu');
-		
-		if (winWidth >= 768) {
-			dropdown.on('mouseenter', function() {
-				$(this).addClass('show')
-					.children(dropdownMenu).addClass('show');
-			});
-			
-			dropdown.on('mouseleave', function() {
-				$(this).removeClass('show')
-					.children(dropdownMenu).removeClass('show');
-			});
-		} else {
-			dropdown.off('mouseenter mouseleave');
-		}
-	}
-	
-	$(window).on('resize', adjustNav);
-	
-	adjustNav();
-});
-$(document).ready(function(){
-	  $(".fancybox").fancybox({
-	        openEffect: "none",
-	        closeEffect: "none"
-	    });
-	    
-	    $(".zoom").hover(function(){
-			
-			$(this).addClass('transition');
-		}, function(){
-	        
-			$(this).removeClass('transition');
-		});
-	});
-function showCar(id, img, name, price, type, brand, amount, disc){
-	document.getElementById("modal-car-img").src = img;
-	document.getElementById("modal-car-name").innerHTML = name;
-	document.getElementById("modal-car-price").innerHTML = price + " $";
-	document.getElementById("modal-car-type").innerHTML = "Type: " + type;
-	document.getElementById("modal-car-brand").innerHTML = "Brand: " + brand;
-	document.getElementById("modal-car-amount").innerHTML = "Amount: " + amount;
-	document.getElementById("modal-car-disc").innerHTML = disc;
-	
-	document.getElementById("modal-order-img").src = img;
-	document.getElementById("modal-order-car").innerHTML = name;
-	document.getElementById("modal-order-total").value = price;
-	document.getElementById("modal-order-price").value = price;
-	document.getElementById("modal-order-carid").value = id;
-	$("#carmodal").modal("show");
-}
-function showOrder(){
-	
-	$("#carmodal").modal("hide");
-	$('#ordermodal').modal({backdrop: 'static', keyboard: false});
-	$("#ordermodal").modal("show");
-	
-}
-function onCheck(checkbox, button){
-	if(document.getElementById(checkbox).checked){
-		document.getElementById(button).disabled = false;
-	}else{
-		document.getElementById(button).disabled = true;
-	}
-}
-function calcTotalPrice(amount){
-	var a = document.getElementById(amount).value;
-	document.getElementById("modal-order-total").value = a * document.getElementById("modal-order-price").value;
-}
-</script>
-<script type="text/javascript">
-$('[data-dismiss=modal]').on('click', function (e) {
-    var $t = $(this),
-        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
-
-  $(target)
-    .find("input,textarea,select")
-       .val('')
-       .end()
-    .find("input[type=checkbox], input[type=radio]")
-       .prop("checked", "")
-       .end();
-})
-</script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<%@include file="/WEB-INF/views/include/footer.jsp"%>
 </body>
 </html>

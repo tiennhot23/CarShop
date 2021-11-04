@@ -1,41 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!-- Navigation-->
-<base href="${pageContext.servletContext.contextPath}/">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.htm">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    
-                    <form class="d-flex" action="login.htm">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Login
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">!</span>
-                        </button>
-                    </form>
-                    <ul></ul>
-                    <form class="d-flex" action="login.htm">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Logout
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">!</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<c:if test="${not empty car}">
+    <script>
+        window.onload = function () {
+            $("#carmodal").modal("show");
+        };
+    </script>
+</c:if>
+<c:if test="${not empty order}">
+    <script>
+        window.onload = function () {
+            $("#ordermodal").modal("show");
+        };
+    </script>
+</c:if>
+<!-- <div id="loading">
+</div>
+<script>
+  $(window).on('load', function () {
+    $('#loading').hide();
+    $("div#main").removeClass("hidden");
+  }) 
+</script> -->  <!--set div class hidden -->
