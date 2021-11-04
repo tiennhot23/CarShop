@@ -1,9 +1,7 @@
 package ptithcm.controller;
 
-import java.io.File;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -18,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javafx.util.Pair;
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
+import ptithcm.bean.UploadFile;
 import ptithcm.dao.BrandDAO;
 import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
@@ -28,13 +28,15 @@ import ptithcm.dao.TypeDAO;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
 import ptithcm.entity.Types;
+import ptithcm.service.FileService;
+import ptithcm.service.PageService;
 
 @Transactional
 @Controller
 @RequestMapping("/admin/cars/")
 public class AdminCarController{
 	@Autowired
-	ServletContext context;
+	UploadFile uploadFile;
 	@Autowired
 	Mailer mailer;
 	@Autowired
@@ -43,6 +45,10 @@ public class AdminCarController{
 	@Autowired
 	FilterCar filterCar;
 	
+	@Autowired
+	PageService pageService;
+	@Autowired
+	FileService fileService;
 	
 	
 	@RequestMapping("index")
@@ -59,26 +65,26 @@ public class AdminCarController{
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
 		model.addAttribute("btnStatus", "btnAdd");
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, page, 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, page, 6));
 		return "admin/cars";
 	}
 	
 	@RequestMapping(value = "index.htm", params = "btnAdd")
 	public String addProduct(HttpServletRequest request,ModelMap model, 
 			@ModelAttribute("car") Cars car, @RequestParam(value="imageFile", required=false) MultipartFile imageFile) {
+		List<Cars> cars = CarDAO.getCars(filterCar);
+		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("car", car);
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
+		
 		if(imageFile != null) {
-			if(!imageFile.getContentType().equals("image/jpeg") && !imageFile.getContentType().equals("image/png")) {
-				model.addAttribute("message", "Không đúng định dạng file ảnh");
+			Pair<Boolean, String> result = fileService.uploadFile(uploadFile.getBasePath(), 
+					imageFile, car.getName() + "." + imageFile.getContentType().split("/")[1], "image", "car");
+			if(!result.getKey()) {
+				model.addAttribute("message", result.getValue());
+				return "admin/cars";
 			}else {
-				String photoPath = context.getRealPath("/files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
-				System.out.println(photoPath);
-				try {
-					imageFile.transferTo(new File(photoPath));
-					car.setImg("files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
-				}
-				catch (Exception e) {
-					model.addAttribute("message", "Lỗi lưu file!");
-				}
+				car.setImg(result.getValue());
 			}
 		}
 		Integer temp = CarDAO.create(car);
@@ -88,10 +94,6 @@ public class AdminCarController{
 			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
 		}
 		car = new Cars();
-		List<Cars> cars = CarDAO.getCars(filterCar);
-		model.addAttribute("btnStatus", "btnAdd");
-		model.addAttribute("car", car);
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, pagenumber.getP(), 6));
 		return "admin/cars";
 	}
 	
@@ -101,37 +103,34 @@ public class AdminCarController{
 		List<Cars> cars = CarDAO.getCars(filterCar);
 		model.addAttribute("btnStatus", "btnEdit");
 		model.addAttribute("car", CarDAO.getCar(id));
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
 		return "admin/cars";
 	}
 	
 	@RequestMapping(value = "index.htm", params = "btnEdit")
 	public String edit_Product(HttpServletRequest request, ModelMap model,
 			@ModelAttribute("car") Cars car, @RequestParam(value="imageFile", required=false) MultipartFile imageFile) {
+		
+		List<Cars> cars = CarDAO.getCars(filterCar);
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
+		
 		if(imageFile != null) {
-			if(!imageFile.getContentType().equals("image/jpeg") && !imageFile.getContentType().equals("image/png")) {
-				model.addAttribute("message", "Không đúng định dạng file ảnh");
+			Pair<Boolean, String> result = fileService.uploadFile(uploadFile.getBasePath(), 
+					imageFile, car.getName() + "." + imageFile.getContentType().split("/")[1], "image", "car");
+			if(!result.getKey()) {
+				model.addAttribute("message", result.getValue());
+				return "admin/cars";
 			}else {
-				String photoPath = context.getRealPath("/files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
-				System.out.println(photoPath);
-				try {
-					imageFile.transferTo(new File(photoPath));
-					car.setImg("files/" + car.getName() + "." + imageFile.getContentType().split("/")[1]);
-				}
-				catch (Exception e) {
-					model.addAttribute("message", "Lỗi lưu file!");
-				}
+				car.setImg(result.getValue());
 			}
-		}		
+		}
 		Integer temp = CarDAO.update(car);
 		if (temp != 0) {
 			model.addAttribute("message", "Update successfull");
 		} else {
 			model.addAttribute("message", "Update failed!");
 		}
-		car = new Cars();
-		List<Cars> cars = CarDAO.getCars(filterCar);
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, pagenumber.getP(), 6));
+		car = new Cars();			
 		return "admin/cars";
 	}
 	
@@ -158,7 +157,7 @@ public class AdminCarController{
 		}
 		List<Cars> cars = CarDAO.getCars(filterCar);
 		model.addAttribute("btnStatus", "btnAdd");
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
 		return "admin/cars";
 	}
 

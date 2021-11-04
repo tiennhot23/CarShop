@@ -32,6 +32,7 @@ import ptithcm.entity.Cars;
 import ptithcm.entity.Orders;
 import ptithcm.entity.Securities;
 import ptithcm.entity.Types;
+import ptithcm.service.PageService;
 
 @Transactional
 @Controller
@@ -47,6 +48,8 @@ public class CarController {
 	@Autowired
 	FilterCar filterCar;
 	
+	@Autowired
+	PageService pageService;
 	
 	@RequestMapping("index")
 	public String index(HttpServletRequest request, ModelMap model) {
@@ -62,7 +65,7 @@ public class CarController {
 		List<Cars> cars = CarDAO.getCars(filterCar);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
-		model.addAttribute("pagedListHolder", PageController.getPageList(cars, page, 8));
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, page, 8));
 		
 		return "public/cars";
 	}

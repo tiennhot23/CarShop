@@ -24,6 +24,7 @@ import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
 import ptithcm.dao.OrderDAO;
 import ptithcm.entity.Orders;
+import ptithcm.service.PageService;
 
 @Transactional
 @Controller
@@ -38,6 +39,9 @@ public class AdminController{
 	PageNumber pagenumber;
 	@Autowired
 	FilterOrder filterOrder;
+	
+	@Autowired
+	PageService pageService;
 	
 	
 	@RequestMapping("index")
@@ -54,7 +58,7 @@ public class AdminController{
 		List<Orders> orders = OrderDAO.getOrders(filterOrder);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
-		model.addAttribute("pagedListHolder", PageController.getPageList(orders, page, 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(orders, page, 6));
 		return "admin/index";
 	}
 	
@@ -63,7 +67,7 @@ public class AdminController{
 			@ModelAttribute("order") Orders order) {
 		List<Orders> orders = OrderDAO.getOrders(filterOrder);
 		model.addAttribute("orderAccept", OrderDAO.getOrder(id));
-		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
@@ -92,7 +96,7 @@ public class AdminController{
 			}
 		}
 		List<Orders> orders = OrderDAO.getOrders(filterOrder);
-		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		
 		return "admin/index";
 	}
@@ -102,7 +106,7 @@ public class AdminController{
 	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("order") Orders order) {
 		List<Orders> orders = OrderDAO.getOrders(filterOrder);
 		model.addAttribute("orderDeny", OrderDAO.getOrder(id));
-		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
@@ -130,7 +134,7 @@ public class AdminController{
 			}
 		}
 		List<Orders> orders = OrderDAO.getOrders(filterOrder);
-		model.addAttribute("pagedListHolder", PageController.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	

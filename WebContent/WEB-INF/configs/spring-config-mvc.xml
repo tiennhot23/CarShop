@@ -73,7 +73,13 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="20971520" />
 	</bean>
-
+	
+	<bean id="uploadFile" class="ptithcm.bean.UploadFile">
+		<property name="basePath" value="D:\\eclipse-workspace\\CarShop\\WebContent\\resources\\image\" />
+	</bean>
+	
+	<bean id="PageService" class="ptithcm.service.impl.PageServiceImpl"></bean>
+	<bean id="FileService" class="ptithcm.service.impl.FileServiceImpl"></bean>
 
 
 
