@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ptithcm.dao.AdminDAO;
 import ptithcm.dao.BrandDAO;
-import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
 import ptithcm.dao.SecurityDAO;
 import ptithcm.dao.TypeDAO;
@@ -29,15 +28,16 @@ import ptithcm.entity.Brands;
 import ptithcm.entity.Orders;
 import ptithcm.entity.Securities;
 import ptithcm.entity.Types;
+import ptithcm.service.FilterService;
 
 @Transactional
 @Controller
 public class BaseController {
+	@Autowired
+	FilterService filterService;
 	
 	@Autowired
 	AdminDAO adminDAO;
-	@Autowired
-	CarDAO carDAO;
 	@Autowired
 	BrandDAO brandDAO;
 	@Autowired
@@ -49,6 +49,8 @@ public class BaseController {
 	
 	@RequestMapping("index")
 	public String index(ModelMap model, HttpServletRequest request) {
+		filterService.clearFilterCar();
+		filterService.clearFilterOrder();
 		String user = (request.getSession().getAttribute("admin")==null && request.getSession().getAttribute("user")==null)?"0":"1";
 		model.addAttribute("user", user);
 		return "public/index";

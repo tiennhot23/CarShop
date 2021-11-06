@@ -85,7 +85,7 @@
 	
 	<bean id="PageService" class="ptithcm.service.impl.PageServiceImpl"></bean>
 	<bean id="FileService" class="ptithcm.service.impl.FileServiceImpl"></bean>
-
+	<bean id="FilterService" class="ptithcm.service.impl.FilterServiceImpl"></bean>
 
 
 

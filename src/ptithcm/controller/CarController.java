@@ -7,12 +7,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
-import ptithcm.dao.AdminDAO;
 import ptithcm.dao.BrandDAO;
 import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
@@ -33,6 +30,7 @@ import ptithcm.entity.Cars;
 import ptithcm.entity.Orders;
 import ptithcm.entity.Securities;
 import ptithcm.entity.Types;
+import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
 @Transactional
@@ -40,20 +38,17 @@ import ptithcm.service.PageService;
 @RequestMapping("/cars/")
 public class CarController {
 	@Autowired
-	ServletContext context;
-	@Autowired
 	Mailer mailer;
 	@Autowired
-	@Qualifier("pagenumber")
 	PageNumber pagenumber;
 	@Autowired
 	FilterCar filterCar;
 	
 	@Autowired
 	PageService pageService;
-	
 	@Autowired
-	AdminDAO adminDAO;
+	FilterService filterService;
+	
 	@Autowired
 	CarDAO carDAO;
 	@Autowired
@@ -68,11 +63,7 @@ public class CarController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest request, ModelMap model) {
 		if(request.getParameter("clear") != null) {
-			filterCar.setNameFilter("");
-			filterCar.setMinFilter(0);
-			filterCar.setMaxFilter(Long.parseLong("1000000000000000"));
-			filterCar.setTypeFilter("");
-			filterCar.setBrandFilter("");
+			filterService.clearFilterCar();
 		}else {
 			filterCar = getFilterCar(request);
 		}

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,16 +22,15 @@ import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
 import ptithcm.bean.UploadFile;
-import ptithcm.dao.AdminDAO;
 import ptithcm.dao.BrandDAO;
 import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
-import ptithcm.dao.SecurityDAO;
 import ptithcm.dao.TypeDAO;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
 import ptithcm.entity.Types;
 import ptithcm.service.FileService;
+import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
 @Transactional
@@ -44,7 +42,6 @@ public class AdminCarController{
 	@Autowired
 	Mailer mailer;
 	@Autowired
-	@Qualifier("pagenumber")
 	PageNumber pagenumber;
 	@Autowired
 	FilterCar filterCar;
@@ -53,9 +50,9 @@ public class AdminCarController{
 	PageService pageService;
 	@Autowired
 	FileService fileService;
-	
 	@Autowired
-	AdminDAO adminDAO;
+	FilterService filterService;
+	
 	@Autowired
 	CarDAO carDAO;
 	@Autowired
@@ -63,19 +60,15 @@ public class AdminCarController{
 	@Autowired
 	TypeDAO typeDAO;
 	@Autowired
-	SecurityDAO securityDAO;
-	@Autowired
 	OrderDAO orderDAO;
+	
 	
 	
 	@RequestMapping("index")
 	public String cars(HttpServletRequest request, ModelMap model, @ModelAttribute("car") Cars car) {
+		filterService.clearFilterOrder();
 		if(request.getParameter("clear") != null) {
-			filterCar.setNameFilter("");
-			filterCar.setMinFilter(0);
-			filterCar.setMaxFilter(Long.parseLong("1000000000000000"));
-			filterCar.setTypeFilter("");
-			filterCar.setBrandFilter("");
+			filterService.clearFilterCar();
 		}
 		filterCar = getFilterCar(request);
 		List<Cars> cars = carDAO.getCars(filterCar);
@@ -255,4 +248,5 @@ public class AdminCarController{
 		filterCar.setBrandFilter((request.getParameter("brandFilter")==null)?filterCar.getBrandFilter():request.getParameter("brandFilter").trim());
 		return filterCar;
 	}
+	
 }

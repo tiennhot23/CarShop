@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -19,16 +18,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ptithcm.bean.FilterCar;
 import ptithcm.bean.FilterOrder;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
-import ptithcm.dao.AdminDAO;
-import ptithcm.dao.BrandDAO;
-import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
-import ptithcm.dao.SecurityDAO;
-import ptithcm.dao.TypeDAO;
 import ptithcm.entity.Orders;
+import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
 @Transactional
@@ -40,23 +36,18 @@ public class AdminController{
 	@Autowired
 	Mailer mailer;
 	@Autowired
-	@Qualifier("pagenumber")
 	PageNumber pagenumber;
 	@Autowired
+	FilterCar filterCar;
+	@Autowired
 	FilterOrder filterOrder;
+	
 	
 	@Autowired
 	PageService pageService;
 	@Autowired
-	AdminDAO adminDAO;
-	@Autowired
-	CarDAO carDAO;
-	@Autowired
-	BrandDAO brandDAO;
-	@Autowired
-	TypeDAO typeDAO;
-	@Autowired
-	SecurityDAO securityDAO;
+	FilterService filterService;
+
 	@Autowired
 	OrderDAO orderDAO;
 	
@@ -64,12 +55,9 @@ public class AdminController{
 	@RequestMapping("index")
 	public String index(HttpServletRequest request, ModelMap model, 
 			@ModelAttribute("order") Orders order) {
+		filterService.clearFilterCar();
 		if(request.getParameter("clear") != null) {
-			filterOrder.setOidFilter("");
-			filterOrder.setCustomerFilter("");
-			filterOrder.setEmailFilter("");
-			filterOrder.setPhoneFilter("");
-			filterOrder.setStatusFilter(0);
+			filterService.clearFilterOrder();
 		}
 		filterOrder = getFilterOrder(request);
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
