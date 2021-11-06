@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ptithcm.bean.FilterCar;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
+import ptithcm.dao.AdminDAO;
 import ptithcm.dao.BrandDAO;
 import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
@@ -51,6 +52,19 @@ public class CarController {
 	@Autowired
 	PageService pageService;
 	
+	@Autowired
+	AdminDAO adminDAO;
+	@Autowired
+	CarDAO carDAO;
+	@Autowired
+	BrandDAO brandDAO;
+	@Autowired
+	TypeDAO typeDAO;
+	@Autowired
+	SecurityDAO securityDAO;
+	@Autowired
+	OrderDAO orderDAO;
+ 	
 	@RequestMapping("index")
 	public String index(HttpServletRequest request, ModelMap model) {
 		if(request.getParameter("clear") != null) {
@@ -62,11 +76,12 @@ public class CarController {
 		}else {
 			filterCar = getFilterCar(request);
 		}
-		List<Cars> cars = CarDAO.getCars(filterCar);
+		List<Cars> cars = carDAO.getCars(filterCar);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
 		model.addAttribute("pagedListHolder", pageService.getPageList(cars, page, 8));
-		
+		String user = (request.getSession().getAttribute("admin")==null && request.getSession().getAttribute("user")==null)?"0":"1";
+		model.addAttribute("user", user);
 		return "public/cars";
 	}
 	
@@ -81,7 +96,7 @@ public class CarController {
 		int carid = Integer.parseInt(request.getParameter("carid"));
 		int stat = -2;
 		Cars car = new Cars();
-		car = CarDAO.getCar(carid);
+		car = carDAO.getCar(carid);
 		long total = car.getPrice() * amount;
 		
 		Orders order = new Orders();
@@ -95,10 +110,10 @@ public class CarController {
 		order.setTotal(total);
 		order.setStat(stat);
 		
-		if(OrderDAO.create(order)==0) {
+		if(orderDAO.create(order)==0) {
 			model.addAttribute("status", "0");
 			model.addAttribute("message", "Không thể tạo đơn hàng!");
-			return "public/order";
+			return "public/notify";
 		}
 		String token = order.getOid() + "~~" + order.getEmail();
 		byte[] encodedBytes = Base64.getEncoder().encode(token.getBytes());
@@ -115,10 +130,10 @@ public class CarController {
 		security.setExpired(String.valueOf(c.getTimeInMillis()));
 		security.setOrder(order);
 		
-		if(SecurityDAO.create(security)==0) {
+		if(securityDAO.create(security)==0) {
 			model.addAttribute("status", "0");
 			model.addAttribute("message", "Không thể tạo key!");
-			return "public/order";
+			return "public/notify";
 		}
 		String from = "IDRISCAR";
 		String to = email;
@@ -137,19 +152,19 @@ public class CarController {
 			model.addAttribute("status", "0");
 			model.addAttribute("message","Gửi mail thất bại!");
 		}
-		return "public/order";
+		return "public/notify";
 	}
 	
 	@ModelAttribute("brands")
 	public List<Brands> getBrandsSearch() {
-		List<Brands> list = BrandDAO.getBrands();
+		List<Brands> list = brandDAO.getBrands();
 		list.add(0, new Brands("All", "none"));
 		return list;
 	}
 	
 	@ModelAttribute("types")
 	public List<Types> getTypesSearch() {
-		List<Types> list = TypeDAO.getTypes();
+		List<Types> list = typeDAO.getTypes();
 		list.add(0, new Types("All", "none"));
 		return list;
 	}

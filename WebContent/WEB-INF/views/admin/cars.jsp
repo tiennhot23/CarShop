@@ -13,21 +13,9 @@
    </head>
    <body id="body-pd" class=" bg-light">
       	<%@include file="/WEB-INF/views/include/adminmenu.jsp"%>
-		<div class="l-navbar" id="nav-bar">
-		   <nav class="nav">
-		      <div>
-		         <a href="admin/" class="nav_logo"> <i class="bx bx-layer nav_logo-icon"></i> <span class="nav_logo-name">BBBootstrap</span> </a>
-		         <div class="nav_list">
-		            <a href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Dashboard</span> </a>
-		            <a href="admin/cars/" class="nav_link  active"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
-		            <a href="admin/types/" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
-		            <a href="admin/brands/" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
-		            <a href="admin/stats/" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Stats</span> </a>
-		         </div>
-		      </div>
-		      <a href="#" class="nav_link"> <i class="bx bx-log-out nav_icon"></i> <span class="nav_name">SignOut</span> </a>
-		   </nav>
-		</div>
+		<script>
+				$("#carnav").addClass("active");
+		</script>
       <!--Container Main start-->
       <div class=" bg-light">
          
@@ -40,41 +28,47 @@
                   <h4 class="card-title">Car Information</h4>
                   <form:form action="admin/cars/" method="post" modelAttribute="car" enctype="multipart/form-data">
                   	 <div class="form-group">
-                        <form:input path="id" type="hidden" class="form-control" placeholder="Car id" required="true"/>
+                        <form:input path="id" type="hidden" class="form-control" placeholder="Car id"/>
                      </div>
                      <div class="form-group">
                         <label for="inputAddress2">Name</label>
-                        <form:input path="name" type="text" class="form-control" id="inputAddress2" required="true"/>
+                        <form:input path="name" type="text" class="form-control" id="inputAddress2"/>
+                        <form:errors path="name" element="errors"></form:errors>
                      </div>
                      <div class="form-group">
                         <label for="inputAddress">Image</label>
                         <div class="form-check">
 						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiolink" value="option1" onclick="EnableDisableTextBox()"  checked>
-						  <form:input path="img" type="text" class="form-control" id="inputlink" placeholder="Link image" required="true"/>
+						  <form:input path="img" type="text" class="form-control" id="inputlink" placeholder="Link image"/>
+						  <form:errors path="img" element="errors"></form:errors>
 						</div>
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiofile" value="option2" onclick="EnableDisableTextBox()" >
-						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled required /> 
+						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled  /> 
 						</div>
                      </div>
                      
                      <div class="form-group">
                         <label for="inputAddress2">Video</label>
                         <form:input path="video" type="text" class="form-control" id="inputAddress2" />
+                        <form:errors path="video" element="errors"></form:errors>
                      </div>
                      <div class="form-row">
                         <div class="form-group col-md-6">
                            <label for="inputEmail4">Amount</label>
                            <form:input path="amount" type="number" class="form-control" id="inputEmail4" min="0" />
+                           <form:errors path="amount" element="errors"></form:errors>
                         </div>
                         <div class="form-group col-md-6">
                            <label for="inputPassword4">Price</label>
                            <form:input path="price" type="number" class="form-control" id="inputPassword4" min="0" max="1000000000000000" />
+                           <form:errors path="price" element="errors"></form:errors>
                         </div>
                      </div>
                      <div class="form-group">
                         <label for="exampleFormControlTextarea1">Discription</label>
-                        <form:textarea path="disc" class="form-control" id="exampleFormControlTextarea1" rows="3" required="true"></form:textarea>
+                        <form:textarea path="disc" class="form-control" id="exampleFormControlTextarea1" rows="3"></form:textarea>
+                        <form:errors path="disc" element="errors"></form:errors>
                      </div>
                      <div class="form-row">
                         <div class="form-group col-md-5">
@@ -207,7 +201,7 @@
                                                    <td>${c.type.name }</td>
                                                    <td>${c.brand.name }</td>
                                                    <td>${c.amount }</td>
-                                                   <td class="text-center"><span class="fw-bolder">${c.price } VND</span></td>
+                                                   <td class="text-center"><span class="fw-bolder">${c.price } $</span></td>
                                                    <td><a href="admin/cars/${c.id}.htm?linkEdit">
                                                       <button type="button" class="btn btn-info btn-just-icon btn-sm">
                                                       <i class="material-icons">Edit</i>
@@ -236,7 +230,7 @@
          </div>
       </div>
       <!--Container Main end--> 
-      
+		
       <%@include file="/WEB-INF/views/include/adminfooter.jsp"%>
    </body>
 </html>

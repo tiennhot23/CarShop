@@ -13,5 +13,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="D:/Study/school/LTWeb/Tai nguyen sinh vien/lib/Validation/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -12,41 +12,14 @@
       	<%@include file="/WEB-INF/views/include/header.jsp"%>
    </head>
 <body>
-<%@include file="/WEB-INF/views/include/menu.jsp"%>
+
 <header class="header-area overlay">
     <div class="page-header">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-caption">
-                        <nav class="navbar navbar-expand-md navbar-dark">
-							<div class="container">
-								<a href="#" class="navbar-brand">IDRISCAR</a>
-								
-								<button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#main-nav">
-									<span class="menu-icon-bar"></span>
-									<span class="menu-icon-bar"></span>
-									<span class="menu-icon-bar"></span>
-								</button>
-								
-								<div id="main-nav" class="collapse navbar-collapse">
-									<ul class="navbar-nav ml-auto">
-										<li><a href="#" class="nav-item nav-link ">Home</a></li>
-										<li><a href="#footer" class="nav-item nav-link">About Us</a></li>
-										<li><a href="cars/" class="nav-item nav-link active">Cars</a></li>
-										<li class="dropdown">
-											<a href="#" class="nav-item nav-link" data-toggle="dropdown">Explore</a>
-											<div class="dropdown-menu">
-												<a href="#videos" class="dropdown-item">Video</a>
-												<a href="#types" class="dropdown-item">Type</a>
-												<a href="#brands" class="dropdown-item">Brand</a>
-											</div>
-										</li>
-										<li><a href="login.htm" class="nav-item nav-link">Login</a></li>
-									</ul>
-								</div>
-							</div>
-						</nav>
+                        <%@include file="/WEB-INF/views/include/menu.jsp"%>
                     </div>
                 </div>
             </div>
@@ -231,6 +204,15 @@
              	</div>
             </div>
         </div>
-<%@include file="/WEB-INF/views/include/footer.jsp"%>
+		<%@include file="/WEB-INF/views/include/footer.jsp"%>
+		<script>
+			window.onload = function () {
+				var user = ${user};
+				if(user == "1"){
+					$("#logintag").text("Logout");
+				}
+				$("#cartag").addClass("active")
+			};
+		</script>
 </body>
 </html>

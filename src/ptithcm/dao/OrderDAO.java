@@ -2,23 +2,37 @@ package ptithcm.dao;
 
 import java.util.List;
 
+
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import ptithcm.bean.FilterOrder;
 import ptithcm.entity.Orders;
-public class OrderDAO extends DAO{
-	
-	public static List<Orders> getOrders() {
+
+public class OrderDAO{
+
+	private SessionFactory factory;
+	public SessionFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(SessionFactory factory) {
+		this.factory = factory;
+	}
+
+	public List<Orders> getOrders() {
 		String hql = "FROM Orders";
-		Query query = getSession().createQuery(hql);
+		Query query = factory.getCurrentSession().createQuery(hql);
 		@SuppressWarnings("unchecked")
 		List<Orders> list = query.list();
 		return list;
 	}
 	
-	public static Orders getOrder(String oid) {
+	public Orders getOrder(String oid) {
 		String hql = "FROM Orders where oid = :oid";
-		Query query = getSession().createQuery(hql);
+		Query query = factory.getCurrentSession().createQuery(hql);
 		query.setParameter("oid", oid);
 		@SuppressWarnings("unchecked")
 		List<Orders> list = query.list();
@@ -26,9 +40,9 @@ public class OrderDAO extends DAO{
 		else return null;
 	}
 	
-	public static Orders getOrder(int id) {
+	public Orders getOrder(int id) {
 		String hql = "FROM Orders where id = :id";
-		Query query = getSession().createQuery(hql);
+		Query query = factory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
 		@SuppressWarnings("unchecked")
 		List<Orders> list = query.list();
@@ -36,16 +50,16 @@ public class OrderDAO extends DAO{
 		else return null;
 	}
 	
-	public static List<Orders> getOrders(int carId) {
+	public List<Orders> getOrders(int carId) {
 		String hql = "FROM Orders where car.id = :carId";
-		Query query = getSession().createQuery(hql);
+		Query query = factory.getCurrentSession().createQuery(hql);
 		query.setParameter("carId", carId);
 		@SuppressWarnings("unchecked")
 		List<Orders> list = query.list();
 		return list;
 	}
 	
-	public static List<Orders> getOrders(FilterOrder filterOrder) {
+	public List<Orders> getOrders(FilterOrder filterOrder) {
 		String hql = "FROM Orders where stat <> -2 ";
 		if(!filterOrder.getOidFilter().equals("")) hql += "and oid = :oidFilter ";
 		if(!filterOrder.getCustomerFilter().equals("")) hql += "and customer LIKE :customerFilter ";
@@ -56,7 +70,7 @@ public class OrderDAO extends DAO{
 		}
 		hql += "order by stat";
 				
-		Query query = getSession().createQuery(hql);
+		Query query = factory.getCurrentSession().createQuery(hql);
 		if(!filterOrder.getOidFilter().equals("")) query.setParameter("oidFilter", filterOrder.getOidFilter());
 		if(!filterOrder.getCustomerFilter().equals("")) query.setParameter("customerFilter", "%" + filterOrder.getCustomerFilter() + "%");
 		if(!filterOrder.getEmailFilter().equals("")) query.setParameter("emailFilter", filterOrder.getEmailFilter());
@@ -70,50 +84,53 @@ public class OrderDAO extends DAO{
 	}
 	
 	
-	public static int create(Orders order) {
-		begin();
+	public int create(Orders order) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().save(order);
-			commit();
+			session.save(order);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("CREATE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int update(Orders order) {
-		begin();
+	public int update(Orders order) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().update(order);
-			commit();
+			session.update(order);
+			transaction.commit();
 		} catch (Exception e) {
-			System.out.println("UPDATE ORDER ERROR: " + e);
-			rollback();
+			System.out.println("CREATE ORDER ERROR: " + e);
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int delete(Orders order) {
-		begin();
+	public int delete(Orders order) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().delete(order);
-			commit();
+			session.delete(order);
+			transaction.commit();
 		} catch (Exception e) {
-			System.out.println("DELETE ORDER ERROR: " + e);
-			rollback();
+			System.out.println("CREATE ORDER ERROR: " + e);
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}

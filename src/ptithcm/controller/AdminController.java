@@ -22,7 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ptithcm.bean.FilterOrder;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
+import ptithcm.dao.AdminDAO;
+import ptithcm.dao.BrandDAO;
+import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
+import ptithcm.dao.SecurityDAO;
+import ptithcm.dao.TypeDAO;
 import ptithcm.entity.Orders;
 import ptithcm.service.PageService;
 
@@ -42,6 +47,18 @@ public class AdminController{
 	
 	@Autowired
 	PageService pageService;
+	@Autowired
+	AdminDAO adminDAO;
+	@Autowired
+	CarDAO carDAO;
+	@Autowired
+	BrandDAO brandDAO;
+	@Autowired
+	TypeDAO typeDAO;
+	@Autowired
+	SecurityDAO securityDAO;
+	@Autowired
+	OrderDAO orderDAO;
 	
 	
 	@RequestMapping("index")
@@ -55,7 +72,7 @@ public class AdminController{
 			filterOrder.setStatusFilter(0);
 		}
 		filterOrder = getFilterOrder(request);
-		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
 		model.addAttribute("pagedListHolder", pageService.getPageList(orders, page, 6));
@@ -65,8 +82,8 @@ public class AdminController{
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
 	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id,
 			@ModelAttribute("order") Orders order) {
-		List<Orders> orders = OrderDAO.getOrders(filterOrder);
-		model.addAttribute("orderAccept", OrderDAO.getOrder(id));
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
+		model.addAttribute("orderAccept", orderDAO.getOrder(id));
 		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
@@ -76,9 +93,9 @@ public class AdminController{
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
 		@SuppressWarnings("deprecation")
 		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));		
-		Orders order = OrderDAO.getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
+		Orders order = orderDAO.getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
 		order.setStat(1);
-		Integer temp = OrderDAO.update(order);
+		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
 			model.addAttribute("message", "Order accepted");
 		} else {
@@ -95,7 +112,7 @@ public class AdminController{
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
 		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		
 		return "admin/index";
@@ -104,8 +121,8 @@ public class AdminController{
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
 	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("order") Orders order) {
-		List<Orders> orders = OrderDAO.getOrders(filterOrder);
-		model.addAttribute("orderDeny", OrderDAO.getOrder(id));
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
+		model.addAttribute("orderDeny", orderDAO.getOrder(id));
 		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
@@ -113,9 +130,9 @@ public class AdminController{
 	@RequestMapping(value = "index", params = "btnDeny")
 	public String denied(HttpServletRequest request, ModelMap model) {
 		String reason = request.getParameter("disc");
-		Orders order = OrderDAO.getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
+		Orders order = orderDAO.getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
 		order.setStat(2);
-		Integer temp = OrderDAO.update(order);
+		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
 			model.addAttribute("message", "Order rejected");
 		} else {
@@ -133,7 +150,7 @@ public class AdminController{
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
-		List<Orders> orders = OrderDAO.getOrders(filterOrder);
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
 		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}

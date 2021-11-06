@@ -7,7 +7,7 @@ body {
   padding-top: 7px;
   padding-bottom: 8px; }
   .brand-wrapper .logo {
-    height: 25px; }
+    height: 100px; }
 
 .login-section-wrapper {
   display: -webkit-box;
@@ -96,5 +96,7 @@ body {
      object-fit: cover;
   -o-object-position: left;
      object-position: left; }
-
+errors {
+	color: red;
+}
 /*# sourceMappingURL=login.css.map */

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,800');
 @import url('https://fonts.googleapis.com/css?family=Lobster');
+
 html {
   font-size: 62.5%;
 }
@@ -16,6 +17,9 @@ p {
   margin-bottom: 0.5em;
   font-size: 1.6rem;
   line-height: 1.6;
+}
+errors {
+	color: red;
 }
 .carousel-control-next-icon{
   height: 50px !important;

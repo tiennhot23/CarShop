@@ -2,64 +2,81 @@ package ptithcm.dao;
 
 import java.util.List;
 
+
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import ptithcm.entity.Types;
 
-public class TypeDAO extends DAO{
-	
-	public static List<Types> getTypes() {
+public class TypeDAO{
+
+	private SessionFactory factory;
+	public SessionFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(SessionFactory factory) {
+		this.factory = factory;
+	}
+
+	public  List<Types> getTypes() {
+		Session session = factory.getCurrentSession();
 		String hql = "FROM Types";
-		Query query = getSession().createQuery(hql);
+		Query query = session.createQuery(hql);
 		@SuppressWarnings("unchecked")
 		List<Types> list = query.list();
 		return list;
 	}
 	
-	public static int create(Types type) {
-		begin();
+	public  int create(Types type) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().save(type);
-			commit();
+			session.save(type);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("CREATE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int update(Types type) {
-		begin();
+	public  int update(Types type) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().update(type);
-			commit();
+			session.update(type);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("UPDATE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int delete(Types type) {
-		begin();
+	public  int delete(Types type) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().delete(type);
-			commit();
+			session.delete(type);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("DELETE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}

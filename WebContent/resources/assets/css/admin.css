@@ -25,7 +25,9 @@ body {
     font-size: var(--normal-font-size);
     transition: .5s
 }
-
+errors {
+	color: red;
+}
 a {
     text-decoration: none
 }

@@ -51,6 +51,9 @@
 		<property name="statusFilter" value="0" />
 	</bean>
 	
+	
+	
+	<!-- Mail -->
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
@@ -69,6 +72,8 @@
 		</property>
 	</bean>
 	
+	
+	<!-- UploadFile -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="20971520" />
@@ -94,7 +99,14 @@
 	</bean>
 	
 	
-	
+	<!-- Interceptor -->
+	<mvc:interceptors>  
+		 <mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<mvc:mapping path="/logout.htm"/>
+			<bean class="ptithcm.interceptor.RoleInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 	
 	
 	<!-- Hibernate -->
@@ -115,8 +127,24 @@
 		p:sessionFactory-ref="sessionFactory"/>
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<bean id="dao" class="ptithcm.dao.DAO">
+	<bean id="adminDAO" class="ptithcm.dao.AdminDAO">
 		<property name="factory" ref="sessionFactory" />
 	</bean>
+	<bean id="brandDAO" class="ptithcm.dao.BrandDAO">
+		<property name="factory" ref="sessionFactory" />
+	</bean>
+	<bean id="carDAO" class="ptithcm.dao.CarDAO">
+		<property name="factory" ref="sessionFactory" />
+	</bean>
+	<bean id="orderDAO" class="ptithcm.dao.OrderDAO">
+		<property name="factory" ref="sessionFactory" />
+	</bean>
+	<bean id="securityDAO" class="ptithcm.dao.SecurityDAO">
+		<property name="factory" ref="sessionFactory" />
+	</bean>
+	<bean id="typeDAO" class="ptithcm.dao.TypeDAO">
+		<property name="factory" ref="sessionFactory" />
+	</bean>
+
 
 </beans>

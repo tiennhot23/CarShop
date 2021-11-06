@@ -13,9 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,14 +29,22 @@ public class Orders {
 	private int id;
 	@Generated( value = GenerationTime.ALWAYS )
 	private String oid;
+	@NotBlank(message="Tên khách hàng không được bỏ trống")
+	@Pattern(regexp="[a-z][A-Z]+", message="Tên chỉ bao gồm kí tự a-zA-Z")
 	private String customer;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="MM/dd/yyyy")
 	private Date datebuy;
 	private int stat;
+	@NotBlank(message="Email không được bỏ trống")
+	@Pattern(regexp="^[a-z][a-z0-9]+@[a-z]+(\\.[a-z]{2,4}){1,2}$", message="Email gồm chữ cái thường và chữ số, kí tự đầu tiên phải là chữ cái")
 	private String email;
+	@NotBlank(message="SĐT không được bỏ trống")
+	@Pattern(regexp="^[0][0-9]{9}$", message="SĐT phải bao gồm 10 chữ số và số 0 ở đầu")
 	private String phone;
+	@NotBlank(message="Địa chỉ không được bỏ trống")
 	private String addres;
+	@Min(value=1, message="Số lượng mua ít nhất là 1")
 	private int amount;
 	private long total;
 	

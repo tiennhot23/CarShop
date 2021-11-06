@@ -3,62 +3,79 @@ package ptithcm.dao;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import ptithcm.entity.Brands;
 
-public class BrandDAO extends DAO{
+public class BrandDAO{
+	private SessionFactory factory;
 	
-	public static List<Brands> getBrands() {
+	public SessionFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(SessionFactory factory) {
+		this.factory = factory;
+	}
+
+	public List<Brands> getBrands() {
+		Session session = factory.getCurrentSession();
 		String hql = "FROM Brands";
-		Query query = getSession().createQuery(hql);
+		Query query = session.createQuery(hql);
 		@SuppressWarnings("unchecked")
 		List<Brands> list = query.list();
 		return list;
 	}
 	
-	public static int create(Brands brand) {
-		begin();
+	public int create(Brands brand) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().save(brand);
-			commit();
+			session.save(brand);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("CREATE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int update(Brands brand) {
-		begin();
+	public int update(Brands brand) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().update(brand);
-			commit();
+			session.update(brand);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("UPDATE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}
 	
-	public static int delete(Brands brand) {
-		begin();
+	public int delete(Brands brand) {
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		int res = 1;
 		try {
-			getSession().delete(brand);
-			commit();
+			session.delete(brand);
+			transaction.commit();
 		} catch (Exception e) {
 			System.out.println("DELETE ORDER ERROR: " + e);
-			rollback();
+			transaction.rollback();
 			res = 0;
 		} finally {
-			close();
+			session.close();
 		}
 		return res;
 	}

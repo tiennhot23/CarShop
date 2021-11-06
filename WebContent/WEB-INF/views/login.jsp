@@ -18,26 +18,29 @@
   <link rel="stylesheet" href="resources/assets/css/login.css">
 </head>
 <body>
-  <main>
+  <div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6 login-section-wrapper">
           <div class="brand-wrapper">
-            <img src="resources/assets/images/logo.svg" alt="logo" class="logo">
+            <img src="resources/assets/images/logo.png" alt="logo" class="logo">
+            <a style="font-family: 'Lobster', cursive; color: black" href="" class="navbar-brand">IDRISCAR</a>
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Log in</h1>
-            <form action="admin/" method="post">
+            <form:form action="login.htm" method="post" modelAttribute="admin">
               <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="enter your username" required>
+                <form:input type="text" path="username" id="username" class="form-control" placeholder="enter your username" />
+                <form:errors path="username" element="errors"></form:errors>
               </div>
               <div class="form-group mb-4">
                 <label for="pass">Password</label>
-                <input type="password" name="pass" id="pass" class="form-control" placeholder="enter your passsword" required>
+                <form:input type="password" path="pass" id="pass" class="form-control" placeholder="enter your passsword" />
+                <form:errors path="pass" element="errors"></form:errors>
               </div>
-              <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Login">
-            </form>
+              <input id="login" class="btn btn-block login-btn" type="submit" value="Login">
+            </form:form>
             ${message }
             <p>
             <a href="#!" class="forgot-password-link">Forgot password?</a>
@@ -49,7 +52,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>

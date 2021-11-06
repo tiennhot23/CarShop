@@ -36,3 +36,20 @@
     </script>
 </c:if>
 
+<div class="l-navbar" id="nav-bar">
+   <nav class="nav">
+      <div>
+         <a href="" class="nav_logo">  <img style="height: 25px" src="resources/assets/images/logo.png"  class="bx bx-layer nav_logo-icon"></img> <span class="nav_logo-name">IDRISCAR</span> </a>
+         <div class="nav_list">
+            <a id="ordernav" href="admin/" class="nav_link"> <i class="bx bx-grid-alt nav_icon"></i> <span class="nav_name">Order</span> </a>
+            <a id="carnav" href="admin/cars/" class="nav_link"> <i class="bx bx-user nav_icon"></i> <span class="nav_name">Cars</span> </a>
+            <a id="categorynav" href="admin/types/" class="nav_link"> <i class="bx bx-message-square-detail nav_icon"></i> <span class="nav_name">Category</span> </a>
+            <a id="brandnav" href="admin/brands/" class="nav_link"> <i class="bx bx-bookmark nav_icon"></i> <span class="nav_name">Brand</span> </a> 
+            <a id="chartnav" href="admin/stats/" class="nav_link"> <i class="bx bx-bar-chart-alt-2 nav_icon"></i> <span class="nav_name">Chart</span> </a>
+         </div>
+      </div>
+      <a href="login.htm" class="nav_link"> <i class="bx bx-log-out nav_icon"></i> <span class="nav_name">SignOut</span> </a>
+   </nav>
+</div>
+
+

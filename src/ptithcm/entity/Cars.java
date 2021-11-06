@@ -2,6 +2,7 @@ package ptithcm.entity;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
@@ -18,11 +23,18 @@ public class Cars {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@Column(unique = true)
+	@NotBlank(message="Tên xe không được bỏ trống")
 	private String name;
+	@NotBlank(message="Hình ảnh không được bỏ trống")
 	private String img;
 	private String video;
+	@Min(value=0, message="Số lượng không hợp lệ")
 	private int amount;
+	@NotBlank(message="Mô tả không được bỏ trống")
 	private String disc;
+	@Min(value=0, message="Giá xe không hợp lệ")
+	@Max(value=Long.MAX_VALUE, message="Giá xe không hợp lệ")
 	private long price;
 	
 	@ManyToOne
