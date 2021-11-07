@@ -177,25 +177,35 @@
                     </div>
                     <div class="modal-body">
 						<div class="image-cover card bg-dark text-white">
-						  <img class="card-img" src="${orderAccept.car.img }" alt="Card image">
+						  <img class="card-img" src="${order.car.img }" alt="Card image">
 						  <div class="card-img-overlay">						  
-						    <h5 class="card-title">Car: ${orderAccept.car.name }</h5>
-						    <p class="card-text">Customer: ${orderAccept.customer }</p>
-						    <p class="card-text">Email: ${orderAccept.email }</p>
-						    <p class="card-text">Phone: ${orderAccept.phone }</p>
-						    <p class="card-text">Address: ${orderAccept.addres }</p>
-						    <p class="card-text">Amount: ${orderAccept.amount }</p>
+						    <h5 class="card-title">Car: ${order.car.name }</h5>
+						    <p class="card-text">Customer: ${order.customer }</p>
+						    <p class="card-text">Email: ${order.email }</p>
+						    <p class="card-text">Phone: ${order.phone }</p>
+						    <p class="card-text">Address: ${order.addres }</p>
+						    <p class="card-text">Amount: ${order.amount }</p>
 						    
 						  </div>
 						</div>
 						<p class="card-text mt-2">Choose an expected date</p>
-                        <form action="admin/?p=~">
-                        	<input name="idorderaccept" type="hidden" class="form-control" value="${orderAccept.id }"/>
+                        <form:form action="admin/" modelAttribute="order">
+                        	<form:input path="id" type="hidden" class="form-control" />
+                        	<form:input path="oid" type="hidden" class="form-control" />
+                        	<form:input path="datebuy" type="hidden" class="form-control" />
+                        	<form:input path="car.id" type="hidden" class="form-control" />
+                        	<form:input path="customer" type="hidden" class="form-control" />
+                        	<form:input path="email" type="hidden" class="form-control" />
+                        	<form:input path="phone" type="hidden" class="form-control" />
+                        	<form:input path="addres" type="hidden" class="form-control" />
+                        	<form:input path="amount" type="hidden" class="form-control" />
+                        	<form:input path="stat" type="hidden" class="form-control" />
+                        	<form:input path="total" type="hidden" class="form-control" />
                         	<input name="expecteddate" id="datepicker" width="276" required/>
                         	<button name="btnAccept" type="submit" class="btn mt-2 btn-info btn-just-icon btn-sm">
 	                        <i class="material-icons">Accept</i>
 	                        </button>
-                        </form>
+                        </form:form>
 					    <script>
 					        $('#datepicker').datepicker({
 					            uiLibrary: 'bootstrap4'
@@ -215,25 +225,35 @@
                     </div>
                     <div class="modal-body">
 						<div class="image-cover card bg-dark text-white">
-						  <img class="card-img" src="${orderDeny.car.img }" alt="Card image">
+						  <img class="card-img" src="${order.car.img }" alt="Card image">
 						  <div class="card-img-overlay">						  
-						    <h5 class="card-title">Car: ${orderDeny.car.name }</h5>
-						    <p class="card-text">Customer: ${orderDeny.customer }</p>
-						    <p class="card-text">Email: ${orderDeny.email }</p>
-						    <p class="card-text">Phone: ${orderDeny.phone }</p>
-						    <p class="card-text">Address: ${orderDeny.addres }</p>
-						    <p class="card-text">Amount: ${orderDeny.amount }</p>
+						    <h5 class="card-title">Car: ${order.car.name }</h5>
+						    <p class="card-text">Customer: ${order.customer }</p>
+						    <p class="card-text">Email: ${order.email }</p>
+						    <p class="card-text">Phone: ${order.phone }</p>
+						    <p class="card-text">Address: ${order.addres }</p>
+						    <p class="card-text">Amount: ${order.amount }</p>
 						    
 						  </div>
 						</div>
-                        <form action="admin/?p=~" method="post">
-                        	<input name="idorderdeny" type="hidden" class="form-control" value="${orderDeny.id }"/>
+                        <form:form action="admin/" method="post" modelAttribute="order">
+                        	<form:input path="id" type="hidden" class="form-control"/>
+                        	<form:input path="oid" type="hidden" class="form-control" />
+                        	<form:input path="datebuy" type="hidden" class="form-control" />
+                        	<form:input path="car.id" type="hidden" class="form-control" />
+                        	<form:input path="customer" type="hidden" class="form-control" />
+                        	<form:input path="email" type="hidden" class="form-control" />
+                        	<form:input path="phone" type="hidden" class="form-control" />
+                        	<form:input path="addres" type="hidden" class="form-control" />
+                        	<form:input path="amount" type="hidden" class="form-control" />
+                        	<form:input path="stat" type="hidden" class="form-control" />
+                        	<form:input path="total" type="hidden" class="form-control" />
                         	<label class="mt-1">Reason:</label>
                         	<textarea name="disc" class="form-control mt-1" id="exampleFormControlTextarea1" rows="3"></textarea>
                         	<button name="btnDeny" type="submit" class="btn mt-2 btn-danger btn-just-icon btn-sm">
 	                        <i class="material-icons">Deny</i>
 	                        </button>
-                        </form>
+                        </form:form>
 					    <script>
 					        $('#datepicker').datepicker({
 					            uiLibrary: 'bootstrap4'

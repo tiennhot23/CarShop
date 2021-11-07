@@ -30,7 +30,7 @@ public class Orders {
 	@Generated( value = GenerationTime.ALWAYS )
 	private String oid;
 	@NotBlank(message="Tên khách hàng không được bỏ trống")
-	@Pattern(regexp="[a-z][A-Z]+", message="Tên chỉ bao gồm kí tự a-zA-Z")
+	@Pattern(regexp="[\\p{L}-]+", message="Tên chỉ bao gồm kí tự a-zA-Z")    // regex for unicode O._.O
 	private String customer;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="MM/dd/yyyy")

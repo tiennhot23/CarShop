@@ -54,7 +54,8 @@
     	<img src="https://jumeirahroyal.com/wp-content/uploads/d7e50cb89c.png" width="50">
     	</c:if>
    		<span class="mt-2">${message }</span>
-   		<a class="d-flex align-items-center" href="">Contact us<i class="fa fa-angle-right ml-2"></i></a>
+   		<a class="d-flex align-items-center" href="#footer">Contact us<i class="fa fa-angle-right ml-2"></i></a>
+   		<a class="d-flex align-items-center" href="orders/?oidFilter=${order.oid }&emailFilter=${order.email }&phoneFilter=${order.phone}">See order detail<i class="fa fa-angle-right ml-2"></i></a>
    		<a class="d-flex align-items-center" href=""><button class="btn btn-dark mt-3 px-4" type="button">Back to Home</button> </a>
     </div>
 </div>

@@ -9,6 +9,8 @@
 	<head>
       	<base href="${pageContext.servletContext.contextPath}/">
       	<link rel="stylesheet" href="<c:url value='resources/assets/css/public/cars.css'/>">
+      	<link rel="stylesheet" href="<c:url value='resources/assets/css/public/orders.css'/>">
+
       	<%@include file="/WEB-INF/views/include/header.jsp"%>
    </head>
 <body>
@@ -28,187 +30,150 @@
 	
 </header>
 <div class="card-section" id="main">
-   <div class="container">
-       <div class="card-block bg-white mb30">
-           <div class="row">
+   <div class="container ">
+       <div class="card-block bg-white mb30 card" style="padding: 10px !important">
+           <div class="row mb-4">
                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                    <!-- section-title -->
-                   <div class="section-title mb-0">
-                       <form:form action="cars/" class="row g-3" modelAttribute="filter_car">
-                           <div class="col-12">
-                              <label for="inputAddress" class="form-label">Name</label>
-                              <form:input path="nameFilter" type="text" class="form-control" id="inputAddress" placeholder="Car name..."/>
+                   <div class="section-title mb-0 ">
+                       <form action="orders/" class="row" method="post">
+                           <div class="col-md-9">
+                              <label for="inputAddress" class="form-label">OID</label>
+                              <input name="oid" name="oid" type="text" class="form-control" id="inputAddress" placeholder="OID" required/>
                            </div>
-                           <div class="col-md-6">
-                              <label for="inputEmail4" class="form-label">From</label>
-                              <form:input path="minFilter" type="number" class="form-control" id="min_price" min="0" onchange="document.getElementById('max_price').min=this.value;"  placeholder="Minimum price" />
+                           <div class="col-md-3">
+                              <button type="submit" class="btn btn-primary mt-5">Search</button>
                            </div>
-                           <div class="col-md-6">
-                              <label for="inputPassword4" class="form-label">To</label>
-                              <form:input path="maxFilter" type="number" class="form-control" id="max_price" max="1000000000000000" min="document.getElementById('min_price').value" placeholder="Maximum price" />
-                           </div>
-                           <div class="col-md-2 form-group">
-                              <label for="sel1">Types:</label>
-                              <form:select path="typeFilter" items="${types }"
-								itemValue="name" itemLabel="name"
-								class="form-control">
-		
-								</form:select>
-                           </div>
-                           <div class="col-md-2 form-group">
-                              <label for="sel1">Brands:</label>
-                              <form:select path="brandFilter" items="${brands }"
-								itemValue="name" itemLabel="name"
-								class="form-control">
-		
-								</form:select>
-                             
-                           </div>
-                           <div class="row col-12 mt-5">
-		                  	<div class="col-sm-11">
-		                  		<div class="mb-2 d-flex justify-content-between align-items-center">
-				                     <button type="submit" class="btn btn-lg">Search</button>
-				                  </div>
-		                  	</div>
-		                  	<div class="col-sm-1">
-		                  		<button name="clear" style="float: right;" type="submit" class="btn badge badge-info">Clear filter</button>
-		                  	</div>
-		                  </div>
-                        </form:form>
+                        </form>
                    </div>
                    <!-- /.section-title -->
                </div>
            </div>
        </div>
-       <div class="row">
+       <div id="orderdetail" class="row" style="display: none">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                    <!-- section-title -->
                    <div class="section-title mb-0">
 						<div class="container page-top">
-							<div class="row">
-								<c:forEach var="c" items="${pagedListHolder.pageList}">
-									<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-						                <a class="fancybox" rel="ligthbox" onclick="showCar('${c.id }', '${c.img}', '${c.name }','${c.price }', '${c.type.name }', '${c.brand.name }', '${c.amount }', '${c.disc }')">
-						                    <img  src="${c.img }" class="zoom img-fluid "  alt="">
-						                </a>
-						                
-						            </div>
-                                </c:forEach>
+						<div class="row" >
+							<div class="card">
+							    <div class="title">Car infomation</div>
+							    <img  src="${order.car.img }">
+							    <div class="info">
+							        <div class="row">
+							            <div class="col-6"> <span id="heading">Type</span><br> <span id="details">${order.car.type.name } car</span> </div>
+							            <div class="col-6 pull-right"> <span id="heading">Brand</span><br> <span>${order.car.brand.name } car</span> </div>
+							        </div>
+							        <div class="row">
+							            <div class="col-7"> <span id="heading">Price</span><br> <span>${order.car.price } $</span> </div>
+							        </div>
+							        <div class="row">
+							            <div class="col-12"> <span id="heading">Discription</span><br> <span>${order.car.disc }</span> </div>
+							        </div>
+							    </div>
+							    
 							</div>
+							
+							<div class="card">
+							    <div class="title">Purchase Reciept</div>
+							    <div class="info">
+							        <div class="row">
+							            <div class="col-7"> <span id="heading">Date</span><br> <span id="details">${order.datebuy }</span> </div>
+							            <div class="col-5 pull-right"> <span id="heading">Order No.</span><br> <span id="details">${order.oid }</span> </div>
+							        </div>
+							        <div class="row">
+							            <div class="col-12"> <span id="heading">Customer</span><br> <span>${order.customer }</span> </div>
+							        </div>
+							        <div class="row">
+							            <div class="col-7"> <span id="heading">Email</span><br> <span>${order.email }</span> </div>
+							            <div class="col-5 pull-right"> <span id="heading">Phone</span><br> <span id="details">${order.phone }</span> </div>
+							        </div>
+							        <div class="row">
+							            <div class="col-12"> <span id="heading">Address</span><br> <span>${order.addres }</span> </div>
+							        </div>
+							    </div>
+							    <div class="pricing">
+							        <div class="row">
+							            <div class="col-8"> <span id="name">${order.car.name } x ${order.amount }</span> </div>
+							            <div class="col-4"> <span id="price" style="float: right !important">${order.car.price } $</span> </div>
+							        </div>
+							    </div>
+							    <div class="total">
+							        <div class="row">
+							            <div class="col-12" ><big style="float: right !important">${order.total } $</big></div>
+							        </div>
+							    </div>
+							    <div class="tracking">
+							        <div class="title">Tracking Order</div>
+							    </div>
+							    <div class="progress-track">
+							        <ul id="progressbar">
+							            <li class="step0 active " id="step1">Ordered</li>
+							            
+							            <c:choose>
+							            <c:when test="${order.stat == -2 }">
+							            <li class="step0 text-center" id="step2">Confirmed</li>
+							            <li class="step0 text-right" id="step3">Pending</li>
+							            <li class="step0 text-right" id="step4">Accepted</li>
+							            </c:when>
+							            <c:when test="${order.stat == -1 }">
+							            <li class="step0 active text-center" id="step2">Confirmed</li>
+							            <li class="step0 active text-right" id="step3">Pending</li>
+							            <li class="step0 text-right" id="step4">Accepted</li>
+							            </c:when>
+							            <c:when test="${order.stat == 1 }">
+							            <li class="step0 active text-center" id="step2">Confirmed</li>
+							            <li class="step0 active text-right" id="step3">Pending</li>
+							            <li class="step0 active text-right" id="step4">Accepted</li>
+							            </c:when>
+							            <c:when test="${order.stat == 2 }">
+							            <li class="step0 active text-center" id="step2">Confirmed</li>
+							            <li class="step0 active text-right" id="step3">Pending</li>
+							            <li class="step0 active text-right" id="step4">Denied</li>
+							            </c:when>
+							            </c:choose>
+							            
+							        </ul>
+							    </div>
+							    <div class="footer">
+							        <div class="row">
+							            <div class="col-2"><img src="<c:url value='resources/assets/images/logo.png'/>"></div>
+							            <div class="col-10">Want any help? Please &nbsp;<a> contact us</a></div>
+							        </div>
+							    </div>
+							</div>
+						</div>
 						</div>	
                    </div>
                    <!-- /.section-title -->
                </div>
        </div>
-       <jsp:useBean id="pagedListHolder" scope="request"
-                     type="org.springframework.beans.support.PagedListHolder" />
-                  <c:url value="cars/" var="pagedLink">
-                     <c:param name="p" value="~" />
-                  </c:url>
-                  <div>
-                     <tg:paging pagedListHolder="${pagedListHolder}"
-                        pagedLink="${pagedLink}" />
-                  </div>
    </div>
 </div>
 
 
-		<div class="modal fade" id="carmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            	<div class="modal-content">
-                    <div class="modal-body">
-						<div class="image-cover card bg-dark text-white">
-						  <img id="modal-car-img" class="card-img" src="${car.img }" alt="Card image">
-						  <div class="card-img-overlay mt-5">
-						  	<h5 id="modal-car-name" class="card-title">Car: ${car.name }</h5>	
-						    <p id="modal-car-price" class="card-text">Price: ${car.price }</p>
-						    <p id="modal-car-type" class="card-text">Type: ${car.type.name }</p>
-						    <p id="modal-car-brand" class="card-alg-left card-text">Brand: ${car.brand.name }</p>
-						    
-                            <div class="card-alg-right ">
-				                <a onclick="showOrder()" class=" btn btn-lg">Buy now</a>
-				            </div>
-				            <p class="card-text">.</p>
-						    <p id="modal-car-amount" class="card-text">Amount: ${car.amount }</p>
-						    <p id="modal-car-disc" class="card-text">Discription: ${car.disc }</p>
-						  </div>
-						</div>
-                    </div>
-             	</div>
-            </div>
-        </div>
-        
-        <div class="modal fade" id="ordermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            	<div class="modal-content">
-                    <div class="modal-body">
-						<div class="row modal-row">
-						    <div class="col-md-6 mb-4 mb-md-0">
-						    	<h5 id="modal-order-car" class="card-title"></h5>
-						      <img id="modal-order-img" width="100%" border-radius= "50%" src="${car.img }" alt="Card image">
-						    </div>
-						    <div class="col-md-6">
-								<form action="cars/order.htm" method="post">
-								  <div class="form-row">
-								  	<div class="form-group col-md-12">
-									    <label for="inputAddress2">Name</label>
-									    <input name="customer" type="text" class="form-control" id="inputAddress2" placeholder="Your name" required>
-									  </div>
-								    <div class="form-group col-md-6">
-								      <label for="inputEmail4">Email</label>
-								      <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="Email" required>
-								    </div>
-								    <div class="form-group col-md-6">
-								      <label for="inputPassword4">Phone</label>
-								      <input name="phone" type="text" class="form-control" id="inputPassword4" placeholder="Phone number" pattern="[0][0-9]{9}" required>
-								    </div>
-								  </div>
-								  <div class="form-group">
-								    <label for="inputAddress">Address</label>
-								    <input name="addres" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
-								  </div>
-								  
-								  <div class="form-row">
-								  	<div class="form-group col-md-2">
-								      <label for="inputZip">Amount</label>
-								      <input name="amount" type="number" class="form-control" id="amountBuy" value="1" min="1" onclick="calcTotalPrice('amountBuy')" required>
-								    </div>
-								    <div class="form-group col-md-6">
-								      <label for="inputCity">Total price</label>
-								      <input type="number" class="form-control" id="modal-order-total" min="0" disabled>
-								    </div>
-								    <div class="form-group col-md-1">
-								      <label for="inputCity">Unit</label>
-								      <label class="mt-1" for="inputCity">$</label>
-								    </div>
-								    <div class="form-group">
-								      <input type="hidden" class="form-control" id="modal-order-price" min="0" disabled>
-								      <input name="carid" type="hidden" class="form-control" id="modal-order-carid" >
-								    </div>
-								  </div>
-								  <div class="form-group mb-5">
-								    <div class="form-check">
-								      <input class="form-check-input" type="checkbox" id="lincenceCheck" onclick="onCheck('lincenceCheck', 'btnBuy')">
-								      <label class="form-check-label ml-2" for="gridCheck">
-								        I've read all the 
-								      </label>
-								      <a href=""><span>linsence</span></a>
-								    </div>
-								  </div>
-								  <button type="button" class="btn btn-secondary mr-2" style="float: right;" data-dismiss="modal">Cancel</button>
-								  <button id="btnBuy" type="submit" class="btn btn-lg" disabled>Buy</button>
-								</form>
-						    </div>
-						  </div>
-                    </div>
-             	</div>
-            </div>
-        </div>
-<%@include file="/WEB-INF/views/include/footer.jsp"%>
+		
+		<%@include file="/WEB-INF/views/include/footer.jsp"%>
 		<script>
 			window.onload = function () {
-			          $("#ordertag").addClass("active")
-			      };
+				var user = ${user};
+				if(user == "1"){
+					$("#logintag").text("Logout");
+				}
+				$("#ordertag").addClass("active")
+			};
 		</script>
+		<c:if test="${not empty order }">
+			<script type="text/javascript">
+				window.onload = function (){
+					$("#orderdetail").css({display: "block"});
+					var user = ${user};
+					if(user == "1"){
+						$("#logintag").text("Logout");
+					}
+					$("#ordertag").addClass("active")
+				}
+			</script>
+		</c:if>
 </body>
 </html>

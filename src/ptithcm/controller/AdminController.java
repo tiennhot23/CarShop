@@ -60,28 +60,28 @@ public class AdminController{
 			filterService.clearFilterOrder();
 		}
 		filterOrder = getFilterOrder(request);
-		List<Orders> orders = orderDAO.getOrders(filterOrder);
+		
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
-		model.addAttribute("pagedListHolder", pageService.getPageList(orders, page, 6));
+		List<Orders> orders = orderDAO.getOrders(filterOrder);
+		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value="/{id}.htm", params="linkAccept")
-	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id,
-			@ModelAttribute("order") Orders order) {
+	public String accept(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id) {
+		model.addAttribute("order", orderDAO.getOrder(id));
+		model.addAttribute("orderAccept", "true");
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
-		model.addAttribute("orderAccept", orderDAO.getOrder(id));
-		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value = "index", params = "btnAccept")
-	public String accepted(HttpServletRequest request, ModelMap model) {
+	public String accepted(HttpServletRequest request, ModelMap model, @ModelAttribute("order") Orders order) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
 		@SuppressWarnings("deprecation")
-		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));		
-		Orders order = orderDAO.getOrder(Integer.parseInt(request.getParameter("idorderaccept")));
+		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));	
 		order.setStat(1);
 		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
@@ -100,25 +100,25 @@ public class AdminController{
 				model.addAttribute("message","Gửi mail thất bại!");
 			}
 		}
+
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
-		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
-		
+		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	
 	@RequestMapping(value="/{id}.htm", params="linkDeny")
-	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("order") Orders order) {
+	public String deny(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id) {
+		model.addAttribute("order", orderDAO.getOrder(id));
+		model.addAttribute("orderDeny", "true");
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
-		model.addAttribute("orderDeny", orderDAO.getOrder(id));
-		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	
 	@RequestMapping(value = "index", params = "btnDeny")
-	public String denied(HttpServletRequest request, ModelMap model) {
+	public String denied(HttpServletRequest request, ModelMap model, @ModelAttribute("order") Orders order) {
 		String reason = request.getParameter("disc");
-		Orders order = orderDAO.getOrder(Integer.parseInt(request.getParameter("idorderdeny")));
 		order.setStat(2);
 		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
@@ -139,7 +139,7 @@ public class AdminController{
 			}
 		}
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
-		model.addAttribute("pagedListHolder", pageService.getPageList(orders, pagenumber.getP(), 6));
+		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 		return "admin/index";
 	}
 	

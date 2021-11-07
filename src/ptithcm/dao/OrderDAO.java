@@ -109,7 +109,7 @@ public class OrderDAO{
 			session.update(order);
 			transaction.commit();
 		} catch (Exception e) {
-			System.out.println("CREATE ORDER ERROR: " + e);
+			System.out.println("UPDATE ORDER ERROR: " + e);
 			transaction.rollback();
 			res = 0;
 		} finally {
@@ -126,7 +126,7 @@ public class OrderDAO{
 			session.delete(order);
 			transaction.commit();
 		} catch (Exception e) {
-			System.out.println("CREATE ORDER ERROR: " + e);
+			System.out.println("DELETE ORDER ERROR: " + e);
 			transaction.rollback();
 			res = 0;
 		} finally {

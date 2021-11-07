@@ -83,7 +83,7 @@ public class BaseController {
 		if(security == null) {
 			model.addAttribute("status", "0");
 			model.addAttribute("message", "Mã xác nhận không tồn tại!");
-			return "public/order";
+			return "public/notify";
 		}
 		Long expiredDate = Long.parseLong(security.getExpired());
 		Long currentDate = Calendar.getInstance().getTimeInMillis();
@@ -97,6 +97,7 @@ public class BaseController {
 			Integer temp = orderDAO.update(order);
 			if (temp != 0) {
 				model.addAttribute("status", "1");
+				model.addAttribute("order", order);
 				model.addAttribute("message", "Đơn hàng của bạn đã được xác nhận.");
 			} else {
 				model.addAttribute("status", "0");
@@ -108,7 +109,7 @@ public class BaseController {
 			model.addAttribute("message", "Mã xác nhận đã bị hết hạn!");
 		}
 		securityDAO.delete(security);
-		return "public/order";
+		return "public/notify";
 	}
 	
 	
