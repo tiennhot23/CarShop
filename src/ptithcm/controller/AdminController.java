@@ -85,10 +85,18 @@ public class AdminController{
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
 		@SuppressWarnings("deprecation")
 		String expecteddate = formatter.format(new Date(request.getParameter("expecteddate")));	
+		
+		Cars car = carDAO.getCar(order.getCar().getId());
+		if(car.getAmount() < order.getAmount()) {
+			model.addAttribute("message", "Purchase quantity exceeds available quantity!");
+		}else {
+			List<Orders> orders = orderDAO.getOrders(filterOrder);
+			model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
+			return "admin/index";
+		}
 		order.setStat(1);
 		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
-			Cars car = carDAO.getCar(order.getCar().getId());
 			car.setAmount(car.getAmount()-order.getAmount());
 			temp = carDAO.update(car);
 			if(temp != 0) {
@@ -107,7 +115,6 @@ public class AdminController{
 			}else {
 				model.addAttribute("message", "Update car amount fail!");
 			}
-			
 		} else {
 			model.addAttribute("message", "Failed!");
 		}

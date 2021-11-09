@@ -48,9 +48,9 @@
 		        var rfile = document.getElementById("radiofile");
 		        var inlink = document.getElementById("inputlink");
 		        var infile = document.getElementById("inputfile");
-		        inlink.disabled = rlink.checked ? false : true;
+		        inlink.readOnly = rlink.checked ? false : true;
 		        infile.disabled = rfile.checked ? false : true;
-		        if (inlink.disabled) {
+		        if (inlink.readOnly) {
 		        	if(inlink.value == '') inlink.value = 'Link image';
 		        }
 		        if (infile.disabled) {

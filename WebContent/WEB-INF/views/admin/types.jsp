@@ -49,6 +49,7 @@
                   <div class="mt-5">
                   <h4 class="typed-title">Type Information</h4>
                   <form:form action="admin/types/" method="post" modelAttribute="type" enctype="multipart/form-data">
+                  	<form:input path="id" type="hidden" class="form-control" placeholder="Id type"/>
                      <div class="form-group">
                         <label for="inputAddress2">Name</label>
                         <form:input path="name" type="text" class="form-control" id="inputAddress2"/>
@@ -124,12 +125,12 @@
                                                    <td><img src="${c.img }" width="50"></td>
                                                    <td>${c.name } car</td>
                                                    <td>${c.disc }</td>
-                                                   <td><a href="admin/types/${c.name}.htm?linkEdit">
+                                                   <td><a href="admin/types/${c.id}.htm?linkEdit">
                                                       <button type="button" class="btn btn-info btn-just-icon btn-sm">
                                                       <i class="material-icons">Edit</i>
                                                       </button></a>
                                                    </td>
-                                                   <td><a href="admin/types/${c.name}.htm?linkDelete" role="button">
+                                                   <td><a href="admin/types/${c.id}.htm?linkDelete" role="button">
                                                       <button type="button" class="btn btn-danger btn-just-icon btn-sm">
                                                       <i class="material-icons">Delete</i>
                                                       </button></a>

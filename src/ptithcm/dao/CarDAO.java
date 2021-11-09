@@ -50,10 +50,10 @@ public class CarDAO{
 		query.setParameter("search", "%" + filterCar.getNameFilter() + "%");
 		query.setParameter("min", filterCar.getMinFilter());
 		query.setParameter("max", filterCar.getMaxFilter());
-		if(filterCar.getTypeFilter().equals("All")) {
+		if(filterCar.getTypeFilter() == null || filterCar.getTypeFilter().equals("All")) {
 			query.setParameter("type", "%");
 		}else query.setParameter("type", "%" + filterCar.getTypeFilter());
-		if(filterCar.getBrandFilter().equals("All")) {
+		if(filterCar.getBrandFilter() == null || filterCar.getBrandFilter().equals("All")) {
 			query.setParameter("brand", "%");
 		}else query.setParameter("brand", "%" + filterCar.getBrandFilter());
 		@SuppressWarnings("unchecked")

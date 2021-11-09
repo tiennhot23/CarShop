@@ -33,14 +33,15 @@ public class TypeDAO{
 		return list;
 	}
 	
-	public  List<Types> getTypes(int id) {
+	public  Types getType(int id) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Types where id = :id";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
 		@SuppressWarnings("unchecked")
 		List<Types> list = query.list();
-		return list;
+		if(list.size()>0) return list.get(0);
+		else return null;
 	}
 
 	public  List<Types> getTypes() {

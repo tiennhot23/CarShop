@@ -33,14 +33,15 @@ public class BrandDAO{
 		return list;
 	}
 	
-	public  List<Brands> getBrands(int id) {
+	public  Brands getBrand(int id) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Brands where id = :id";
 		Query query = session.createQuery(hql);
 		query.setParameter("id", id);
 		@SuppressWarnings("unchecked")
 		List<Brands> list = query.list();
-		return list;
+		if(list.size()>0) return list.get(0);
+		else return null;
 	}
 
 	public List<Brands> getBrands() {

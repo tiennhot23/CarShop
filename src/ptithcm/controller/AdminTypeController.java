@@ -133,11 +133,11 @@ public class AdminTypeController{
 	}
 	
 	
-	@RequestMapping(value="/{name}.htm", params="linkEdit")
-	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("name") String name, @ModelAttribute("type") Types type) {
+	@RequestMapping(value="/{id}.htm", params="linkEdit")
+	public String edit(HttpServletRequest request, ModelMap model, @PathVariable("id") Integer id, @ModelAttribute("type") Types type) {
 		List<Types> types = typeDAO.getTypes(filterCar.getNameFilter());
 		model.addAttribute("btnStatus", "btnEdit");
-		model.addAttribute("type", typeDAO.getTypes(name).get(0));
+		model.addAttribute("type", typeDAO.getType(id));
 		model.addAttribute("pagedListHolder", pageService.getPageList(types, pagenumber.getP(), 6));
 		return "admin/types";
 	}
@@ -187,15 +187,16 @@ public class AdminTypeController{
 		return "admin/types";
 	}
 	
-	@RequestMapping(value = "/{name}.htm", params = "linkDelete")
+	@RequestMapping(value = "/{id}.htm", params = "linkDelete")
 	public String deleteProduct(HttpServletRequest request, ModelMap model, @ModelAttribute("type") Types type,
-			@PathVariable("name") String name) {
+			@PathVariable("id") Integer id) {
 		Integer temp = 0;
+		type = typeDAO.getType(id);
 		FilterCar filterType = new FilterCar();
-		filterType.setTypeFilter(name);
+		filterType.setTypeFilter(type.getName());
 		if(carDAO.getCars(filterType).isEmpty()) {
 			temp = typeDAO.delete(type);
-			if (temp == 1) {
+			if (temp != 0) {
 				model.addAttribute("message", "Delete successfull");
 			} else if (temp == 0){
 				model.addAttribute("message", "Delete failed!");
