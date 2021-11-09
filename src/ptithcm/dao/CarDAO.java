@@ -2,6 +2,7 @@ package ptithcm.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.hibernate.Transaction;
 import ptithcm.bean.FilterCar;
 import ptithcm.entity.Cars;
 
+@Transactional
 public class CarDAO{
 	private SessionFactory factory;
 	public SessionFactory getFactory() {
@@ -58,6 +60,8 @@ public class CarDAO{
 		List<Cars> list = query.list();
 		return list;
 	}
+	
+	
 	
 	public int create(Cars car) {
 		Session session = factory.openSession();

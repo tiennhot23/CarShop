@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,14 @@ import ptithcm.bean.FilterCar;
 import ptithcm.bean.FilterOrder;
 import ptithcm.bean.Mailer;
 import ptithcm.bean.PageNumber;
+import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
+import ptithcm.entity.Cars;
 import ptithcm.entity.Orders;
 import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
-@Transactional
+
 @Controller
 @RequestMapping("/admin/")
 public class AdminController{
@@ -50,6 +51,8 @@ public class AdminController{
 
 	@Autowired
 	OrderDAO orderDAO;
+	@Autowired
+	CarDAO carDAO;
 	
 	
 	@RequestMapping("index")
@@ -85,21 +88,30 @@ public class AdminController{
 		order.setStat(1);
 		Integer temp = orderDAO.update(order);
 		if (temp != 0) {
-			model.addAttribute("message", "Order accepted");
+			Cars car = carDAO.getCar(order.getCar().getId());
+			car.setAmount(car.getAmount()-order.getAmount());
+			temp = carDAO.update(car);
+			if(temp != 0) {
+				model.addAttribute("message", "Order accepted");
+				String from = "IDRISCAR";
+				String to = order.getEmail();
+				String subject = "Order Car";
+				String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
+				if(temp != 0) {
+					try {
+						mailer.send(from, to, subject, body);
+					}catch (Exception e) {
+						model.addAttribute("message","Gửi mail thất bại!");
+					}
+				}
+			}else {
+				model.addAttribute("message", "Update car amount fail!");
+			}
+			
 		} else {
 			model.addAttribute("message", "Failed!");
 		}
-		String from = "IDRISCAR";
-		String to = order.getEmail();
-		String subject = "Order Car";
-		String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
-		if(temp != 0) {
-			try {
-				mailer.send(from, to, subject, body);
-			}catch (Exception e) {
-				model.addAttribute("message","Gửi mail thất bại!");
-			}
-		}
+		
 
 		List<Orders> orders = orderDAO.getOrders(filterOrder);
 		model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));

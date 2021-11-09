@@ -2,6 +2,7 @@ package ptithcm.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ptithcm.entity.Admin;
 
+@Transactional
 public class AdminDAO{
 	@Autowired
 	private SessionFactory factory;

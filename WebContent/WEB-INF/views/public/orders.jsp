@@ -62,7 +62,7 @@
 							    <div class="info">
 							        <div class="row">
 							            <div class="col-6"> <span id="heading">Type</span><br> <span id="details">${order.car.type.name } car</span> </div>
-							            <div class="col-6 pull-right"> <span id="heading">Brand</span><br> <span>${order.car.brand.name } car</span> </div>
+							            <div class="col-6 pull-right"> <span id="heading">Brand</span><br> <span>${order.car.brand.name } </span> </div>
 							        </div>
 							        <div class="row">
 							            <div class="col-7"> <span id="heading">Price</span><br> <span>${order.car.price } $</span> </div>

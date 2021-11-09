@@ -44,7 +44,7 @@
 						</div>
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" name="exampleRadios" id="radiofile" value="option2" onclick="EnableDisableTextBox()" >
-						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled  /> 
+						  <input type="file" name="imageFile" class="form-control-file" id="inputfile" disabled required /> 
 						</div>
                      </div>
                      
@@ -66,29 +66,33 @@
                         </div>
                      </div>
                      <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Discription</label>
+                        <label for="exampleFormControlTextarea1">Description</label>
                         <form:textarea path="disc" class="form-control" id="exampleFormControlTextarea1" rows="3"></form:textarea>
                         <form:errors path="disc" element="errors"></form:errors>
                      </div>
                      <div class="form-row">
                         <div class="form-group col-md-5">
                            <label for="sel1">Types:</label>
-                           <form:select path="type.name" items="${types }"
-								itemValue="name" itemLabel="name"
+                           <form:select path="type.id" items="${types }"
+								itemValue="id" itemLabel="name"
 								class="form-control">
 							</form:select>
                         </div>
                         <div class="form-group col-md-5">
                            <label for="sel1">Brands:</label>
-                           <form:select path="brand.name" items="${brands }"
-								itemValue="name" itemLabel="name"
+                           <form:select path="brand.id" items="${brands }"
+								itemValue="id" itemLabel="name"
 								class="form-control">
 		
 							</form:select>
                         </div>
                      </div>
                      <div class="modal-footer">
-                        <button name="${btnStatus}" type="submit" class="btn btn-primary">Save</button>
+                     	<div class="row">
+                     	<a href="admin/cars/?btnCancel" class="btn">Cancel</a>
+                     	<button name="${btnStatus}" type="submit" class="btn btn-primary">Save</button>
+                     	</div>
+                        
                      </div>
                   </form:form>
                   </div>

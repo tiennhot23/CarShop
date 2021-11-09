@@ -2,6 +2,7 @@ package ptithcm.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.hibernate.Transaction;
 
 import ptithcm.entity.Types;
 
+@Transactional
 public class TypeDAO{
 
 	private SessionFactory factory;
@@ -19,6 +21,26 @@ public class TypeDAO{
 
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
+	}
+	
+	public  List<Types> getTypes(String name) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Types where name LIKE :name";
+		Query query = session.createQuery(hql);
+		query.setParameter("name", "%" + name + "%");
+		@SuppressWarnings("unchecked")
+		List<Types> list = query.list();
+		return list;
+	}
+	
+	public  List<Types> getTypes(int id) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Types where id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		@SuppressWarnings("unchecked")
+		List<Types> list = query.list();
+		return list;
 	}
 
 	public  List<Types> getTypes() {

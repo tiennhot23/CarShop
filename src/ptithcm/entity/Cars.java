@@ -38,11 +38,11 @@ public class Cars {
 	private long price;
 	
 	@ManyToOne
-	@JoinColumn(name="class")
+	@JoinColumn(name="classId")
 	private Types type;
 	
 	@ManyToOne
-	@JoinColumn(name="brand")
+	@JoinColumn(name="brandId")
 	private Brands brand;
 	
 	@OneToMany(mappedBy="car", fetch=FetchType.EAGER)

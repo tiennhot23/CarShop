@@ -3,7 +3,6 @@ package ptithcm.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,6 @@ import ptithcm.service.FileService;
 import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
-@Transactional
 @Controller
 @RequestMapping("/admin/cars/")
 public class AdminCarController{
@@ -79,6 +77,16 @@ public class AdminCarController{
 		return "admin/cars";
 	}
 	
+	@RequestMapping(value = "index.htm", params = "btnCancel")
+	public String cancel(HttpServletRequest request,ModelMap model, @ModelAttribute("car") Cars car) {
+		List<Cars> cars = null;
+		clearFormCar(car);
+		cars = carDAO.getCars(filterCar);
+		model.addAttribute("btnStatus", "btnAdd");
+		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
+		return "admin/cars";
+	}
+	
 	@RequestMapping(value = "index.htm", params = "btnAdd")
 	public String addProduct(HttpServletRequest request,ModelMap model, 
 			@RequestParam(value="imageFile", required=false) MultipartFile imageFile, @Validated @ModelAttribute("car") Cars car, BindingResult err) {
@@ -119,7 +127,7 @@ public class AdminCarController{
 		} else {
 			model.addAttribute("message", "Insert car failed! This car maybe already in shop");
 		}
-		car = new Cars();
+		clearFormCar(car);
 		cars = carDAO.getCars(filterCar);
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
@@ -146,10 +154,8 @@ public class AdminCarController{
 		if(err.hasErrors()) {
 			if(!(err.getErrorCount() == 1 
 					&& car.getImg().equals("imageFile"))) {
-				car = new Cars();
-				model.addAttribute("car", car);
 				cars = carDAO.getCars(filterCar);
-				model.addAttribute("btnStatus", "btnAdd");
+				model.addAttribute("btnStatus", "btnEdit");
 				model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
 				return "admin/cars";
 			}else {
@@ -160,11 +166,10 @@ public class AdminCarController{
 			Pair<Boolean, String> result = fileService.uploadFile(uploadFile.getBasePath(), 
 					imageFile, car.getName() + "." + imageFile.getContentType().split("/")[1], "image", "car");
 			if(!result.getKey()) {
+				
 				model.addAttribute("message", result.getValue());
-				car = new Cars();
-				model.addAttribute("car", car);
 				cars = carDAO.getCars(filterCar);
-				model.addAttribute("btnStatus", "btnAdd");
+				model.addAttribute("btnStatus", "btnEdit");
 				model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
 				return "admin/cars";
 			}else {
@@ -177,8 +182,7 @@ public class AdminCarController{
 		} else {
 			model.addAttribute("message", "Update failed!");
 		}
-		car = new Cars();
-		model.addAttribute("car", car);
+		clearFormCar(car);
 		cars = carDAO.getCars(filterCar);
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pageService.getPageList(cars, pagenumber.getP(), 6));
@@ -247,6 +251,15 @@ public class AdminCarController{
 		filterCar.setTypeFilter((request.getParameter("typeFilter")==null)?filterCar.getTypeFilter():request.getParameter("typeFilter").trim());
 		filterCar.setBrandFilter((request.getParameter("brandFilter")==null)?filterCar.getBrandFilter():request.getParameter("brandFilter").trim());
 		return filterCar;
+	}
+	
+	public void clearFormCar(Cars car) {
+		car.setName("");
+		car.setImg("");
+		car.setVideo("");
+		car.setAmount(0);
+		car.setPrice(0);
+		car.setDisc("");
 	}
 	
 }

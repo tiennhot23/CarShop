@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,7 @@ import ptithcm.entity.Types;
 import ptithcm.service.FilterService;
 import ptithcm.service.PageService;
 
-@Transactional
+
 @Controller
 @RequestMapping("/cars/")
 public class CarController {
@@ -143,6 +142,7 @@ public class CarController {
 			model.addAttribute("status", "0");
 			model.addAttribute("message","Gửi mail thất bại!");
 		}
+		model.addAttribute("order", order);
 		return "public/notify";
 	}
 	

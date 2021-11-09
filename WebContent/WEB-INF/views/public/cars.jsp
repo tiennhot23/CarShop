@@ -171,7 +171,7 @@
 								  <div class="form-row">
 								  	<div class="form-group col-md-2">
 								      <label for="inputZip">Amount</label>
-								      <input name="amount" type="number" class="form-control" id="amountBuy" value="1" min="1" onclick="calcTotalPrice('amountBuy')" required>
+								      <input name="amount" type="number" class="form-control" id="modal-order-amount" value="1" min="1" onclick="calcTotalPrice('amountBuy')" required>
 								    </div>
 								    <div class="form-group col-md-6">
 								      <label for="inputCity">Total price</label>

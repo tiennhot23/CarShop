@@ -2,6 +2,8 @@ package ptithcm.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +11,7 @@ import org.hibernate.Transaction;
 
 import ptithcm.entity.Brands;
 
+@Transactional
 public class BrandDAO{
 	private SessionFactory factory;
 	
@@ -18,6 +21,26 @@ public class BrandDAO{
 
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
+	}
+	
+	public  List<Brands> getBrands(String name) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Brands where name LIKE :name";
+		Query query = session.createQuery(hql);
+		query.setParameter("name", "%" + name + "%");
+		@SuppressWarnings("unchecked")
+		List<Brands> list = query.list();
+		return list;
+	}
+	
+	public  List<Brands> getBrands(int id) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Brands where id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		@SuppressWarnings("unchecked")
+		List<Brands> list = query.list();
+		return list;
 	}
 
 	public List<Brands> getBrands() {

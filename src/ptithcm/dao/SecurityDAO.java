@@ -1,6 +1,9 @@
 package ptithcm.dao;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,6 +11,7 @@ import org.hibernate.Transaction;
 
 import ptithcm.entity.Securities;
 
+@Transactional
 public class SecurityDAO{
 	private SessionFactory factory;
 	public SessionFactory getFactory() {

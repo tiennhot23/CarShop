@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ import ptithcm.entity.Securities;
 import ptithcm.entity.Types;
 import ptithcm.service.FilterService;
 
-@Transactional
+
 @Controller
 public class BaseController {
 	@Autowired

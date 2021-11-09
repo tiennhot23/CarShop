@@ -2,18 +2,28 @@ package ptithcm.entity;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name="Brands")
 public class Brands {
 	@Id
+	@GeneratedValue
+	private Integer id;
+	@Column(unique = true)
+	@NotBlank(message="Tên loại không được bỏ trống")
 	private String name;
+	@NotBlank(message="Mô tả không được bỏ trống")
 	private String disc;
+	@NotBlank(message="Hình ảnh không được bỏ trống")
 	private String img;
 	
 	public String getImg() {
@@ -52,6 +62,11 @@ public class Brands {
 	public void setDisc(String disc) {
 		this.disc = disc;
 	}
-	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 }

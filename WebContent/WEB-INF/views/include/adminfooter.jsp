@@ -51,10 +51,10 @@
 		        inlink.disabled = rlink.checked ? false : true;
 		        infile.disabled = rfile.checked ? false : true;
 		        if (inlink.disabled) {
-		        	inlink.value = ''
+		        	if(inlink.value == '') inlink.value = 'Link image';
 		        }
 		        if (infile.disabled) {
-		        	infile.value = ''
+		        	infile.value = '';
 		        }
 		    }
 		</script>

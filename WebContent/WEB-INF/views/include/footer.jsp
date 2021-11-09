@@ -153,6 +153,7 @@ function showCar(id, img, name, price, type, brand, amount, disc){
 	document.getElementById("modal-order-total").value = price;
 	document.getElementById("modal-order-price").value = price;
 	document.getElementById("modal-order-carid").value = id;
+	document.getElementById("modal-order-amount").max = amount;
 	$("#carmodal").modal("show");
 }
 function showOrder(){

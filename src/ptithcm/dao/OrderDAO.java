@@ -2,6 +2,7 @@ package ptithcm.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.hibernate.Transaction;
 import ptithcm.bean.FilterOrder;
 import ptithcm.entity.Orders;
 
+@Transactional
 public class OrderDAO{
 
 	private SessionFactory factory;
