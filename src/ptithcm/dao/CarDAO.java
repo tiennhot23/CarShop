@@ -31,6 +31,14 @@ public class CarDAO{
 		return list;
 	}
 	
+	public List<String> getListCarName() {
+		String hql = "select distinct name FROM Cars";
+		Query query = factory.getCurrentSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
+		List<String> list = query.list();
+		return list;
+	}
+	
 	public Cars getCar(int id) {
 		String hql = "FROM Cars where id = :id";
 		Query query = factory.getCurrentSession().createQuery(hql);

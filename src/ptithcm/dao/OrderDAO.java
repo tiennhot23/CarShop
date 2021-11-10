@@ -8,8 +8,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 
 import ptithcm.bean.FilterOrder;
+import ptithcm.bean.Revenue;
 import ptithcm.entity.Orders;
 
 @Transactional
@@ -82,6 +84,27 @@ public class OrderDAO{
 		}
 		@SuppressWarnings("unchecked")
 		List<Orders> list = query.list();
+		return list;
+	}
+	
+	public List<Integer> getListYear(){
+		String hql = "select distinct YEAR(datebuy) FROM Orders group by datebuy";
+		Query query = factory.getCurrentSession().createQuery(hql);
+		@SuppressWarnings("unchecked")
+		List<Integer> list = query.list();
+		return list;
+	}
+	
+	
+	// TODO: LOLLLLLLLL
+	public List<Revenue> getRevenues(Integer year) {
+		// The number from database query is not Long but BigInteger.
+		//https://stackoverflow.com/questions/32505464
+		String hql = "select car.name as name, SUM(amount) as amount, SUM(total) as total FROM Orders where YEAR(datebuy) = :y group by car.name order by amount desc";
+		Query query = factory.getCurrentSession().createQuery(hql).setResultTransformer(Transformers.aliasToBean(Revenue.class));
+		query.setParameter("y", year);
+		@SuppressWarnings("unchecked")
+		List<Revenue> list = query.list();
 		return list;
 	}
 	
