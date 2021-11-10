@@ -197,7 +197,16 @@ a {
 }
 
 .modal{
-	width: 100% !important
+	width: 100% !important;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: auto;
+    max-height: 80vh !important;
+    overflow-y: auto;
 }
 
 .modal-backdrop{

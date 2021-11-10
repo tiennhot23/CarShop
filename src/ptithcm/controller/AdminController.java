@@ -137,7 +137,7 @@ public class AdminController{
 	
 	@RequestMapping(value = "index", params = "btnDeny")
 	public String denied(HttpServletRequest request, ModelMap model, @ModelAttribute("order") Orders order) {
-		String reason = request.getParameter("disc");
+		String reason = request.getParameter("messagebody");
 		order.setStat(2);
 		Integer temp = orderDAO.update(order);
 		if (temp != 0) {

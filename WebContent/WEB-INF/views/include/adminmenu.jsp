@@ -32,6 +32,7 @@
     <script>
         window.onload = function () {
             $("#orderdenymodal").modal("show");
+            
         };
     </script>
 </c:if>

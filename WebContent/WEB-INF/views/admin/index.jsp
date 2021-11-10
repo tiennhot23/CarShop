@@ -249,7 +249,7 @@
                         	<form:input path="stat" type="hidden" class="form-control" />
                         	<form:input path="total" type="hidden" class="form-control" />
                         	<label class="mt-1">Reason:</label>
-                        	<textarea name="disc" class="form-control mt-1" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        	<textarea name="messagebody" class="form-control mt-1" id="exampleFormControlTextarea1" rows="3"></textarea>
                         	<button name="btnDeny" type="submit" class="btn mt-2 btn-danger btn-just-icon btn-sm">
 	                        <i class="material-icons">Deny</i>
 	                        </button>
@@ -258,6 +258,7 @@
 					        $('#datepicker').datepicker({
 					            uiLibrary: 'bootstrap4'
 					        });
+					        
 					    </script>
                     </div>
                 </div>

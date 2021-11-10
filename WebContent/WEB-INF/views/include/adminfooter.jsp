@@ -20,7 +20,7 @@
          headerpd.classList.toggle('body-pd')
          })
          }
-         }
+         };
          
          showNavbar('header-toggle','nav-bar','body-pd','header')
          
@@ -29,14 +29,15 @@
          
          function colorLink(){
          if(linkColor){
-         linkColor.forEach(l=> l.classList.remove('active'))
-         this.classList.add('active')
+         linkColor.forEach(l=> l.classList.remove('active'));
+         this.classList.add('active');
          }
-         }
+         };
+         
          
          function openModalFuntion(){
          	$('#exampleModalCenter').modal('show')
-         }
+         };
          linkColor.forEach(l=> l.addEventListener('click', colorLink))
          
          // Your code to run since DOM is loaded and ready
@@ -71,6 +72,10 @@
 			}
 		</script>
 		
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+var editor = CKEDITOR.replace( 'messagebody' );
+CKFinder.setupCKEditor(ckeditor, '${pageContext.request.contextPath}/resources/ckfinder/');
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
