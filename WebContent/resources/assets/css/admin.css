@@ -3,7 +3,7 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #4723D9;
+    --first-color: #000;
     --first-color-light: #AFA5D9;
     --white-color: #F7F6FB;
     --body-font: 'Nunito', sans-serif;
@@ -27,6 +27,18 @@ body {
 }
 errors {
 	color: red;
+}
+.btn-primary {
+	background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+.page-item.active .page-link {
+	background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+.badge-info {
+	background-color: #17a2b8;
 }
 a {
     text-decoration: none

@@ -8,6 +8,8 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
   font-weight: 400;
+  background-color: #232321 !important;
+  color: #ffffff !important;
 }
 h1 {
   margin-bottom: 0.5em;
@@ -78,11 +80,11 @@ errors {
 .carousel, .carousel-inner img{
   margin-left: auto;
   margin-right: auto;
-  width: 900px !important;
-  height: 600px;
+  width: 800px !important;
+  height: 500px;
 }
 .carousel-caption{
-  color: #000 !important;
+  color: #ffffff !important;
   margin-left: auto;
   margin-right: auto;
   right: 5% !important;
