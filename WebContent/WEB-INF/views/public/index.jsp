@@ -19,7 +19,7 @@
 	<div class="banner">
 		<div class="container">
 			<h1>IDRISCAR</h1>
-			<h2>We are here to help you BuyaCar with confidence.</h2>
+			<h2>We are here to help you buy a car with confidence.</h2>
 			<p>A dream without ambition is like a car without gas... you're not going anywhere.</p>
 			<button class="button button-primary" id="getstart">Get Start</button>
 		</div>

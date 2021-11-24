@@ -122,7 +122,13 @@ public class CarController {
 		
 		if(securityDAO.create(security)==0) {
 			model.addAttribute("status", "0");
-			model.addAttribute("message", "Không thể tạo key!");
+			model.addAttribute("message", "Không thể tạo mã xác nhận! Đơn hàng đã bị huỷ.");
+			int temp = orderDAO.delete(order);
+			if (temp != 0) {
+				System.out.println("Đơn hàng đã bị huỷ");
+			} else if (temp == 0){
+				System.out.println("Không thể xoá đơn hàng");
+			}
 			return "public/notify";
 		}
 		String from = "IDRISCAR";
@@ -140,7 +146,19 @@ public class CarController {
 			model.addAttribute("message", "Đơn hàng của bạn đã được thiết lập. Vui lòng vào mail để xác nhận đơn hàng!");
 		}catch (Exception e) {
 			model.addAttribute("status", "0");
-			model.addAttribute("message","Gửi mail thất bại!");
+			model.addAttribute("message","Gửi mail thất bại! Đơn hàng đã bị huỷ");
+			int temp = securityDAO.delete(security);
+			if (temp != 0) {
+				System.out.println("Key đã được xoá");
+			} else if (temp == 0){
+				System.out.println("Không thể xoá key");
+			}
+			temp = orderDAO.delete(order);
+			if (temp != 0) {
+				System.out.println("Đơn hàng đã bị huỷ");
+			} else if (temp == 0){
+				System.out.println("Không thể xoá đơn hàng");
+			}
 		}
 		model.addAttribute("order", order);
 		return "public/notify";
