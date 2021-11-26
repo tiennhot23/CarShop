@@ -33,24 +33,28 @@ function myFunction() {
             <a style="font-family: 'Lobster', cursive; color: black" href="" class="navbar-brand">IDRISCAR</a>
           </div>
           <div class="login-wrapper my-auto">
-            <h1 class="login-title">Log in</h1>
-            <form:form action="login.htm" method="post" modelAttribute="user">
+            <h1 class="login-title">Register</h1>
+            <form:form action="register.htm" method="post" modelAttribute="user">
               <div class="form-group">
                 <label for="username">Username</label>
-                <form:input type="text" path="username" id="username" class="form-control" placeholder="enter your username" required="true"/>
+                <form:input type="text" path="username" id="username" class="form-control" placeholder="enter your username"/>
                 <form:errors path="username" element="errors"></form:errors>
               </div>
               <div class="form-group mb-4">
                 <label for="pass">Password</label>
-                <form:input type="password" path="pass" id="pass" class="form-control" placeholder="enter your passsword" required="true"/>
+                <form:input type="password" path="pass" id="pass" class="form-control" placeholder="enter your passsword"/>
                 <form:errors path="pass" element="errors"></form:errors>
               </div>
-              <input id="login" class="btn btn-block login-btn" type="submit" value="Login">
+              <div class="form-group mb-4">
+                <label for="email">Email</label>
+                <form:input type="text" path="email" id="email" class="form-control" placeholder="abc@gmail.com"/>
+                <form:errors path="email" element="errors"></form:errors>
+              </div>
+              <input id="login" class="btn btn-block login-btn" type="submit" value="Register">
             </form:form>
             ${message }
             <p>
-            <a href="#!" class="forgot-password-link" data-toggle="modal" data-target="#forgotpassmodal">Forgot password?</a>
-            <p class="login-wrapper-footer-text">Don't have an account? <a href="register.htm" class="text-reset">Register here</a></p>
+            <p class="login-wrapper-footer-text">Have an account? <a href="login.htm" class="text-reset">Login here</a></p>
           </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">

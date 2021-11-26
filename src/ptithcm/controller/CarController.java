@@ -24,6 +24,7 @@ import ptithcm.dao.CarDAO;
 import ptithcm.dao.OrderDAO;
 import ptithcm.dao.SecurityDAO;
 import ptithcm.dao.TypeDAO;
+import ptithcm.entity.Admin;
 import ptithcm.entity.Brands;
 import ptithcm.entity.Cars;
 import ptithcm.entity.Orders;
@@ -70,8 +71,16 @@ public class CarController {
 		int page = ServletRequestUtils.getIntParameter(request, "p", 0);
 		pagenumber.setP(page);
 		model.addAttribute("pagedListHolder", pageService.getPageList(cars, page, 8));
-		String user = (request.getSession().getAttribute("admin")==null && request.getSession().getAttribute("user")==null)?"0":"1";
-		model.addAttribute("user", user);
+		Admin user = (Admin) request.getSession().getAttribute("user");
+		String logged;
+		if(user==null) {
+			logged = "0";
+		}else if(user.getUsername().equals("sa")) {
+			logged = "2";
+		}else {
+			logged = "1";
+		}
+		model.addAttribute("logged", logged);
 		return "public/cars";
 	}
 	
@@ -88,6 +97,7 @@ public class CarController {
 		Cars car = new Cars();
 		car = carDAO.getCar(carid);
 		long total = car.getPrice() * amount;
+		Admin user = (Admin) request.getSession().getAttribute("user");
 		
 		Orders order = new Orders();
 		order.setCustomer(customer);
@@ -99,6 +109,7 @@ public class CarController {
 		order.setAddres(addres);
 		order.setTotal(total);
 		order.setStat(stat);
+		order.setAdmin(user);
 		
 		if(orderDAO.create(order)==0) {
 			model.addAttribute("status", "0");
@@ -118,7 +129,9 @@ public class CarController {
 		Securities security = new Securities();
 		security.setToken(token);
 		security.setExpired(String.valueOf(c.getTimeInMillis()));
-		security.setOrder(order);
+		security.setCreated(new Date());
+		security.setId(order.getId());
+		security.setType("O");
 		
 		if(securityDAO.create(security)==0) {
 			model.addAttribute("status", "0");

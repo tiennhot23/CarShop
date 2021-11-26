@@ -144,7 +144,14 @@ function showCar(id, img, name, price, type, brand, amount, disc){
 	document.getElementById("modal-car-price").innerHTML = price + " $";
 	document.getElementById("modal-car-type").innerHTML = "Type: " + type;
 	document.getElementById("modal-car-brand").innerHTML = "Brand: " + brand;
-	document.getElementById("modal-car-amount").innerHTML = "Amount: " + amount;
+	if(amount=='0'){
+		document.getElementById("modal-car-amount").innerHTML = "Amount: SOLD OUT!";
+		document.getElementById("btnBuyNow").disabled = true;
+	}
+	else{
+		document.getElementById("modal-car-amount").innerHTML = "Amount: " + amount;
+		document.getElementById("btnBuyNow").disabled = false;
+	}
 	document.getElementById("modal-car-disc").innerHTML = disc;
 	
 	document.getElementById("modal-order-img").src = img;
@@ -156,11 +163,13 @@ function showCar(id, img, name, price, type, brand, amount, disc){
 	$("#carmodal").modal("show");
 }
 function showOrder(){
-	
-	$("#carmodal").modal("hide");
-	$('#ordermodal').modal({backdrop: 'static', keyboard: false});
-	$("#ordermodal").modal("show");
-	
+	var logged = ${logged};
+	if(logged == "0") window.location.href = "http://localhost:8080/LTW-BuyCar/login.htm";
+	else{
+		$("#carmodal").modal("hide");
+		$('#ordermodal').modal({backdrop: 'static', keyboard: false});
+		$("#ordermodal").modal("show");
+	}
 }
 function onCheck(checkbox, button){
 	if(document.getElementById(checkbox).checked){

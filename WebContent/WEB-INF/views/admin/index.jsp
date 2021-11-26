@@ -194,6 +194,7 @@
                         	<form:input path="oid" type="hidden" class="form-control" />
                         	<form:input path="datebuy" type="hidden" class="form-control" />
                         	<form:input path="car.id" type="hidden" class="form-control" />
+                        	<form:input path="admin.id" type="hidden" class="form-control" />
                         	<form:input path="customer" type="hidden" class="form-control" />
                         	<form:input path="email" type="hidden" class="form-control" />
                         	<form:input path="phone" type="hidden" class="form-control" />
@@ -241,6 +242,7 @@
                         	<form:input path="oid" type="hidden" class="form-control" />
                         	<form:input path="datebuy" type="hidden" class="form-control" />
                         	<form:input path="car.id" type="hidden" class="form-control" />
+                        	<form:input path="admin.id" type="hidden" class="form-control" />
                         	<form:input path="customer" type="hidden" class="form-control" />
                         	<form:input path="email" type="hidden" class="form-control" />
                         	<form:input path="phone" type="hidden" class="form-control" />

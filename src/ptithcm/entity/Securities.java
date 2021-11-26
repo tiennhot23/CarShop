@@ -1,10 +1,14 @@
 package ptithcm.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -13,15 +17,29 @@ public class Securities {
 	@Id
 	private String token;
 	private String expired;
-	@ManyToOne
-	@JoinColumn(name="orderId")
-	private Orders order;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="MM/dd/yyyy")
+	private Date created;
+	private int id;
+	private String type;
 	
-	public Orders getOrder() {
-		return order;
+	public Date getCreated() {
+		return created;
 	}
-	public void setOrder(Orders order) {
-		this.order = order;
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public String getToken() {
 		return token;

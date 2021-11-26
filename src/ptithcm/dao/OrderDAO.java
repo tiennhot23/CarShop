@@ -63,6 +63,18 @@ public class OrderDAO{
 		return list;
 	}
 	
+	public List<Orders> getOrdersOfUser(int userId, String oid) {
+		String hql = "FROM Orders where admin.id = :userId ";
+		if(!oid.equals("")) hql += "and oid = :oid ";
+		hql += "order by oid desc ";
+		Query query = factory.getCurrentSession().createQuery(hql);
+		query.setParameter("userId", userId);
+		if(!oid.equals("")) query.setParameter("oid", oid);
+		@SuppressWarnings("unchecked")
+		List<Orders> list = query.list();
+		return list;
+	}
+	
 	public List<Orders> getOrders(FilterOrder filterOrder) {
 		String hql = "FROM Orders where stat <> -2 ";
 		if(!filterOrder.getOidFilter().equals("")) hql += "and oid = :oidFilter ";

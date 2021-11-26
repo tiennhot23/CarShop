@@ -69,6 +69,24 @@ public class CarDAO{
 		return list;
 	}
 	
+	public List<Cars> getCarsByType(String type) {
+		String hql = "FROM Cars WHERE type.name LIKE :type ";
+		Query query = factory.getCurrentSession().createQuery(hql);
+		query.setParameter("type", type);
+		@SuppressWarnings("unchecked")
+		List<Cars> list = query.list();
+		return list;
+	}
+	
+	public List<Cars> getCarsByBrand(String brand) {
+		String hql = "FROM Cars WHERE brand.name LIKE :brand ";
+		Query query = factory.getCurrentSession().createQuery(hql);
+		query.setParameter("brand", brand);
+		@SuppressWarnings("unchecked")
+		List<Cars> list = query.list();
+		return list;
+	}
+	
 	
 	
 	public int create(Cars car) {

@@ -1,6 +1,9 @@
 
 .card {
-    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
     width: 48%;
     max-width: 800px;
     padding: 4vh 0;

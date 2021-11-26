@@ -47,19 +47,16 @@
 <body>
 <div class="d-flex justify-content-center mt-5 h-100">
     <div class="d-flex align-items-center align-self-center card p-3 text-center cookies">
-    	<c:if test="${status==1}">
-    	<img src="https://icons.veryicon.com/png/o/miscellaneous/cloud-call-center/success-24.png" width="50">
-    	<span class="mt-2">${message }</span>
-   		<a class="d-flex align-items-center" href="#footer">Contact us<i class="fa fa-angle-right ml-2"></i></a>
-   		<a class="d-flex align-items-center" href="orders/?oid=${order.oid }">See order detail<i class="fa fa-angle-right ml-2"></i></a>
-    	</c:if>
-    	<c:if test="${status==0}">
-    	<img src="https://jumeirahroyal.com/wp-content/uploads/d7e50cb89c.png" width="50">
-    	<span class="mt-2">${message }</span>
-    	<a class="d-flex align-items-center" href="#footer">Contact us<i class="fa fa-angle-right ml-2"></i></a>
-    	</c:if>
+   		<a class="d-flex align-items-center mb-2">Username: ${user.username }</a>
    		
-   		<a class="d-flex align-items-center" href=""><button class="btn btn-dark mt-3 px-4" type="button">Back to Home</button> </a>
+   		<div class="d-flex align-items-center">
+   		<form:form action="changepass.htm" method="post" modelAttribute="user">
+	   		<form:input type="hidden" path="username" name="username" placeholder="enter your username"/>
+	   		<form:input type="hidden" path="pass" name="password" placeholder="enter your password"/>
+	   		<input type="password" name="passwordnew" id="password" class="form-control" placeholder="enter new password" required/>
+   			<button class="btn btn-dark mt-3 px-4" type="submit">Change</button>
+   		</form:form>
+   		</div>
     </div>
 </div>
 </body>

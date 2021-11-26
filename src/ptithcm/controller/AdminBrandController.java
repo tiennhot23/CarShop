@@ -192,9 +192,7 @@ public class AdminBrandController{
 			@PathVariable("id") Integer id) {
 		Integer temp = 0;
 		brand = brandDAO.getBrand(id);
-		FilterCar filterBrand = new FilterCar();
-		filterBrand.setBrandFilter(brand.getName());
-		if(carDAO.getCars(filterBrand).isEmpty()) {
+		if(carDAO.getCarsByBrand(brand.getName()).isEmpty()) {
 			temp = brandDAO.delete(brand);
 			if (temp != 0) {
 				model.addAttribute("message", "Delete successfull");
@@ -204,7 +202,6 @@ public class AdminBrandController{
 		}else {
 			model.addAttribute("message", "Cannot delete completely. This brand is used for car infomation.");
 		}
-		filterBrand = null;
 		List<Brands> brands = brandDAO.getBrands(filterCar.getNameFilter());
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pageService.getPageList(brands, pagenumber.getP(), 6));

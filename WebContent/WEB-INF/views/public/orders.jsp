@@ -50,7 +50,10 @@
                </div>
            </div>
        </div>
-       <div id="orderdetail" class="row" style="display: none">
+      
+       
+       	<c:forEach var="order" items="${orders}">
+       <div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                    <!-- section-title -->
                    <div class="section-title mb-0">
@@ -148,6 +151,7 @@
                    <!-- /.section-title -->
                </div>
        </div>
+       </c:forEach>
    </div>
 </div>
 
@@ -156,24 +160,12 @@
 		<%@include file="/WEB-INF/views/include/footer.jsp"%>
 		<script>
 			window.onload = function () {
-				var user = ${user};
-				if(user == "1"){
+				var logged = ${logged};
+				if(logged != "0"){
 					$("#logintag").text("Logout");
 				}
-				$("#ordertag").addClass("active")
+				$("#ordertag").addClass("active");
 			};
 		</script>
-		<c:if test="${not empty order }">
-			<script type="text/javascript">
-				window.onload = function (){
-					$("#orderdetail").css({display: "block"});
-					var user = ${user};
-					if(user == "1"){
-						$("#logintag").text("Logout");
-					}
-					$("#ordertag").addClass("active")
-				}
-			</script>
-		</c:if>
 </body>
 </html>

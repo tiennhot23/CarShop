@@ -101,10 +101,15 @@
 	
 	<!-- Interceptor -->
 	<mvc:interceptors>  
-		 <mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/admin/**"/>
+			<bean class="ptithcm.interceptor.AdminInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/logout.htm"/>
-			<bean class="ptithcm.interceptor.RoleInterceptor" />
+			<mvc:mapping path="/cars/order.htm"/>
+			<mvc:mapping path="/orders/**"/>
+			<bean class="ptithcm.interceptor.UserInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 	

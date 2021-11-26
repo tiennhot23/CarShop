@@ -3,8 +3,10 @@
 use CAR
 
 create table AD(
-	username varchar(50) primary key,
-	pass varchar(50) not null
+	id int primary key identity(1,1),
+	username varchar(50),
+	pass varchar(50) not null,
+	email varchar(100) not null,
 )
 
 create table Classs(
@@ -39,6 +41,7 @@ create table Orders(
 	email varchar(100) not null,
 	customer nvarchar(100) not null,
 	carId int not null foreign key references Cars(id),
+	userId int not null foreign key references AD(id), 
 	phone nvarchar(15) not null,
 	addres nvarchar(100) not null,
 	datebuy date not null,
@@ -50,10 +53,15 @@ create table Orders(
 create table Securities(
 	token varchar(100) primary key,
 	expired varchar(15) not null,
-	orderId int not null foreign key references Orders(id),
+	created date not null,
+	id int not null,
+	type varchar(1) not null
 )
 
-insert into AD values ('sa', '123')
+insert into AD values 
+('sa', '123', 'testmail24681357@gmail.com'),
+('tiennhot', '123', 'testmail24681357@gmail.com'),
+('sai', '123', 'testmail24681357@gmail.com')
 
 insert into Classs values
 ('Sport', N'Xe thể thao là một chiếc ô tô được thiết kế để nhấn mạnh việc xử lý, hiệu suất hoặc sự phấn khích khi lái xe. Xe thể thao có nguồn gốc từ châu Âu vào đầu những năm 1900 và hiện đang được nhiều nhà sản xuất ô tô trên thế giới sản xuất.', N'resources/image/type/sport.png'),
@@ -86,9 +94,9 @@ insert into Cars values
 (N'https://i1-vnexpress.vnecdn.net/2021/06/25/Bai-Ferrari-296-GTB-1-1-1787-1624610298.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=poDZ2_mqNcEewEI_wEcOvg', 'Ferrari 296 GTB', '', 50, 6, N'Thương hiệu xe thể thao Italy giới thiệu mẫu siêu xe mới mang tên 296 GTB, bổ sung thêm lựa chọn cho khách hàng yêu thích dòng xe Ferrari. Điểm nhấn của 296 GTB nằm ở hệ truyền động hybrid, định vị nằm dưới F8 Tributo và là đối thủ của McLaren Artura.', 8600, 2)
 
 insert into Orders values
-('mark@gmail.com',	'mark',		1,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2019-06-10',	2,		1000,	2),
-('ana@gmail.com',	'ana',		2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2019-10-10',	1,		9000,	-1),
-('simp@gmail.com',	'simp',		2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2020-08-10',	2,		8000,	-1),
-('son@gmail.com',	'son',		5,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-03-10',	1,		9100,	-1),
-('nav@gmail.com',	'nav',		7,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-10-10',	1,		2300,	1),
-('david@gmail.com',	'david',	3,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-10-10',	3,		2000,	-2)
+('mark@gmail.com',	'mark',		1,	2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2019-06-10',	2,		1000,	2),
+('ana@gmail.com',	'ana',		2,	3,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2019-10-10',	1,		9000,	-1),
+('simp@gmail.com',	'simp',		2,	2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2020-08-10',	2,		8000,	-1),
+('son@gmail.com',	'son',		5,	3,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-03-10',	1,		9100,	-1),
+('nav@gmail.com',	'nav',		7,	2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-10-10',	1,		2300,	1),
+('david@gmail.com',	'david',	3,	2,	'1234567890',	N'596/37 Trần Hưng Đạo',	'2021-10-10',	3,		2000,	-2)

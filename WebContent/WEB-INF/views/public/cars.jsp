@@ -126,7 +126,7 @@
 						    <p id="modal-car-brand" class="card-alg-left card-text">Brand: ${car.brand.name }</p>
 						    
                             <div class="card-alg-right ">
-				                <a onclick="showOrder()" class=" btn btn-lg">Buy now</a>
+				                <button id="btnBuyNow" onclick="showOrder()" class=" btn btn-lg">Buy now</button>
 				            </div>
 				            <p class="card-text">.</p>
 						    <p id="modal-car-amount" class="card-text">Amount: ${car.amount }</p>
@@ -171,7 +171,7 @@
 								  <div class="form-row">
 								  	<div class="form-group col-md-2">
 								      <label for="inputZip">Amount</label>
-								      <input name="amount" type="number" class="form-control" id="modal-order-amount" value="1" min="1" onclick="calcTotalPrice('amountBuy')" required>
+								      <input name="amount" type="number" class="form-control" id="modal-order-amount" value="1" min="1" onclick="calcTotalPrice('modal-order-amount')" required>
 								    </div>
 								    <div class="form-group col-md-6">
 								      <label for="inputCity">Total price</label>
@@ -204,11 +204,12 @@
              	</div>
             </div>
         </div>
+        
 		<%@include file="/WEB-INF/views/include/footer.jsp"%>
 		<script>
 			window.onload = function () {
-				var user = ${user};
-				if(user == "1"){
+				var logged = ${logged};
+				if(logged != "0"){
 					$("#logintag").text("Logout");
 				}
 				$("#cartag").addClass("active")

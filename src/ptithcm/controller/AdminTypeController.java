@@ -192,9 +192,7 @@ public class AdminTypeController{
 			@PathVariable("id") Integer id) {
 		Integer temp = 0;
 		type = typeDAO.getType(id);
-		FilterCar filterType = new FilterCar();
-		filterType.setTypeFilter(type.getName());
-		if(carDAO.getCars(filterType).isEmpty()) {
+		if(carDAO.getCarsByType(type.getName()).isEmpty()) {
 			temp = typeDAO.delete(type);
 			if (temp != 0) {
 				model.addAttribute("message", "Delete successfull");
@@ -204,7 +202,6 @@ public class AdminTypeController{
 		}else {
 			model.addAttribute("message", "Cannot delete completely. This type is used for car infomation.");
 		}
-		filterType = null;
 		List<Types> types = typeDAO.getTypes(filterCar.getNameFilter());
 		model.addAttribute("btnStatus", "btnAdd");
 		model.addAttribute("pagedListHolder", pageService.getPageList(types, pagenumber.getP(), 6));

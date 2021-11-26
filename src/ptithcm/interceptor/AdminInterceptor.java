@@ -9,13 +9,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import ptithcm.entity.Admin;
 
-public class RoleInterceptor extends HandlerInterceptorAdapter{
+public class AdminInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		Admin admin = (Admin) session.getAttribute("admin");
-		if (admin != null) {
+		Admin admin = (Admin) session.getAttribute("user");
+		if (admin != null && admin.getUsername().equals("sa")) {
 			return true;
 		}
 

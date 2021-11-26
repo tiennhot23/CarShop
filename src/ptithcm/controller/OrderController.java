@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ptithcm.dao.OrderDAO;
+import ptithcm.entity.Admin;
 
 @Controller
 @RequestMapping("/orders/")
@@ -18,9 +19,18 @@ public class OrderController {
 	
 	@RequestMapping("index")
 	public String index(ModelMap model, HttpServletRequest request) {
-		model.addAttribute("order", orderDAO.getOrder(request.getParameter("oid")));
-		String user = (request.getSession().getAttribute("admin")==null && request.getSession().getAttribute("user")==null)?"0":"1";
-		model.addAttribute("user", user);
+		Admin user = (Admin) request.getSession().getAttribute("user");
+		String logged;
+		if(user==null) {
+			logged = "0";
+		}else if(user.getUsername().equals("sa")) {
+			logged = "2";
+		}else {
+			logged = "1";
+		}
+		String oid = request.getParameter("oid");
+		model.addAttribute("orders", orderDAO.getOrdersOfUser(user.getId(), (oid==null)?"":oid));
+		model.addAttribute("logged", logged);
 		return "public/orders";
 	}
 	

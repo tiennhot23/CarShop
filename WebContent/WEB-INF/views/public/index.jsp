@@ -117,8 +117,8 @@
 <script>
 	window.onload = function () {
 		
-		var user = ${user};
-		if(user == "1"){
+		var logged = ${logged};
+		if(logged != "0"){
 			$("#logintag").text("Logout");
 		}
 		$("#hometag").addClass("active");

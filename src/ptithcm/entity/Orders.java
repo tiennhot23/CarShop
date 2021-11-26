@@ -1,15 +1,12 @@
 package ptithcm.entity;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -52,17 +49,19 @@ public class Orders {
 	@JoinColumn(name="carId")
 	private Cars car;
 	
-	public Orders() {
-	}
-	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
-	private Collection<Securities> securities;
+	@ManyToOne
+	@JoinColumn(name="userId")
+	private Admin admin;
 	
-	public Collection<Securities> getSecurities() {
-		return securities;
+	public Admin getAdmin() {
+		return admin;
 	}
 
-	public void setSecurities(Collection<Securities> securities) {
-		this.securities = securities;
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
+	public Orders() {
 	}
 	
 	public String getOid() {

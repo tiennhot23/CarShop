@@ -89,7 +89,6 @@ public class AdminController{
 		Cars car = carDAO.getCar(order.getCar().getId());
 		if(car.getAmount() < order.getAmount()) {
 			model.addAttribute("message", "Purchase quantity exceeds available quantity!");
-		}else {
 			List<Orders> orders = orderDAO.getOrders(filterOrder);
 			model.addAttribute(pageService.getPageList(orders, pagenumber.getP(), 6));
 			return "admin/index";
@@ -104,7 +103,7 @@ public class AdminController{
 				String from = "IDRISCAR";
 				String to = order.getEmail();
 				String subject = "Order Car";
-				String body = "Đơn hàng đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
+				String body = "Đơn hàng " + order.getOid() + " đã được chấp nhận và dự kiến sẽ giao vào ngày " + expecteddate;
 				if(temp != 0) {
 					try {
 						mailer.send(from, to, subject, body);
@@ -148,7 +147,7 @@ public class AdminController{
 		String from = "IDRISCAR";
 		String to = order.getEmail();
 		String subject = "Order Car";
-		String body = "Đơn hàng đã bị từ chối.<br/>" + ((reason.length()>0)?"Lí do: " + reason + "<br/>":"")
+		String body = "Đơn hàng " + order.getOid() + " đã bị từ chối.<br/>" + ((reason.length()>0)?"Lí do: " + reason + "<br/>":"")
 				+ "Mọi thắc mắc vui lòng liên hệ qua website: http://localhost:8080/CarShop/";
 		if(temp != 0) {
 			try {

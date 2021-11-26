@@ -52,6 +52,9 @@
 					</div>
 				</li>
 				<li><a id="ordertag" href="orders/" class="nav-item nav-link">Orders</a></li>
+				<c:if test="${logged=='2'}">
+				<li><a id="admin" href="admin/" class="nav-item nav-link">Administrator</a></li>
+				</c:if>
 				<li><a  href="login.htm" class="nav-item nav-link"><span id="logintag">Login</span></a></li>
 			</ul>
 		</div>
